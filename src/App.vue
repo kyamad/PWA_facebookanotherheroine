@@ -1,7 +1,9 @@
 <template>
   <nav>
     <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <router-link to="/about">About</router-link> |
+    <router-link to="/stream">配信</router-link> |
+    <router-link to="/streamtest">test</router-link> |
   </nav>
   <router-view/>
 </template>

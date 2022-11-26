@@ -1,11 +1,23 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import StreamerView from '../views/StreamerView.vue'
+import Streamertest from '../views/Streamertest.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'home',
     component: HomeView
+  },
+  {
+    path: '/stream',
+    name: 'stream',
+    component: StreamerView
+  },
+  {
+    path: '/streamtest',
+    name: 'streamtest',
+    component: Streamertest
   },
   {
     path: '/about',
