@@ -1,0 +1,38 @@
+@mixin KosugiMaru {
+    font-family: 'Kosugi Maru', sans-serif;
+}
+
+@mixin KosugiMaruNotoSerifJPNomal {
+    font-family: 'Noto Serif JP', sans-serif;
+    font-weight: normal;
+}
+
+@mixin KosugiMaruNotoSerifJPBold {
+    font-family: 'Noto Serif JP', sans-serif;
+    font-weight: bold;
+}
+
+@mixin KosugiMaruNotoSerifJPExtraLight {
+    font-family: 'Noto Serif JP', sans-serif;
+    font-weight: 200;
+}
+
+@mixin KosugiMaruNotoSerifJPLight {
+    font-family: 'Noto Serif JP', sans-serif;
+    font-weight: 300;
+}
+
+@mixin KosugiMaruNotoSerifJPMedium {
+    font-family: 'Noto Serif JP', sans-serif;
+    font-weight: 500;
+}
+
+@mixin KosugiMaruNotoSerifJPRegular {
+    font-family: 'Noto Serif JP', sans-serif;
+    font-weight: 400;
+}
+
+@mixin KosugiMaruNotoSerifJPSemiBold {
+    font-family: 'Noto Serif JP', sans-serif;
+    font-weight: 600;
+}

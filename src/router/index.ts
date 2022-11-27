@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-import StreamerView from '../views/StreamerView.vue'
-import Streamertest from '../views/Streamertest.vue'
+import StreamingView from '../views/StreamingView.vue'
+import LiveStreaming from '../views/LiveStreaming.vue'
+import index from '../views/index.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,14 +11,19 @@ const routes: Array<RouteRecordRaw> = [
     component: HomeView
   },
   {
-    path: '/stream',
-    name: 'stream',
-    component: StreamerView
+    path: '/index',
+    name: 'index',
+    component:index
   },
   {
-    path: '/streamtest',
-    name: 'streamtest',
-    component: Streamertest
+    path: '/streamingview',
+    name: 'streamingview',
+    component: StreamingView
+  },
+  {
+    path: '/streaming',
+    name: 'streaming',
+    component: LiveStreaming
   },
   {
     path: '/about',

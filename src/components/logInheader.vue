@@ -23,6 +23,8 @@ export default defineComponent({
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
+@import '@/assets/sass/mixin.scss';
+
 header{
  position: fixed;
  top: 0; left: 0;
@@ -33,8 +35,13 @@ header{
  z-index: 80;
 }
 
+a{
+    text-decoration: none;
+    color: #000000;
+}
+
 .login{
- font-family: 'Noto Serif JP', serif;
+ @include KosugiMaruNotoSerifJPNomal;
  display: flex;
  list-style: none;
  font-size: 1.5vw;
@@ -70,31 +77,11 @@ header{
 .login li:nth-of-type(9) {
  margin-right: 1vw;
  }
- 
-.m2{
- font-size: 1vw;
- margin-top: 1.5vw;
-}
-
-.btn{
- font-family: none;
- padding: 0.5vw 3vw; /* 上下の余白、左右の余白 */
- border-radius: 3vw; /* 角を丸くする */
- box-shadow: 0.2vw 0.35vw 0.1vw #cccccc;/* 影 */
- border:0.2vw solid #696969; /* 囲み線 */
- text-decoration: none;    
-}
 
 .blue {
  margin-right: 2.5vw;
  background: #007bbb; /* 背景赤 */
  color: #FFFFFF; /* 文字白 */
-}
-
-.gold{
- margin-right: 5vw;
- background: #f8e58c; /* 背景黄 */
- color: #383635; /* 文字黒 */
 }
 
 .livem2{
