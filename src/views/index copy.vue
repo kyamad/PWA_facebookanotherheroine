@@ -1,7 +1,6 @@
 <template>
   <logInheader></logInheader>
   <main id="top-page">
-  <VideoComponent></VideoComponent> 
     <section id="section1">
       <div class="koukoku">
         <a href="#" class ="linkURL"><img src="../assets/広告.jpg"></a>
@@ -20,13 +19,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import VideoComponent from '@/components/VideoComponent.vue';
 import LiveList from  '@/components/LiveList.vue';
 
 export default defineComponent({
   name: 'LiveStreaming',
   components: {
-    VideoComponent,
     LiveList
   },
 });
