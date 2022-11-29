@@ -44,6 +44,15 @@ a{
  border-bottom: 0.2vw solid #a9a9a9;
 }
 
+.login0000{
+ @include KosugiMaruNotoSerifJPNomal;
+ display: flex;
+ list-style: none;
+ font-size: 1.5vw;
+ padding: 0;
+ border-bottom: 0.2vw solid #a9a9a9;
+}
+
 .m1{
  text-decoration: none;
  margin: 0.5vw 4vw 0vw 1.5vw;
