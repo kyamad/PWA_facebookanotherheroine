@@ -1,6 +1,7 @@
 <template>
   <div class="commentview">
-    <ul class="tab-panel">
+      <!--コメント、おたより一覧と内容は別componentsにする-->
+      <ul class="tab-panel">
       <li class="Tab-A" @click="isSelect('1')" v-bind:class="{'active': isActive === '1'}"><div class="tab-A">コメント</div></li>
       <li class="Tab-B" @click="isSelect('2')" v-bind:class="{'active': isActive === '2'}"><div class="tab-B">おたより</div></li>
     </ul>
