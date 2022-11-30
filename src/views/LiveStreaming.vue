@@ -13,7 +13,6 @@
       <p class="livemove">分経過</p>
       </div>
       <div class="livestartbtn">
-      <Limit></Limit>
       <div class="samune">
         <img id="samuneimg" src="../assets/サムネ.jpg">
         <!--<div class="pointfld">
@@ -88,61 +87,7 @@
         </div>
       </div>-->
     </div>
-    <div class="commentview">
-      <div class="TabMenu">
-        <ul class="tab-panel">
-          <li @click="isSelect('1')" v-bind:class="{'active': isActive === '1'}">コメント</li>
-          <li @click="isSelect('1')" v-bind:class="{'active': isActive === '2'}">おたより</li>
-        </ul>
-        <div class="tab-view"></div>
-        <!--<div id="tabpage1">-->
-          <div v-if="isActive == '1'"></div>
-            <!--<li class="listener"><p class="lisname">ユーザー名ユーザー名</p><p class="listenerkom"></p></li>-->
-          <div v-else-if="isActive == '2'"></div>
-          <!--
-          <div id="tabpage2">
-           <ul class="otayori">
-            <li class="mail">
-              <a href="#mailopen0" class ="honbun"><p class="mainame">ユーザー名ユーザー名</p>
-                <div class="mailarea">
-                  <p class="listenermai">複数行の時はline-clampプロパティを使用します。ここに入れる数値が表示される行を表しています。（3行で隠したい場合は「3」）</p>
-                </div>
-              </a>
-            </li>
-           </ul>
-          </div>
-          -->
-          <!--
-          <div id="mailopen0">
-            <div class="open">
-              <p class="otaname">おたよりネーム：ユーザー名ユーザー名</p>
-              <p class="maildetail">複数行の時はline-clampプロパティを使用します。ここに入れる数値が表示される行を表しています。（3行で隠したい場合は「3」）</p>
-            </div>
-          </div>
-          -->
-          <!--<div class ="reportsuccess">
-          <div class ="sucmsg">通報完了しました</div>
-          </div>-->
-        </div>
-        <!--
-        </div>
-        <div class="reportfld">
-        <div class="nondisp"><p class="nondispnaka">非表示</p></div><div class="userblock"><p class="userblknaka">ブロック</p></div><div class="userreport"><p class="userrptnaka">通報</p></div>
-        </div>
-        -->
-      </div>
-      <!--配信コード入れたらまずここ（レイアウト崩れるので）
-      <div class="commentsubmit">
-        <input type="submit" class="ssubmit" id="Submit" value="送信">
-        <input type="text" class="ccmon" name="username" id="Comment" autocomplete="off">
-      </div>
-      -->
-      <!--
-      <div class="kiritimer">
-        <div class="kirista">開始00:00</div>
-        <div class="kiriend">終了01:15</div>
-      </div>
-      -->
+    <MessagingFunction></MessagingFunction>
     </div>
     <LiveControlPanel></LiveControlPanel>
  </main>
@@ -152,16 +97,16 @@
 import { defineComponent } from 'vue';
 import logInheader from '@/components/logInheader.vue';
 import VideoComponent from '@/components/VideoComponent.vue';
-import Limit from '@/components/Limit.vue';
 import LiveControlPanel from '@/components/LiveControlPanel.vue';
+import MessagingFunction from '@/components/MessagingFunction.vue';
 
 export default defineComponent({
   name: 'LiveStreaming',
   components: {
     VideoComponent,
     logInheader,
-    Limit,
-    LiveControlPanel
+    LiveControlPanel,
+    MessagingFunction
   },
 });
 </script>
@@ -358,99 +303,6 @@ header{
 
   .time{
     margin: auto;
-  }
-
-  /*コメント,おたより共通
-  ---------------------------------------*/
-.TabMenu{
-width: 32vw;
-}
-
-  #tab-panel{
-  width: 100%;
-  height: 4vw;
-  display: flex;
-  font-size: 2.1vw;
-  justify-content: center;
-  }
-
-  .tab-A{
-  width: 50%;
-  font-size: 1.3vw;
-  text-decoration: none;
-  border-width: 0.17vw 0.17vw 0vw 0.17vw;
-  border-style: solid;
-  border-color: black;
-  color: #383635;
-  z-index: 0;
-  background-color: #FFFFFF;
-  }
-
-  .tab-B{
-  width: 50%;
-  font-size: 1.3vw;
-  text-decoration: none;
-  border-width: 0.17vw 0.17vw 0vw 0.17vw;
-  border-style: solid;
-  border-color: black;
-  color: #383635;
-  background-color: #FFFFFF;
-  z-index: 0;
-  }
-
-  #tabpage1, #tabpage2, #mailopen0{
-  position: relative;
-  border: 0.17vw solid black;
-  z-index: 0;
-  height: 39VW;
-  overflow: scroll;
-  overflow-x: hidden;
-  background-color: #FFFFFF;
-  }
-
-  /*コメント
-  ---------------------------------------*/
-
-  .listener{
-    display: none;
-  }
-
-  .comment li{
-  padding: 1vw;
-  font-size: 1.25vw;
-  list-style: none;
-  word-break: break-all;
-  border-bottom: 0.2vw solid #cccccc;
-  }
-
-  .lisname{
-  color: #9a493f;
-  margin-bottom: 0.4vw;
-  }
-
-  .commentsubmit{
-  margin-top: 0.7vw;
-  height: 2.5vw;
-  width: 100%;
-  border: 0.05vw solid;
-  display: flex;
-  }
-
-  .ssubmit{
-  padding: 0;
-  width: 20%;
-  height: 100%;
-  font-size: 1vw;
-  line-height: 10vw;
-  }
-
-  .ccmon{
-  border: 0;
-  border-left: 0.1vw solid;
-  padding: 0 0 0 0.4vw;
-  width: 80%;
-  height: 100%;
-  font-size: 1vw;
   }
 
   </style>

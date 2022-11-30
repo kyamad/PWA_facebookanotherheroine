@@ -2,6 +2,7 @@
   <logInheader></logInheader>
   <main id="top-page">
   <VideoComponent></VideoComponent> 
+  <SiteLimit></SiteLimit>
     <section id="section1">
       <div class="koukoku">
         <a href="#" class ="linkURL"><img src="../assets/広告.jpg"></a>
@@ -22,12 +23,14 @@
 import { defineComponent } from 'vue';
 import VideoComponent from '@/components/VideoComponent.vue';
 import LiveList from  '@/components/LiveList.vue';
+import SiteLimit from  '@/components/SiteLimit.vue';
 
 export default defineComponent({
   name: 'LiveStreaming',
   components: {
     VideoComponent,
-    LiveList
+    LiveList,
+    SiteLimit
   },
 });
 </script>

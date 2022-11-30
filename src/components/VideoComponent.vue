@@ -5,9 +5,7 @@
       <div>
         <button type="button" id="join" v-on:click="join()">JOIN</button>
       </div>
-      <div id="local_video">
-        
-      </div>
+      <div id="local_video"></div>
     </div>
   </div>
 </template>
