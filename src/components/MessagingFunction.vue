@@ -36,6 +36,10 @@
         <div class ="sucmsg">通報完了しました</div>
       </div>-->
     </template>
+    <div class="CommentAddfld">
+      <button v-on:click="addComment()">add</button>
+      <input type="text" v-model="WriteComment">
+    </div>
   </div>
   <!--配信コード入れたらまずここ（レイアウト崩れるので）
   <div class="commentsubmit">
