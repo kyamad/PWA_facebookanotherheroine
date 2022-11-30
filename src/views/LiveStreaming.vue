@@ -13,7 +13,7 @@
       <p class="livemove">分経過</p>
       </div>
       <div class="livestartbtn">
-      <!--<div class="listerror"><div class="lierrormsg">ライブが始まったら使えるよ</div></div>-->
+      <Limit></Limit>
       <div class="samune">
         <img id="samuneimg" src="../assets/サムネ.jpg">
         <!--<div class="pointfld">
@@ -144,6 +144,7 @@
       </div>
       -->
     </div>
+    <LiveControlPanel></LiveControlPanel>
  </main>
 </template>
 
@@ -151,12 +152,16 @@
 import { defineComponent } from 'vue';
 import logInheader from '@/components/logInheader.vue';
 import VideoComponent from '@/components/VideoComponent.vue';
+import Limit from '@/components/Limit.vue';
+import LiveControlPanel from '@/components/LiveControlPanel.vue';
 
 export default defineComponent({
   name: 'LiveStreaming',
   components: {
     VideoComponent,
-    logInheader
+    logInheader,
+    Limit,
+    LiveControlPanel
   },
 });
 </script>
