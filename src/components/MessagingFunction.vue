@@ -7,9 +7,7 @@
     </ul>
     <template v-if="isActive === '1'">
       <div id="tabpage1">
-        <ul class="comment">
-          <li class="listener"><p class="lisname">ユーザー名ユーザー名</p><p class="listenerkom"></p>あああああああああああああああああああああああああああああああああああああああああああああああ</li>
-        </ul>
+        <UserComment></UserComment>
       </div>
     </template>
     <template v-else-if="isActive === '2'">
@@ -63,9 +61,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import UserComment from '@/components/Comment.vue';
 
 export default defineComponent({
   name: 'MessagingFunction',
+  components : {
+    UserComment
+  },
   methods: {
     isSelect: function (num:any) {
       this.isActive = num;
@@ -149,24 +151,6 @@ template {
   /*コメント
   ---------------------------------------*/
 
-  .listener{
-    display: none;/*通常はblock*/
-    text-align: justify;
-  }
-
-  .comment li{
-  padding: 1vw;
-  font-size: 1.25vw;
-  list-style: none;
-  word-break: break-all;
-  border-bottom: 0.2vw solid #cccccc;
-  }
-
-  .lisname{
-  color: #9a493f;
-  margin-bottom: 0.4vw;
-  }
-
   .mail{
   height: 5vw;
   font-size: 1vw;
@@ -207,23 +191,6 @@ template {
   -webkit-box-orient: vertical;
   overflow: hidden;
   word-break: break-all;
-  }
-
-  .ssubmit{
-  padding: 0;
-  width: 20%;
-  height: 100%;
-  font-size: 1vw;
-  line-height: 10vw;
-  }
-
-  .ccmon{
-  border: 0;
-  border-left: 0.1vw solid;
-  padding: 0 0 0 0.4vw;
-  width: 80%;
-  height: 100%;
-  font-size: 1vw;
   }
 
 .CommentAddfld{

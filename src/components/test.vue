@@ -5,7 +5,7 @@ mRtmClient = RtmClient.createInstance(getBaseContext(), getString(R.string.agora
         mRtmChannel.join(new ResultCallback<Void>() {
             mRtmChannel = mRtmClient.createChannel(channel, new MyChannelListener());
                     mRtmChannel.join(new ResultCallback<Void>() {
-                    RtmMessage message = mRtmClient.createMessage();
+                        RtmMessage message = mRtmClient.createMessage();
                         message.setText(”Please unmute”);
                         mRtmChannel.sendMessage(message, new ResultCallback<Void>() {
                             class MyChannelListener implements RtmChannelListener {
