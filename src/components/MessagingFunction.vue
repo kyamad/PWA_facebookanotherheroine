@@ -37,8 +37,8 @@
       </div>-->
     </template>
     <div class="CommentAddfld">
-      <button v-on:click="addComment()">add</button>
-      <input type="text" v-model="WriteComment">
+      <button v-on:click="addComment()">送信</button>
+      <input class="CommentText" type="text" v-model="WriteComment">
     </div>
   </div>
   <!--配信コード入れたらまずここ（レイアウト崩れるので）
@@ -209,14 +209,6 @@ template {
   word-break: break-all;
   }
 
-  .commentsubmit{
-  margin-top: 0.7vw;
-  height: 2.5vw;
-  width: 100%;
-  border: 0.05vw solid;
-  display: flex;
-  }
-
   .ssubmit{
   padding: 0;
   width: 20%;
@@ -233,5 +225,31 @@ template {
   height: 100%;
   font-size: 1vw;
   }
+
+.CommentAddfld{
+ margin-top: 0.7vw;
+ height: 2.5vw;
+ width: 100%;
+ border: 0.05vw solid;
+ display: flex;
+
+}
+
+.CommentText{
+ border: 0;
+ border-left: 0.1vw solid;
+ padding: 0 0 0 0.4vw;
+ width: 80%;
+ height: 100%;
+ font-size: 1vw;
+
+}
+
+.CommentAddfld button{
+ padding: 0;
+ width: 20%;
+ height: 100%;
+ font-size: 1vw;
+}
 
 </style>
