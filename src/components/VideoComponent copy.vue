@@ -1,5 +1,13 @@
 <template>
-  <button type="button" id="startbtn" v-on:click="join()">LIVE<br>スタート</button>
+  <div>
+    <h2>Agora Video Web SDK Quickstart Vue.js</h2>
+    <div>
+      <div>
+        <button type="button" id="join" v-on:click="join()">JOIN</button>
+      </div>
+      <div id="local_video"></div>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -19,14 +27,12 @@ export default defineComponent({
         localVideoTrack: null,
         client: null
       };
-      
       let options = {
         appId: "49d72a2fc8dc4917804e9e8bacde2661",
         channel: "test_ui",
-        token: "007eJxTYLjh4jixQe2CdGxy96ZLbq3bqpSMrk2+cFt8h6nwtDtBht4KDCaWKeZGiUZpyRYpySaWhuYWBiaplqkWSYnJKalGZmaGD1xbkhsCGRkOup5iYIRCEJ+doSS1uCS+NJOBAQCaIyDQ",
+        token: "007eJxTYNjXefPZN92nzJb/Z2+bxcjh57Nv6+KrsurSZX+DaxP8fksoMJhYppgbJRqlJVukJJtYGppbGJikWqZaJCUmp6QamZkZrj/Xk9wQyMjAODmDCUiCIYjPzlCSWlwSX5rJwAAAAiAhew==",
         uid: 0
       }
-      
       async function initializeRTC() {
         rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
         await rtc.client.join(options.appId, options.channel, options.token, options.uid);
@@ -34,7 +40,6 @@ export default defineComponent({
         rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
         rtc.localVideoTrack.play("local_video");
         await rtc.client.publish([rtc.localAudioTrack, rtc.localVideoTrack]);
-        console.log("やあ");
       }
       initializeRTC();
     }
@@ -48,21 +53,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-#startbtn{
- position: absolute;
- color: #000;
- font-size: 2vw;
- background-color: #fcd575;
- box-shadow: 0 0 1vw;
- border-radius: 50%;
- bottom: 4vw;
- left: 0;
- right: 0;
- margin: 0 23.5vw;
- padding: 3.6vw 1.7vw;
- cursor: pointer;
-}
-
 #local_video {
   width: 320px;
   height: 240px;

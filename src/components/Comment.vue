@@ -6,6 +6,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import AgoraRTM from 'agora-rtm-sdk';
 
 export default defineComponent({
     name:'UserComment',
@@ -19,7 +20,7 @@ body {
 }
 
 .listener{
-    display: none;/*通常はblock*/
+    display: block;/*通常はblock*/
     text-align: justify;
   }
 
