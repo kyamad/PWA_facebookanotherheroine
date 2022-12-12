@@ -7,7 +7,9 @@
     </ul>
     <template v-if="isActive === '1'">
       <div id="tabpage1">
-        <UserComment></UserComment>
+        <ul class="comment">
+          <li class="listener"><p class="lisname"></p><p class="listenerkom"></p></li>
+        </ul>
       </div>
     </template>
     <template v-else-if="isActive === '2'">
@@ -61,23 +63,60 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import UserComment from '@/components/Comment.vue';
+import AgoraRTM from 'agora-rtm-sdk';
 
 export default defineComponent({
   name: 'MessagingFunction',
   components : {
-    UserComment
   },
   methods: {
     isSelect: function (num:any) {
       this.isActive = num;
+    },
+
+    addComment: () => {
+
+      let options = {
+        uid: "",
+        token: ""
+      };
+
+      const appID = "49d72a2fc8dc4917804e9e8bacde2661";
+      options.token = "<Your token>";
+
+      const client = AgoraRTM.createInstance(appID);
+      let channel = client.createChannel("demoChannel");
+
+
+      async function add(){
+
+        this.WriteComment.value.toString()
+
+        if (channel != null) {
+            await channel.sendMessage({ text: channelMessage }).then(() => {
+              
+              let comment = document.querySelector('.comment')!;
+              let Listener = comment.getElementsByTagName('li');
+              let i = Listener.length; 
+              let clist = Listener[0].cloneNode(true);
+              comment.appendChild(clist);
+              let ttext = Listener[i].querySelector('.listenerkom')!;
+              ttext.textContent = channelMessage;
+              Listener[i].style.display = "block";
+              })
+        }
+      }
+      add();
     }
   },
+
   data: function() {
     return {
       isActive : '1'
+      WriteComment:""
     }
   }
+
 });
 </script>
 
@@ -150,6 +189,24 @@ template {
 
   /*コメント
   ---------------------------------------*/
+
+.listener{
+    display: block;/*通常はblock*/
+    text-align: justify;
+  }
+
+.comment li{
+  padding: 1vw;
+  font-size: 1.25vw;
+  list-style: none;
+  word-break: break-all;
+  border-bottom: 0.2vw solid #cccccc;
+}
+
+.lisname{
+  color: #9a493f;
+  margin-bottom: 0.4vw;
+}
 
   .mail{
   height: 5vw;
