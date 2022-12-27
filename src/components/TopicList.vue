@@ -16,7 +16,7 @@
   </template> 
   <template v-else>
     お題が選択されていません
-  </template> 
+  </template>
 
   <template v-if="tabindex=='tab4'">
     <ul>

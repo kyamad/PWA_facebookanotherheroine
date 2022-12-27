@@ -37,7 +37,7 @@
       </div>-->
     </template>
     <div class="CommentAddfld">
-      <button v-on:click="addComment()">送信</button>
+      <button v-on:click="addComment">送信</button>
       <input class="CommentText" type="text" v-model="WriteComment">
     </div>
   </div>
@@ -64,56 +64,115 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import AgoraRTM from 'agora-rtm-sdk';
+import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 
 export default defineComponent({
   name: 'MessagingFunction',
   components : {
   },
+
   methods: {
     isSelect: function (num:any) {
       this.isActive = num;
     },
 
-    addComment: () => {
-
-      let options = {
-        uid: "",
-        token: ""
+    CommentSt: () => {
+      let rtm = {
+        channel:"demochannel",
+        client: null,
+        Account:null
       };
+      
+      let RTMC = {
+        CapId: null,
+        CapChannel: null,
+        appId: "49d72a2fc8dc4917804e9e8bacde2661",
+        channel: "demoChannel",
+        token: "007eJxTYDj6i2V2uLvb/pRCv4cHj3zysLj3Mi9ySryI96QPC3/1NfopMJhYppgbJRqlJVukJJtYGppbGJikWqZaJCUmp6QamZkZ2votSG4IZGQ4I7KNhZEBAkF8boaU1Nx854zEvLzUHAYGANAyI88=",
+        uid: 0
+      };
+      
+      rtm.client = AgoraRTM.createInstance(RTMC.CapId);
+      rtm.channel = rtm.client.createChannel(RTMC.CapChannel); 
 
-      const appID = "49d72a2fc8dc4917804e9e8bacde2661";
-      options.token = "<Your token>";
+      rtm.channel.on('ConnectionStateChange', (newState, reason) => {
+        console.log('on connection state changed to ' + newState + ' reason: ' + reason);
+      });
 
-      const client = AgoraRTM.createInstance(appID);
-      let channel = client.createChannel("demoChannel");
+      function loginAgoraRTC(){
+        rtm.client.login({uid: RTMC.uid}).then(() => {
+              console.log('AgoraRTM client login success');
+              channelJoinAgoraRTC();
+          }),
+          // .catch(err => {
+          //     console.log('AgoraRTM client login failure', err);
+          // });
+      };
+      loginAgoraRTC();
 
+      function channelJoinAgoraRTC(){
+          rtm.channel.join().then(() => {
+              console.log('AgoraRTM channel join success');
+              getChannelMessages();
+          }),
+          // .catch(err => {
+          //     console.log('AgoraRTM channel join failure', err);
+          // });
+      };
+      
 
-      async function add(){
+      let comment = document.querySelector('.comment')!;
+      let Listener = comment.getElementsByTagName('li');
+      let i = Listener.length;  
+      let ttext = Listener[i].querySelector('.listenerkom')!;
+      let channelMessage = ttext.textContent;
 
-        this.WriteComment.value.toString()
+      function getChannelMessages(){
+          rtm.channel.on('ChannelMessage', function(message, memberId){
+              console.log(" got message: " + message.text + " from " + memberId);
+            //     remoteMessage = message.text; この辺は考える。とりあえずメッセージ反映はさせる
+            //     if(remoteMessage == "startGame()" && gameStatus == false){
+            //         startGame();
+            //     }else if(remoteMessage == "1" || remoteMessage == "2" || remoteMessage == "3"){
+            //         remoteMessage = Number(remoteMessage);
+            //         console.log("typeof remoteMessage is " + typeof remoteMessage);
+            //         console.log("remoteMessage is " + remoteMessage);
+            //         getRoles(remoteMessage, memberId);
+            //     }
+            // });
+          });
+      };
+    },
 
-        if (channel != null) {
-            await channel.sendMessage({ text: channelMessage }).then(() => {
-              
-              let comment = document.querySelector('.comment')!;
-              let Listener = comment.getElementsByTagName('li');
-              let i = Listener.length; 
-              let clist = Listener[0].cloneNode(true);
-              comment.appendChild(clist);
-              let ttext = Listener[i].querySelector('.listenerkom')!;
-              ttext.textContent = channelMessage;
-              Listener[i].style.display = "block";
-              })
-        }
+    addComment : function(WriteComment:any){
+      console.log("yaa")
+      // rtm.channel.sendMessage({text:WriteComment}).then(() => {
+      //     console.log(agoraRTMaccountName + " success to sending Msg");
+      //   }).catch(error => {
+      //       console.log(agoraRTMaccountName + " failed to sending Msg" + error);
+      //       alert("メッセージ送れず");
+      //   });
+
+        // window.onunload; ()=> {
+        //     exitAgoraRTM();
+        // };
+
+        // ログイン→チャンネル参加→Msg送信　Addcomment作る→受信作る→試す
+      
       }
-      add();
+
+      // function exitAgoraRTM(){
+      //   rtm.client.logout();
+      //   rtm.channel.leave();
+      //   console.log('channel left and log out');
+      // }
     }
   },
 
   data: function() {
     return {
-      isActive : '1'
-      WriteComment:""
+      isActive : '1',
+      channelMessage:""
     }
   }
 

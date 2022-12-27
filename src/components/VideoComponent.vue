@@ -23,13 +23,13 @@ export default defineComponent({
       
       let options = {
         appId: "49d72a2fc8dc4917804e9e8bacde2661",
-        channel: "test_ui",
-        token: "007eJxTYNjXefPZN92nzJb/Z2+bxcjh57Nv6+KrsurSZX+DaxP8fksoMJhYppgbJRqlJVukJJtYGppbGJikWqZaJCUmp6QamZkZrj/Xk9wQyMjAODmDCUiCIYjPzlCSWlwSX5rJwAAAAiAhew==",
+        channel: "demoChannel",
+        token: "007eJxTYDj6i2V2uLvb/pRCv4cHj3zysLj3Mi9ySryI96QPC3/1NfopMJhYppgbJRqlJVukJJtYGppbGJikWqZaJCUmp6QamZkZ2votSG4IZGQ4I7KNhZEBAkF8boaU1Nx854zEvLzUHAYGANAyI88=",
         uid: 0
       }
       
       async function initializeRTC() {
-        rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+        rtc.client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
         await rtc.client.join(options.appId, options.channel, options.token, options.uid);
         rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
         rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
@@ -37,6 +37,13 @@ export default defineComponent({
         await rtc.client.publish([rtc.localAudioTrack, rtc.localVideoTrack]);
       }
       initializeRTC();
+
+      function Livestart() {
+        document.getElementById("samuneimg").style.display = "none";
+        document.querySelector(".filter").style.display = "none";
+        document.getElementById("startbtn").style.display = "none";
+      }
+      Livestart();
     }
   },
   mounted: () => {
