@@ -10,6 +10,8 @@ import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 export default defineComponent({
   name: 'VideoComponents',
 
+  created : function(){},
+
   methods: {
     join: () => {
       // let rtc = this.rtc;
@@ -24,7 +26,7 @@ export default defineComponent({
       let options = {
         appId: "49d72a2fc8dc4917804e9e8bacde2661",
         channel: "demoChannel",
-        token: "007eJxTYDj6i2V2uLvb/pRCv4cHj3zysLj3Mi9ySryI96QPC3/1NfopMJhYppgbJRqlJVukJJtYGppbGJikWqZaJCUmp6QamZkZ2votSG4IZGQ4I7KNhZEBAkF8boaU1Nx854zEvLzUHAYGANAyI88=",
+        token: "007eJxTYPhWuTCRZ4usUFnz3mPvNt6bzKJjuWSf47Jd502ypOTvFz5XYDCxTDE3SjRKS7ZISTaxNDS3MDBJtUy1SEpMTkk1MjMzlNq2KrkhkJHh1KT1LIwMEAjiczOkpObmO2ck5uWl5jAwAACG7yNy",
         uid: 0
       }
       

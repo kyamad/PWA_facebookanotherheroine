@@ -62,13 +62,37 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent} from 'vue';
 import AgoraRTM from 'agora-rtm-sdk';
 import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
+import { reactive } from 'vue';
+
+let rtm = reactive({
+  channel:null,
+  client: "",
+  Account:null
+});
+
+let RTMC = reactive({
+  CapId: "49d72a2fc8dc4917804e9e8bacde2661",
+  CapChannel: "demochannel",
+  appId: "49d72a2fc8dc4917804e9e8bacde2661",
+  channel: "demoChannel",
+  token: "007eJxTYPhWuTCRZ4usUFnz3mPvNt6bzKJjuWSf47Jd502ypOTvFz5XYDCxTDE3SjRKS7ZISTaxNDS3MDBJtUy1SEpMTkk1MjMzlNq2KrkhkJHh1KT1LIwMEAjiczOkpObmO2ck5uWl5jAwAACG7yNy",
+  uid: "222222222222222222222222222222"
+});
+
 
 export default defineComponent({
   name: 'MessagingFunction',
   components : {
+  },
+  
+  data: function() {
+    return {
+      isActive : '1',
+      channelMessage:""
+    }
   },
 
   methods: {
@@ -76,24 +100,30 @@ export default defineComponent({
       this.isActive = num;
     },
 
-    CommentSt: () => {
-      let rtm = {
-        channel:"demochannel",
-        client: null,
-        Account:null
-      };
-      
-      let RTMC = {
-        CapId: null,
-        CapChannel: null,
-        appId: "49d72a2fc8dc4917804e9e8bacde2661",
-        channel: "demoChannel",
-        token: "007eJxTYDj6i2V2uLvb/pRCv4cHj3zysLj3Mi9ySryI96QPC3/1NfopMJhYppgbJRqlJVukJJtYGppbGJikWqZaJCUmp6QamZkZ2votSG4IZGQ4I7KNhZEBAkF8boaU1Nx854zEvLzUHAYGANAyI88=",
-        uid: 0
-      };
-      
+    addComment : function(WriteComment:any){
       rtm.client = AgoraRTM.createInstance(RTMC.CapId);
       rtm.channel = rtm.client.createChannel(RTMC.CapChannel); 
+
+      function loginAgoraRTC(){
+        rtm.client.login({options: RTMC.appId}).then(() => {
+            console.log('AgoraRTM client login success');
+        }).catch(err => {
+            console.log('AgoraRTM client login failure', err);
+        });
+      }
+      loginAgoraRTC()
+
+        console.log("yaa");
+        // この辺はできてる
+        rtm.channel.sendMessage({text:'test channel message'}).then(() => {
+            console.log("agoraRTMaccountName" + " success to sending Msg");
+          }).catch(error => {
+              console.log("agoraRTMaccountName" + " failed to sending Msg" + error);
+              alert("メッセージ送れず");
+          });
+    },
+
+    CommentSt: () => {
 
       rtm.channel.on('ConnectionStateChange', (newState, reason) => {
         console.log('on connection state changed to ' + newState + ' reason: ' + reason);
@@ -103,22 +133,20 @@ export default defineComponent({
         rtm.client.login({uid: RTMC.uid}).then(() => {
               console.log('AgoraRTM client login success');
               channelJoinAgoraRTC();
-          }),
-          // .catch(err => {
-          //     console.log('AgoraRTM client login failure', err);
-          // });
-      };
+          }).catch(err => {
+              console.log('AgoraRTM client login failure', err);
+          });
+      }
       loginAgoraRTC();
 
       function channelJoinAgoraRTC(){
           rtm.channel.join().then(() => {
               console.log('AgoraRTM channel join success');
               getChannelMessages();
-          }),
-          // .catch(err => {
-          //     console.log('AgoraRTM channel join failure', err);
-          // });
-      };
+          }).catch(err => {
+              console.log('AgoraRTM channel join failure', err);
+          });
+      }
       
 
       let comment = document.querySelector('.comment')!;
@@ -129,36 +157,18 @@ export default defineComponent({
 
       function getChannelMessages(){
           rtm.channel.on('ChannelMessage', function(message, memberId){
-              console.log(" got message: " + message.text + " from " + memberId);
-            //     remoteMessage = message.text; この辺は考える。とりあえずメッセージ反映はさせる
-            //     if(remoteMessage == "startGame()" && gameStatus == false){
-            //         startGame();
-            //     }else if(remoteMessage == "1" || remoteMessage == "2" || remoteMessage == "3"){
-            //         remoteMessage = Number(remoteMessage);
-            //         console.log("typeof remoteMessage is " + typeof remoteMessage);
-            //         console.log("remoteMessage is " + remoteMessage);
-            //         getRoles(remoteMessage, memberId);
-            //     }
-            // });
-          });
-      };
-    },
-
-    addComment : function(WriteComment:any){
-      console.log("yaa")
-      // rtm.channel.sendMessage({text:WriteComment}).then(() => {
-      //     console.log(agoraRTMaccountName + " success to sending Msg");
-      //   }).catch(error => {
-      //       console.log(agoraRTMaccountName + " failed to sending Msg" + error);
-      //       alert("メッセージ送れず");
-      //   });
-
-        // window.onunload; ()=> {
-        //     exitAgoraRTM();
-        // };
-
-        // ログイン→チャンネル参加→Msg送信　Addcomment作る→受信作る→試す
-      
+            console.log(" got message: " + message.text + " from " + memberId);
+              //     remoteMessage = message.text; この辺は考える。とりあえずメッセージ反映はさせる
+              //     if(remoteMessage == "startGame()" && gameStatus == false){
+              //         startGame();
+              //     }else if(remoteMessage == "1" || remoteMessage == "2" || remoteMessage == "3"){
+              //         remoteMessage = Number(remoteMessage);
+              //         console.log("typeof remoteMessage is " + typeof remoteMessage);
+              //         console.log("remoteMessage is " + remoteMessage);
+              //         getRoles(remoteMessage, memberId);
+              //     }
+              // });
+        });
       }
 
       // function exitAgoraRTM(){
@@ -167,15 +177,12 @@ export default defineComponent({
       //   console.log('channel left and log out');
       // }
     }
+          // window.onunload; ()=> {
+          //     exitAgoraRTM();
+          // };
+
+          // ログイン→チャンネル参加→Msg送信　Addcomment作る→受信作る→試す
   },
-
-  data: function() {
-    return {
-      isActive : '1',
-      channelMessage:""
-    }
-  }
-
 });
 </script>
 
