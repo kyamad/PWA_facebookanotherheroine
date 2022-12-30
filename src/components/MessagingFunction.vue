@@ -76,7 +76,7 @@ let rtm = reactive({
 let RTMC = reactive({
   CapId: "49d72a2fc8dc4917804e9e8bacde2661",
   CapChannel: "demochannel",
-  appId: "49d72a2fc8dc4917804e9e8bacde2661",
+  appId: "e85ce293e5c04229b9b098b9dfa9db55",
   channel: "demoChannel",
   token: "007eJxTYPhWuTCRZ4usUFnz3mPvNt6bzKJjuWSf47Jd502ypOTvFz5XYDCxTDE3SjRKS7ZISTaxNDS3MDBJtUy1SEpMTkk1MjMzlNq2KrkhkJHh1KT1LIwMEAjiczOkpObmO2ck5uWl5jAwAACG7yNy",
   uid: "222222222222222222222222222222"
@@ -105,7 +105,7 @@ export default defineComponent({
       rtm.channel = rtm.client.createChannel(RTMC.CapChannel); 
 
       function loginAgoraRTC(){
-        rtm.client.login({options: RTMC.appId}).then(() => {
+        rtm.client.login({uid: RTMC.appId}).then(() => {
             console.log('AgoraRTM client login success');
         }).catch(err => {
             console.log('AgoraRTM client login failure', err);
