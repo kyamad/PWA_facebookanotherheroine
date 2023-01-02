@@ -66,21 +66,27 @@ import { defineComponent} from 'vue';
 import AgoraRTM from 'agora-rtm-sdk';
 import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 import { reactive } from 'vue';
-
+import { RtcTokenBuilder, RtmTokenBuilder, RtcRole, RtmRole } from 'agora-access-token';
+  
 let rtm = reactive({
   channel:null,
-  client: "",
-  Account:null
+  client: null,
+  Account:null,
+  expirationTimeInSeconds : 60 * 60,// トークンの有効期間
+  currentTimestamp : Math.floor(Date.now() / 1000)
 });
 
 let RTMC = reactive({
   CapId: "49d72a2fc8dc4917804e9e8bacde2661",
   CapChannel: "demochannel",
-  appId: "e85ce293e5c04229b9b098b9dfa9db55",
+  appCertificate: "e4736ccd47ad4fb9ae0bc8e713398b55",
   channel: "demoChannel",
-  token: "007eJxTYPhWuTCRZ4usUFnz3mPvNt6bzKJjuWSf47Jd502ypOTvFz5XYDCxTDE3SjRKS7ZISTaxNDS3MDBJtUy1SEpMTkk1MjMzlNq2KrkhkJHh1KT1LIwMEAjiczOkpObmO2ck5uWl5jAwAACG7yNy",
   uid: "222222222222222222222222222222"
 });
+
+let privilegeExpiredTs = rtm.currentTimestamp + rtm.expirationTimeInSeconds;
+
+let token = RtmTokenBuilder.buildToken(RTMC.CapId, RTMC.appCertificate, RTMC.uid, RtmRole, privilegeExpiredTs);
 
 
 export default defineComponent({
@@ -105,7 +111,7 @@ export default defineComponent({
       rtm.channel = rtm.client.createChannel(RTMC.CapChannel); 
 
       function loginAgoraRTC(){
-        rtm.client.login({uid: RTMC.appId}).then(() => {
+        rtm.client.login({uid: RTMC.uid}).then(() => {
             console.log('AgoraRTM client login success');
         }).catch(err => {
             console.log('AgoraRTM client login failure', err);

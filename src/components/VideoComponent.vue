@@ -9,9 +9,6 @@ import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 
 export default defineComponent({
   name: 'VideoComponents',
-
-  created : function(){},
-
   methods: {
     join: () => {
       // let rtc = this.rtc;
