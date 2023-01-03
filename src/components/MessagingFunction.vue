@@ -80,13 +80,13 @@ let RTMC = reactive({
   CapId: "49d72a2fc8dc4917804e9e8bacde2661",
   CapChannel: "demochannel",
   appCertificate: "e4736ccd47ad4fb9ae0bc8e713398b55",
-  channel: "demoChannel",
-  uid: "222222222222222222222222222222"
+  channel: "demochannel",
+  uid: "kakaka"
 });
 
-// let privilegeExpiredTs = rtm.currentTimestamp + rtm.expirationTimeInSeconds;
+let privilegeExpiredTs = rtm.currentTimestamp + rtm.expirationTimeInSeconds;
 
-// let token = RtmTokenBuilder.buildToken(RTMC.CapId, RTMC.appCertificate, RTMC.uid, RtmRole, privilegeExpiredTs);
+let token = RtmTokenBuilder.buildToken(RTMC.CapId, RTMC.appCertificate, RTMC.uid, RtmRole.Rtm_User, privilegeExpiredTs);
 
 
 export default defineComponent({
@@ -108,25 +108,26 @@ export default defineComponent({
 
     addComment : function(WriteComment:any){
       rtm.client = AgoraRTM.createInstance(RTMC.CapId);
-      rtm.channel = rtm.client.createChannel(RTMC.CapChannel); 
 
-      function loginAgoraRTC(){
-        rtm.client.login({uid: RTMC.uid}).then(() => {
+      function loginAgoraRTM(){
+        rtm.client.login(options: {uid: RTMC.uid; token?: token}).then(() => {
             console.log('AgoraRTM client login success');
         }).catch(err => {
             console.log('AgoraRTM client login failure', err);
         });
       }
-      loginAgoraRTC()
+      loginAgoraRTM();
+
+      rtm.channel = rtm.client.createChannel(RTMC.CapChannel); 
 
         console.log("yaa");
         // この辺はできてる
-        rtm.channel.sendMessage({text:'test channel message'}).then(() => {
-            console.log("agoraRTMaccountName" + " success to sending Msg");
-          }).catch(error => {
-              console.log("agoraRTMaccountName" + " failed to sending Msg" + error);
-              alert("メッセージ送れず");
-          });
+        // rtm.channel.sendMessage({text:'test channel message'}).then(() => {
+        //     console.log("agoraRTMaccountName" + " success to sending Msg");
+        // }).catch(error => {
+        //     console.log("agoraRTMaccountName" + " failed to sending Msg" + error);
+        //     alert("メッセージ送れず");
+        // });
     },
 
     CommentSt: () => {

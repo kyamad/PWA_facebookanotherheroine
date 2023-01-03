@@ -22,8 +22,8 @@ export default defineComponent({
       
       let options = {
         appId: "49d72a2fc8dc4917804e9e8bacde2661",
-        channel: "demoChannel",
-        token: "007eJxTYPhWuTCRZ4usUFnz3mPvNt6bzKJjuWSf47Jd502ypOTvFz5XYDCxTDE3SjRKS7ZISTaxNDS3MDBJtUy1SEpMTkk1MjMzlNq2KrkhkJHh1KT1LIwMEAjiczOkpObmO2ck5uWl5jAwAACG7yNy",
+        channel: "demochannel",
+        token: "007eJxTYNg9bflqRqOJC2fNLyjQ2KVvuWhj/4aUZCG1fHPzedtbcxgUGEwsU8yNEo3Ski1Skk0sDc0tDExSLVMtkhKTU1KNzMwMDy/bnNwQyMjQO0GblZEBAkF8boaU1Nz85IzEvLzUHAYGAOE1IVw=",
         uid: 0
       }
       
