@@ -84,9 +84,9 @@ let RTMC = reactive({
   uid: "222222222222222222222222222222"
 });
 
-let privilegeExpiredTs = rtm.currentTimestamp + rtm.expirationTimeInSeconds;
+// let privilegeExpiredTs = rtm.currentTimestamp + rtm.expirationTimeInSeconds;
 
-let token = RtmTokenBuilder.buildToken(RTMC.CapId, RTMC.appCertificate, RTMC.uid, RtmRole, privilegeExpiredTs);
+// let token = RtmTokenBuilder.buildToken(RTMC.CapId, RTMC.appCertificate, RTMC.uid, RtmRole, privilegeExpiredTs);
 
 
 export default defineComponent({
