@@ -81,7 +81,7 @@ let RTMC = reactive({
   CapChannel: "demochannel",
   appCertificate: "e4736ccd47ad4fb9ae0bc8e713398b55",
   channel: "demochannel",
-  uid: "kakaka"
+  uid: "aaaaa"
 });
 
 let privilegeExpiredTs = rtm.currentTimestamp + rtm.expirationTimeInSeconds;
@@ -109,14 +109,26 @@ export default defineComponent({
     addComment : function(WriteComment:any){
       rtm.client = AgoraRTM.createInstance(RTMC.CapId);
 
+      // createAgoraAccount();
+      // function createAgoraAccount(){
+      //     RTMC.uid = Math.random().toString(32).substring(2);
+      //     //uid = agoraRTMaccountName;
+      //     console.log('your account name is' + '【' + RTMC.uid + '】');
+      // }
+
+
       function loginAgoraRTM(){
-        rtm.client.login(options: {uid: RTMC.uid; token?: token}).then(() => {
+        rtm.client.login({uif:RTMC.uid, token:token}).then(() => {
             console.log('AgoraRTM client login success');
         }).catch(err => {
             console.log('AgoraRTM client login failure', err);
         });
       }
       loginAgoraRTM();
+
+      rtm.client.on("ConnectionStateChanged", function (newState, reason) {
+          console.log("on connection state changed to " + newState + " reason:" + reason);
+      });
 
       rtm.channel = rtm.client.createChannel(RTMC.CapChannel); 
 

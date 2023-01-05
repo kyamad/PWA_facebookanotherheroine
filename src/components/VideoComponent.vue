@@ -24,7 +24,7 @@ export default defineComponent({
         appId: "49d72a2fc8dc4917804e9e8bacde2661",
         channel: "demochannel",
         token: "007eJxTYNg9bflqRqOJC2fNLyjQ2KVvuWhj/4aUZCG1fHPzedtbcxgUGEwsU8yNEo3Ski1Skk0sDc0tDExSLVMtkhKTU1KNzMwMDy/bnNwQyMjQO0GblZEBAkF8boaU1Nz85IzEvLzUHAYGAOE1IVw=",
-        uid: 0
+        uid: "aaaaa"
       }
       
       async function initializeRTC() {
