@@ -15,6 +15,7 @@
     "agora-access-token": "^2.0.4",
     "agora-rtc-sdk-ng": "^4.15.0",
     "agora-rtm-sdk": "^1.6.0-204",
+    "agora-token": "^2.0.0",
     "crypto-browserify": "^3.12.0",
     "crypto-js": "^3.3.0",
     "node-polyfill-webpack-plugin": "^2.0.1",

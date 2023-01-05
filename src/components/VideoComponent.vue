@@ -6,6 +6,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
+import { RtcTokenBuilder, RtcRole } from 'agora-access-token';
 
 export default defineComponent({
   name: 'VideoComponents',
@@ -24,12 +25,19 @@ export default defineComponent({
         appId: "49d72a2fc8dc4917804e9e8bacde2661",
         channel: "demochannel",
         token: "007eJxTYNg9bflqRqOJC2fNLyjQ2KVvuWhj/4aUZCG1fHPzedtbcxgUGEwsU8yNEo3Ski1Skk0sDc0tDExSLVMtkhKTU1KNzMwMDy/bnNwQyMjQO0GblZEBAkF8boaU1Nz85IzEvLzUHAYGAOE1IVw=",
-        uid: "aaaaa"
-      }
+        uid: "aaaaa",
+        appCertificate: "e4736ccd47ad4fb9ae0bc8e713398b55",
+        expirationTimeInSeconds : 60 * 60,// トークンの有効期間
+        currentTimestamp : Math.floor(Date.now() / 1000)
+      };
+
+      const privilegeExpiredTs = options.currentTimestamp + options.expirationTimeInSeconds;
+
+      const token = RtcTokenBuilder.buildTokenWithAccount(options.appId, options.appCertificate, options.channel, options.uid, RtcRole.PUBLISHER, privilegeExpiredTs);
       
       async function initializeRTC() {
         rtc.client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
-        await rtc.client.join(options.appId, options.channel, options.token, options.uid);
+        await rtc.client.join(options.appId, options.channel, token, options.uid);
         rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
         rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
         rtc.localVideoTrack.play("local_video");

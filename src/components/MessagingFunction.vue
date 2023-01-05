@@ -66,7 +66,7 @@ import { defineComponent} from 'vue';
 import AgoraRTM from 'agora-rtm-sdk';
 import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 import { reactive } from 'vue';
-import { RtcTokenBuilder, RtmTokenBuilder, RtcRole, RtmRole } from 'agora-access-token';
+import { RtmTokenBuilder2 } from 'agora-token';
   
 let rtm = reactive({
   channel:null,
@@ -81,12 +81,10 @@ let RTMC = reactive({
   CapChannel: "demochannel",
   appCertificate: "e4736ccd47ad4fb9ae0bc8e713398b55",
   channel: "demochannel",
-  uid: "aaaaa"
+  uid: Math.random().toString(32).substring(2)
 });
 
-let privilegeExpiredTs = rtm.currentTimestamp + rtm.expirationTimeInSeconds;
-
-let token = RtmTokenBuilder.buildToken(RTMC.CapId, RTMC.appCertificate, RTMC.uid, RtmRole.Rtm_User, privilegeExpiredTs);
+let token = RtmTokenBuilder2.buildToken(RTMC.CapId, RTMC.appCertificate, RTMC.uid, rtm.expirationTimeInSeconds);
 
 
 export default defineComponent({
@@ -108,7 +106,8 @@ export default defineComponent({
 
     addComment : function(WriteComment:any){
       rtm.client = AgoraRTM.createInstance(RTMC.CapId);
-
+      rtm.channel = rtm.client.createChannel(RTMC.CapChannel); 
+      
       // createAgoraAccount();
       // function createAgoraAccount(){
       //     RTMC.uid = Math.random().toString(32).substring(2);
@@ -118,7 +117,7 @@ export default defineComponent({
 
 
       function loginAgoraRTM(){
-        rtm.client.login({uif:RTMC.uid, token:token}).then(() => {
+        rtm.client.login({uid:RTMC.uid}).then(() => {
             console.log('AgoraRTM client login success');
         }).catch(err => {
             console.log('AgoraRTM client login failure', err);
@@ -130,10 +129,7 @@ export default defineComponent({
           console.log("on connection state changed to " + newState + " reason:" + reason);
       });
 
-      rtm.channel = rtm.client.createChannel(RTMC.CapChannel); 
-
         console.log("yaa");
-        // この辺はできてる
         // rtm.channel.sendMessage({text:'test channel message'}).then(() => {
         //     console.log("agoraRTMaccountName" + " success to sending Msg");
         // }).catch(error => {
