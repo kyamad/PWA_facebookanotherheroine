@@ -67,7 +67,7 @@ import AgoraRTM from 'agora-rtm-sdk';
 import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 import { reactive } from 'vue';
 import { RtmTokenBuilder2 } from 'agora-token';
-  
+
 let rtm = reactive({
   channel:null,
   client: null,
@@ -77,9 +77,9 @@ let rtm = reactive({
 });
 
 let RTMC = reactive({
-  CapId: "49d72a2fc8dc4917804e9e8bacde2661",
+  CapId: "e85ce293e5c04229b9b098b9dfa9db55",
   CapChannel: "demochannel",
-  appCertificate: "e4736ccd47ad4fb9ae0bc8e713398b55",
+  appCertificate: "390d335e653141b48e2cbba11d5ae48a",
   channel: "demochannel",
   uid: Math.random().toString(32).substring(2)
 });
@@ -107,6 +107,8 @@ export default defineComponent({
     addComment : function(WriteComment:any){
       rtm.client = AgoraRTM.createInstance(RTMC.CapId);
       rtm.channel = rtm.client.createChannel(RTMC.CapChannel); 
+      console.log(token);
+      console.log(RTMC.uid);
       
       // createAgoraAccount();
       // function createAgoraAccount(){
