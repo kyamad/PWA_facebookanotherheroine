@@ -1,4 +1,5 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
+// https://qiita.com/itachi/items/0910e5eda52779ffc2c0
 
 const path = require("path");
 
