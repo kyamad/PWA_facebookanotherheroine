@@ -10,7 +10,6 @@ module.exports = {
     //development: 開発時のファイル出力モード(最適化より時間短縮、エラー表示を優先）
     //production: 本番時のファイル出力モード（最適化されて出力）
     mode:'production',
-    
     //メインとなるjsファイル(エントリーポイント)
     entry: "./src/main.ts",
     //ファイルの出力設定
@@ -20,6 +19,7 @@ module.exports = {
         //出力ファイル名
         filename: "bundle.js",
     },
+    target: 'node',
     //ローダーの設定
     module: {
         rules: [
@@ -32,23 +32,31 @@ module.exports = {
                 loader: "vue-loader" //vue-loaderを使う
             },
             {
-                test: /\.ts$/,
-                use: "ts-loader"
+                test: /\.ts$/, //拡張子が.tsの場合
+                exclude: /node_modules/,
+                loader: "ts-loader", //ts-loaderを使う
+
+            },
+            {
+                test: /\.scss$/,
+                use: ["style-loader", "css-loader", "sass-loader"]
             }
         ]
     },
     plugins: [
         //Vueを読み込むために必要
-        new VueLoaderPlugin()
+        new VueLoaderPlugin(),
     ],
 }
+
+
 
 // const path = require("path");
 // const isProduction = process.env.NODE_ENV == "production";
 // const stylesHandler = "style-loader";
 
 // const config = {
-//   entry: "./src/main.ts",
+//   entry: "./src/index.js",
 //   output: {
 //     path: path.resolve(__dirname, "dist"),
 //   },
@@ -59,14 +67,13 @@ module.exports = {
 //   module: {
 //     rules: [
 //       {
-//         test: /\.css$/,
-//         use: ["vue-style-loader", "css-loader"]
+//         test: /\.css$/i,
+//         use: [stylesHandler, "css-loader"],
 //       },
 //       {
-//         test: /\.vue$/,
-//         loader: "vue-loader"
+//         test: /\.(eot|svg|ttf|woff|woff2|png|jpg|gif)$/i,
+//         type: "asset",
 //       },
-      
 
 //       // Add your rules for custom modules here
 //       // Learn more about loaders from https://webpack.js.org/loaders/

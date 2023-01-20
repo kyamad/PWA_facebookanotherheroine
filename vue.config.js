@@ -7,7 +7,7 @@ module.exports = defineConfig({
   configureWebpack: {
     plugins: [
       new NodePolyfillPlugin(),
-      new MyAwesomeWebpackPlugin()
+      // new MyAwesomeWebpackPlugin()
     ],
     optimization: {
       splitChunks: {
