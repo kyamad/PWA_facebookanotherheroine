@@ -1,5 +1,6 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
 // https://qiita.com/itachi/items/0910e5eda52779ffc2c0
+// 転送用の変更
 
 const path = require("path")
 const {VueLoaderPlugin } = require("vue-loader")
@@ -11,7 +12,7 @@ module.exports = {
     mode:'production',
 
     //メインとなるjsファイル(エントリーポイント)
-    entry: "./src/main.ts",
+    entry: "./src/main.js",
     //ファイルの出力設定
     output: {
         //出力先のディレクトリ（絶対パスで指定）
