@@ -10,9 +10,9 @@ module.exports = {
     //development: 開発時のファイル出力モード(最適化より時間短縮、エラー表示を優先）
     //production: 本番時のファイル出力モード（最適化されて出力）
     mode:'production',
-
+    
     //メインとなるjsファイル(エントリーポイント)
-    entry: "./src/main.js",
+    entry: "./src/main.ts",
     //ファイルの出力設定
     output: {
         //出力先のディレクトリ（絶対パスで指定）
