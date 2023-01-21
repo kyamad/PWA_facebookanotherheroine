@@ -8,6 +8,8 @@ import { defineComponent } from 'vue';
 import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 import { RtcTokenBuilder, RtcRole } from 'agora-access-token';
 
+declare var document:any; // documentオブジェクトの型チェックエラー一時海回避用
+
 export default defineComponent({
   name: 'VideoComponents',
   methods: {
@@ -15,7 +17,7 @@ export default defineComponent({
       // let rtc = this.rtc;
       // let options = this.options;
 
-      let rtc = {
+      let rtc:any = {
         localAudioTrack: null,
         localVideoTrack: null,
         client: null
@@ -50,6 +52,7 @@ export default defineComponent({
         document.querySelector(".filter").style.display = "none";
         document.getElementById("startbtn").style.display = "none";
       }
+
       Livestart();
     }
   },

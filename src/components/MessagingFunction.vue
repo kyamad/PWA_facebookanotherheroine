@@ -66,9 +66,9 @@ import { defineComponent} from 'vue';
 import AgoraRTM from 'agora-rtm-sdk';
 import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 import { reactive } from 'vue';
-import { RtmTokenBuilder2 } from 'agora-token';
+import { RtmTokenBuilder } from 'agora-token';
 
-let rtm = reactive({
+let rtm:any = reactive({
   channel:null,
   client: null,
   Account:null,
@@ -84,7 +84,7 @@ let RTMC = reactive({
   uid: Math.random().toString(32).substring(2)
 });
 
-let token = RtmTokenBuilder2.buildToken(RTMC.CapId, RTMC.appCertificate, RTMC.uid, rtm.expirationTimeInSeconds);
+let token = RtmTokenBuilder.buildToken(RTMC.CapId, RTMC.appCertificate, RTMC.uid, rtm.expirationTimeInSeconds);
 
 
 export default defineComponent({
@@ -121,13 +121,13 @@ export default defineComponent({
       function loginAgoraRTM(){
         rtm.client.login({uid:RTMC.uid}).then(() => {
             console.log('AgoraRTM client login success');
-        }).catch(err => {
+        }).catch((err:any) => {
             console.log('AgoraRTM client login failure', err);
         });
       }
       loginAgoraRTM();
 
-      rtm.client.on("ConnectionStateChanged", function (newState, reason) {
+      rtm.client.on("ConnectionStateChanged", function (newState:string, reason:string) {
           console.log("on connection state changed to " + newState + " reason:" + reason);
       });
 
@@ -142,7 +142,7 @@ export default defineComponent({
 
     CommentSt: () => {
 
-      rtm.channel.on('ConnectionStateChange', (newState, reason) => {
+      rtm.channel.on('ConnectionStateChange', (newState:string, reason:string) => {
         console.log('on connection state changed to ' + newState + ' reason: ' + reason);
       });
 
@@ -150,7 +150,7 @@ export default defineComponent({
         rtm.client.login({uid: RTMC.uid}).then(() => {
               console.log('AgoraRTM client login success');
               channelJoinAgoraRTC();
-          }).catch(err => {
+          }).catch((err:any) => {
               console.log('AgoraRTM client login failure', err);
           });
       }
@@ -160,7 +160,7 @@ export default defineComponent({
           rtm.channel.join().then(() => {
               console.log('AgoraRTM channel join success');
               getChannelMessages();
-          }).catch(err => {
+          }).catch((err:any) => {
               console.log('AgoraRTM channel join failure', err);
           });
       }
@@ -173,7 +173,7 @@ export default defineComponent({
       let channelMessage = ttext.textContent;
 
       function getChannelMessages(){
-          rtm.channel.on('ChannelMessage', function(message, memberId){
+          rtm.channel.on('ChannelMessage', function(message:any, memberId:string){
             console.log(" got message: " + message.text + " from " + memberId);
               //     remoteMessage = message.text; この辺は考える。とりあえずメッセージ反映はさせる
               //     if(remoteMessage == "startGame()" && gameStatus == false){
