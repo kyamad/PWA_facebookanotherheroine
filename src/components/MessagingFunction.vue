@@ -29,7 +29,7 @@
         <div class="open">
           <p class="otaname">おたよりネーム：ユーザー名ユーザー名</p>
           <p class="maildetail">複数行の時はline-clampプロパティを使用します。ここに入れる数値が表示される行を表しています。（3行で隠したい場合は「3」）</p>
-        </div>
+        </div>  
       </div>
       -->
       <!--<div class ="reportsuccess">
@@ -66,7 +66,7 @@ import { defineComponent} from 'vue';
 import AgoraRTM from 'agora-rtm-sdk';
 import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 import { reactive } from 'vue';
-import { RtmTokenBuilder2 } from 'agora-token';
+import { RtmTokenBuilder } from 'agora-token';
 
 let rtm = reactive({
   channel:null,
@@ -84,7 +84,7 @@ let RTMC = reactive({
   uid: Math.random().toString(32).substring(2)
 });
 
-let token = RtmTokenBuilder2.buildToken(RTMC.CapId, RTMC.appCertificate, RTMC.uid, rtm.expirationTimeInSeconds);
+let token = RtmTokenBuilder.buildToken(RTMC.CapId, RTMC.appCertificate, RTMC.uid, rtm.expirationTimeInSeconds);
 
 
 export default defineComponent({
