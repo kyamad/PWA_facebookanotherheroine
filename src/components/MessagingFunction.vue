@@ -29,7 +29,7 @@
         <div class="open">
           <p class="otaname">おたよりネーム：ユーザー名ユーザー名</p>
           <p class="maildetail">複数行の時はline-clampプロパティを使用します。ここに入れる数値が表示される行を表しています。（3行で隠したい場合は「3」）</p>
-        </div>
+        </div>  
       </div>
       -->
       <!--<div class ="reportsuccess">

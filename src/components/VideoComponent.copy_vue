@@ -21,8 +21,7 @@ export default defineComponent({
     join: () => {
       // let rtc = this.rtc;
       // let options = this.options;
-
-      let rtc = {
+      let rtc:any = {
         localAudioTrack: null,
         localVideoTrack: null,
         client: null
