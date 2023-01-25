@@ -65,6 +65,13 @@
 import { defineComponent} from 'vue';
 import { reactive } from 'vue';
 import { getDatabase, ref, set , push } from "firebase/database";
+import { initializeApp } from "firebase/app";
+
+const firebaseConfig = {
+  databaseURL : "https://amateras-952e1-default-rtdb.firebaseio.com/"
+};
+const app = initializeApp(firebaseConfig);
+
 
 
 export default defineComponent({
@@ -86,10 +93,10 @@ export default defineComponent({
     },
 
     addComment : function(WriteComment:any){
-      const database = getDatabase();
+      const database = getDatabase(app);
       const DatabaseRef = ref(database ,"test")
 
-      push(DatabaseRef, {
+      set(DatabaseRef, {
         message:"TestMsg"
       });
       console.log("完了");
