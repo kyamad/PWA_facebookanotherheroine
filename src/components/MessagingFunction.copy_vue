@@ -29,7 +29,7 @@
         <div class="open">
           <p class="otaname">おたよりネーム：ユーザー名ユーザー名</p>
           <p class="maildetail">複数行の時はline-clampプロパティを使用します。ここに入れる数値が表示される行を表しています。（3行で隠したい場合は「3」）</p>
-        </div>  
+        </div>
       </div>
       -->
       <!--<div class ="reportsuccess">
@@ -63,8 +63,28 @@
 
 <script lang="ts">
 import { defineComponent} from 'vue';
+import AgoraRTM from 'agora-rtm-sdk';
+import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 import { reactive } from 'vue';
-import { getDatabase, ref, set , push } from "firebase/database";
+import { RtmTokenBuilder } from 'agora-token';
+
+let rtm:any = reactive({
+  channel:null,
+  client: null,
+  Account:null,
+  expirationTimeInSeconds : 60 * 60,// トークンの有効期間
+  currentTimestamp : Math.floor(Date.now() / 1000)
+});
+
+let RTMC = reactive({
+  CapId: "e85ce293e5c04229b9b098b9dfa9db55",
+  CapChannel: "demochannel",
+  appCertificate: "390d335e653141b48e2cbba11d5ae48a",
+  channel: "demochannel",
+  uid: Math.random().toString(32).substring(2)
+});
+
+let token = RtmTokenBuilder.buildToken(RTMC.CapId, RTMC.appCertificate, RTMC.uid, rtm.expirationTimeInSeconds);
 
 
 export default defineComponent({
@@ -80,23 +100,105 @@ export default defineComponent({
   },
 
   methods: {
-
     isSelect: function (num:any) {
       this.isActive = num;
     },
 
     addComment : function(WriteComment:any){
-      const database = getDatabase();
-      const DatabaseRef = ref(database ,"test")
+      rtm.client = AgoraRTM.createInstance(RTMC.CapId);
+      rtm.channel = rtm.client.createChannel(RTMC.CapChannel); 
+      console.log(token);
+      console.log(RTMC.uid);
+      
+      // createAgoraAccount();
+      // function createAgoraAccount(){
+      //     RTMC.uid = Math.random().toString(32).substring(2);
+      //     //uid = agoraRTMaccountName;
+      //     console.log('your account name is' + '【' + RTMC.uid + '】');
+      // }
 
-      push(DatabaseRef, {
-        message:"TestMsg"
+
+      function loginAgoraRTM(){
+        rtm.client.login({uid:RTMC.uid}).then(() => {
+            console.log('AgoraRTM client login success');
+        }).catch((err:any) => {
+            console.log('AgoraRTM client login failure', err);
+        });
+      }
+      loginAgoraRTM();
+
+      rtm.client.on("ConnectionStateChanged", function (newState:string, reason:string) {
+          console.log("on connection state changed to " + newState + " reason:" + reason);
       });
-      console.log("完了");
+
+        console.log("yaa");
+        // rtm.channel.sendMessage({text:'test channel message'}).then(() => {
+        //     console.log("agoraRTMaccountName" + " success to sending Msg");
+        // }).catch(error => {
+        //     console.log("agoraRTMaccountName" + " failed to sending Msg" + error);
+        //     alert("メッセージ送れず");
+        // });
     },
 
     CommentSt: () => {
+
+      rtm.channel.on('ConnectionStateChange', (newState:string, reason:string) => {
+        console.log('on connection state changed to ' + newState + ' reason: ' + reason);
+      });
+
+      function loginAgoraRTC(){
+        rtm.client.login({uid: RTMC.uid}).then(() => {
+              console.log('AgoraRTM client login success');
+              channelJoinAgoraRTC();
+          }).catch((err:any) => {
+              console.log('AgoraRTM client login failure', err);
+          });
+      }
+      loginAgoraRTC();
+
+      function channelJoinAgoraRTC(){
+          rtm.channel.join().then(() => {
+              console.log('AgoraRTM channel join success');
+              getChannelMessages();
+          }).catch((err:any) => {
+              console.log('AgoraRTM channel join failure', err);
+          });
+      }
+      
+
+      let comment = document.querySelector('.comment')!;
+      let Listener = comment.getElementsByTagName('li');
+      let i = Listener.length;  
+      let ttext = Listener[i].querySelector('.listenerkom')!;
+      let channelMessage = ttext.textContent;
+
+      function getChannelMessages(){
+          rtm.channel.on('ChannelMessage', function(message:any, memberId:string){
+            console.log(" got message: " + message.text + " from " + memberId);
+              //     remoteMessage = message.text; この辺は考える。とりあえずメッセージ反映はさせる
+              //     if(remoteMessage == "startGame()" && gameStatus == false){
+              //         startGame();
+              //     }else if(remoteMessage == "1" || remoteMessage == "2" || remoteMessage == "3"){
+              //         remoteMessage = Number(remoteMessage);
+              //         console.log("typeof remoteMessage is " + typeof remoteMessage);
+              //         console.log("remoteMessage is " + remoteMessage);
+              //         getRoles(remoteMessage, memberId);
+              //     }
+              // });
+        });
+      }
+
+      // function exitAgoraRTM(){
+      //   rtm.client.logout();
+      //   rtm.channel.leave();
+      //   console.log('channel left and log out');
+      // }
     }
+          // window.onunload; ()=> {
+          //     exitAgoraRTM();
+          // };
+
+          // ログイン→チャンネル参加→Msg送信　Addcomment作る→受信作る→試す
   },
 });
 </script>
