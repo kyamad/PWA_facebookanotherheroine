@@ -20,6 +20,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+@import '@/assets/sass/mixin.scss';
 header{
  position: fixed;
  top: 0; left: 0;
@@ -36,15 +37,6 @@ a{
 }
 
 .login{
- @include KosugiMaruNotoSerifJPNomal;
- display: flex;
- list-style: none;
- font-size: 1.5vw;
- padding: 0;
- border-bottom: 0.2vw solid #a9a9a9;
-}
-
-.login0000{
  @include KosugiMaruNotoSerifJPNomal;
  display: flex;
  list-style: none;
