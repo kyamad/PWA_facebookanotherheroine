@@ -1,5 +1,9 @@
 <template>
-  <Header></Header>
+<div v-if="signup">
+<SignUp @onClick="SignUpCls"></SignUp>
+</div>
+<Header></Header>
+
   <main id="top-page">
     <section id="section1">
       <div class="koukoku">
@@ -21,17 +25,34 @@
 import { defineComponent } from 'vue';
 import LiveList from  '@/components/LiveList.vue';
 import Header from  '@/components/header.vue';
+import SignUp from  '@/components/SignUp.vue';
 
 export default defineComponent({
   name: 'LiveStreaming',
   components: {
     LiveList,
-    Header
+    Header,
+    SignUp
   },
+  data: function(){
+    return{
+      signup: true,
+    }
+  },
+  methods: {
+    SignUpCls(value:any) {
+        this.signup = value;
+    },
+  }
 });
 </script>
 
 <style scoped lang="scss">
+
+template{
+  position: absolute;
+  height: 100%;
+}
 
 #section1{
  font-family: 'Kosugi Maru', sans-serif;

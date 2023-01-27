@@ -6,8 +6,8 @@
         <li class="m5"><a href="#" class ="linkURL"> ゲーム </a></li>
         <li class="m6"><a href="#" class ="linkURL"> つゆだく </a></li>
         <li class="m7"><a href="#" class ="linkURL"> ラジオ </a></li>
-        <li class="m8"><a href="#" class ="linkURL"> リクエスト部屋 </a></li>
-        <li class="m2"><a href="#" class ="btn blue"> 新規登録 </a></li>
+        <li class="m8"><a href="#" class ="linkURL" > リクエスト部屋 </a></li>
+        <li class="m2"><a href="#" class ="btn blue" @click="hoge"> 新規登録 </a></li>
         <li class="m2"><a href="#" class ="btn gold"> ログイン </a></li>
     </ul>
 </template>
@@ -16,6 +16,11 @@
 import { defineComponent } from 'vue';
 
 export default defineComponent({
+    methods: {
+        hoge : function(){
+            console.log("Click")
+        }
+    }
 });
 </script>
 
