@@ -3,7 +3,6 @@ import HomeView from '../views/HomeView.vue'
 import StreamingView from '../views/StreamingView.vue'
 import LiveStreaming from '../views/LiveStreaming.vue'
 import index from '../views/index.vue'
-import SignUp from '../views/SignUp.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -25,11 +24,6 @@ const routes: Array<RouteRecordRaw> = [
     path: '/streaming',
     name: 'streaming',
     component: LiveStreaming
-  },
-  {
-    path: '/signup',
-    name: 'signup',
-    component: SignUp
   },
   {
     path: '/about',
