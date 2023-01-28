@@ -7,7 +7,7 @@
       <h class="title">ユーザーアカウントを作成</h>
       <div class="row">
           <div class="col-sm-8">
-              <form v-on:submit.prevent="registerUser">
+              <form v-on:submit.prevent="AddReister">
                   <div class="form-group">
                       <label for="Name">ユーザー名</label>
                       <input type="text" class="form-control1" id="UserName" v-model="name" maxlength="10">
@@ -34,8 +34,8 @@
                     <div class="form-group2">
                       <label for="Gender">性別</label>
                       <select v-model="gender">
-                        <option v-for="i in gender" :value= gender :key="i">
-                          {{ i.gen }}
+                        <option v-for="item , i in gender" :value= gender :key="i">
+                          {{ item.gen }}
                         </option>
                       </select>
                     </div>
@@ -45,15 +45,13 @@
                       <input type="email" class="form-control2" id="email" v-model="email">
                   </div>
                   <div class="form-group">
-                    <label for="Password1">パスワード</label>
-                    <input type="password" class="form-control3" id="password" v-model="password">
-                  </div>
-                  <div class="form-group">
-                    <label for="Password2">パスワード(確認)</label>
-                    <input type="password" class="form-control4" id="password" v-model="password2">
+                    <label for="Password1">パスワード(6文字以上英数字)※空白は消えます</label>
+                    <input type="password" v-if="open ==false" class="form-control3" id="password" v-model="password">
+                    <input type="text" v-if="open ==true" class="form-control3" v-model="password">
+                    <div class="pw-openflg">パスワードを表示する<input type="checkbox" v-model="open"></div>
                   </div>
                   <div class="RegisterBtn">
-                    <button type="submit" class="btn btn-info" @click="AddReister">登録</button>
+                    <button type="submit" class="btn btn-info">登録</button>
                   </div>
               </form>
           </div>
@@ -65,7 +63,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { getDatabase, ref, set , push } from "firebase/database";
-import app from "../../firebaseconfig";
+import app from "../../firebaseConfig";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 export default defineComponent({
@@ -75,8 +73,8 @@ export default defineComponent({
       name: '',
       email: '',
       password: '',
-      password2: '',
-      year: 0,
+      open: false,
+      year: 1995,
       month: 1,
       day: 1,
       days_max: 0,
@@ -101,24 +99,43 @@ export default defineComponent({
       const auth = getAuth(app);
       const mail = this.email;
       const pass = this.password;
-
-      createUserWithEmailAndPassword(auth, mail, pass)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        sendEmailVerification(user)
-        .then(() => {
-          alert("登録のために確認メールが送信されました！");
-          this.$emit("onClick", false);
+      this.name = this.name.replace(/\s+/g, "");
+      this.email = this.email.replace(/\s+/g, "");
+      this.password = this.password.replace(/\s+/g, "");
+      
+      if(!this.name){
+        alert("ユーザー名を入力してください")
+      } else if(!this.email){
+        alert("メールアドレスを入力してください")
+      } else if(!this.password) {
+        alert("パスワードを入力してください")
+      } else {
+        createUserWithEmailAndPassword(auth, mail, pass)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          sendEmailVerification(user)
+          .then(() => {
+            alert("登録のために確認メールが送信されました！");
+            this.$emit("onClick", false);
+          });
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          if(errorCode == "auth/email-already-in-use"){
+            alert("このメールアドレスは使用されています")
+          } else if(errorCode == "auth/invalid-email"){
+            alert("メールアドレスの形式が正しくありません")
+          } else if(errorCode == "auth/user-disabled"){
+            alert("サービスの利用が停止されているかもしれません")
+          } else if(errorCode == "auth/weak-password"){
+            alert("パスワードは6文字以上にしてください")
+          } else if(errorCode == "auth/popup-blocked"){
+            alert("認証ポップアップがブロックされました。ポップアップブロックをご利用の場合は設定を解除してください")
+          } else {
+            alert("何かしらのエラーが起きました。時間を置くか、最初からやり直してください。")
+          }
         });
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        console.log("エラーコード：" + errorCode);
-        console.log("エラーメッセージ：" + errorMessage);
-        // ..
-      });
-
+      }
     }
   }
 });
@@ -230,6 +247,17 @@ select{
 
 .RegisterBtn{
   text-align: center;
+}
+
+.pw-openflg{
+  display: flex;
+  font-size: 1vw;
+  margin-top: 0.5vw;
+}
+
+.pw-openflg input{
+  width: 1vw;
+  margin: auto auto 0.15vw 0.5vw;
 }
 
 .Sign-Flex-Grp{

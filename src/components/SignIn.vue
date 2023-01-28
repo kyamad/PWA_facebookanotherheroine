@@ -7,7 +7,7 @@
       <h class="title">ログイン</h>
       <div class="row">
           <div class="col-sm-8">
-              <form v-on:submit.prevent="LogInUser">
+              <form v-on:submit.prevent="SignIn">
                   <div class="form-group">
                       <label for="Email">メールアドレス</label>
                       <input type="email" class="form-control2" id="email" v-model="email">
@@ -17,7 +17,7 @@
                     <input type="password" class="form-control3" id="password" v-model="password">
                   </div>
                   <div class="RegisterBtn">
-                    <button type="submit" class="btn btn-info" @click="SignIn">ログイン</button>
+                    <button type="submit" class="btn btn-info">ログイン</button>
                   </div>
               </form>
           </div>
@@ -29,7 +29,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { getDatabase, ref, set , push } from "firebase/database";
-import app from "../../firebaseconfig";
+import app from "../../firebaseConfig";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default defineComponent({
@@ -49,19 +49,38 @@ export default defineComponent({
       const auth = getAuth(app);
       const mail = this.email;
       const pass = this.password;
+      this.email = this.email.replace(/\s+/g, "");
+      this.password = this.password.replace(/\s+/g, "");
 
-      signInWithEmailAndPassword(auth, mail, pass)
-      .then((userCredential) => {
-        this.$emit("onClick", false);
-        const user = userCredential.user;
-        // ...
-      })
-      .catch((error) => {
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        // ..
-      });
-
+      if(!this.email){
+        alert("メールアドレスを入力してください")
+      } else if(!this.password) {
+        alert("パスワードを入力してください")
+      } else {
+        signInWithEmailAndPassword(auth, mail, pass)
+        .then((userCredential) => {
+          this.$emit("onClick", false);
+          const user = userCredential.user;
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          if(errorCode == "auth/email-already-in-use"){
+            alert("メールアドレスまたはパスワードが違います")
+          } else if(errorCode == "auth/user-not-found"){
+            alert("メールアドレスまたはパスワードが違います")
+          } else if(errorCode == "auth/user-disabled"){
+            alert("サービスの利用が停止されているかもしれません")
+          } else if(errorCode == "auth/user-mismatch"){
+            alert("メールアドレスまたはパスワードが違います")
+          } else if(errorCode == "auth/popup-blocked"){
+            alert("認証ポップアップがブロックされました。ポップアップブロックをご利用の場合は設定を解除してください")
+          } else if(errorCode == "auth/wrong-password"){
+            alert("メールアドレスまたはパスワードが違います")
+          } else {
+            alert("何かしらのエラーが起きました。時間を置くか、最初からやり直してください。")
+          }
+        });
+      }
     }
   }
 });

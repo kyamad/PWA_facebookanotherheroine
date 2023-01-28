@@ -66,7 +66,7 @@ import { defineComponent} from 'vue';
 import { reactive } from 'vue';
 import { getDatabase, ref, set , push } from "firebase/database";
 import { initializeApp } from "firebase/app";
-import app from "../../firebaseconfig";
+import app from "../../firebaseConfig";
 
 export default defineComponent({
   name: 'MessagingFunction',
@@ -76,7 +76,8 @@ export default defineComponent({
   data: function() {
     return {
       isActive : '1',
-      channelMessage:""
+      channelMessage:"",
+      WriteComment:"",
     }
   },
 
