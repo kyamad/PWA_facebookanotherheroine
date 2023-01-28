@@ -66,13 +66,7 @@ import { defineComponent} from 'vue';
 import { reactive } from 'vue';
 import { getDatabase, ref, set , push } from "firebase/database";
 import { initializeApp } from "firebase/app";
-
-const firebaseConfig = {
-  databaseURL : "https://amateras-952e1-default-rtdb.firebaseio.com/"
-};
-const app = initializeApp(firebaseConfig);
-
-
+import app from "../../firebaseconfig";
 
 export default defineComponent({
   name: 'MessagingFunction',

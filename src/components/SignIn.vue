@@ -4,42 +4,10 @@
       <div class="CloseBtn">
         <button @click="close">×</button>
       </div>
-      <h class="title">ユーザーアカウントを作成</h>
+      <h class="title">ログイン</h>
       <div class="row">
           <div class="col-sm-8">
-              <form v-on:submit.prevent="registerUser">
-                  <div class="form-group">
-                      <label for="Name">ユーザー名</label>
-                      <input type="text" class="form-control1" id="UserName" v-model="name" maxlength="10">
-                  </div>
-                  <div class="Sign-Flex-Grp">
-                    <div class="form-group2">
-                      <label for="Birthday">生年月日</label>
-                      <select v-model="year" @change="get_days">
-                        <option v-for="n in 70" :value="(NowYear + 1 ) - n" :key="n">
-                          {{ (NowYear + 1 ) - n }}
-                        </option>
-                      </select>年
-                      <select v-model="month" @change="get_days">
-                        <option v-for="n in 12" :value="n" :key="n">
-                          {{ n }}
-                        </option>
-                      </select>月
-                      <select v-model="day">
-                        <option v-for="n in days_max" :value="n" :key="n">
-                          {{ n }}
-                        </option>
-                      </select>日
-                    </div>
-                    <div class="form-group2">
-                      <label for="Gender">性別</label>
-                      <select v-model="gender">
-                        <option v-for="i in gender" :value= gender :key="i">
-                          {{ i.gen }}
-                        </option>
-                      </select>
-                    </div>
-                  </div>
+              <form v-on:submit.prevent="LogInUser">
                   <div class="form-group">
                       <label for="Email">メールアドレス</label>
                       <input type="email" class="form-control2" id="email" v-model="email">
@@ -48,12 +16,8 @@
                     <label for="Password1">パスワード</label>
                     <input type="password" class="form-control3" id="password" v-model="password">
                   </div>
-                  <div class="form-group">
-                    <label for="Password2">パスワード(確認)</label>
-                    <input type="password" class="form-control4" id="password" v-model="password2">
-                  </div>
                   <div class="RegisterBtn">
-                    <button type="submit" class="btn btn-info" @click="AddReister">登録</button>
+                    <button type="submit" class="btn btn-info" @click="SignIn">ログイン</button>
                   </div>
               </form>
           </div>
@@ -66,56 +30,35 @@
 import { defineComponent } from 'vue';
 import { getDatabase, ref, set , push } from "firebase/database";
 import app from "../../firebaseconfig";
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default defineComponent({
-  name: 'SignUp',
+  name: 'SignIn',
   data: function(){
     return{
-      name: '',
       email: '',
       password: '',
-      password2: '',
-      year: 0,
-      month: 1,
-      day: 1,
-      days_max: 0,
-      NowYear:0,
-      gender: [{gen:"男性"},{gen:"女性"},{gen:"その他"}],
-      signup: false,
+      signin: false,
     }
   },
-  created: function () {
-    this.get_days();
-    const d = new Date()
-    this.NowYear = d.getFullYear()
-  },
   methods: {
-    get_days: function () {
-      this.days_max = new Date(this.year, this.month, 0).getDate();
-    },
     close: function(){
-      this.$emit("onClick", this.signup)
+      this.$emit("onClick", this.signin)
     },
-    AddReister: function() {
+    SignIn: function() {
       const auth = getAuth(app);
       const mail = this.email;
       const pass = this.password;
 
-      createUserWithEmailAndPassword(auth, mail, pass)
+      signInWithEmailAndPassword(auth, mail, pass)
       .then((userCredential) => {
+        this.$emit("onClick", false);
         const user = userCredential.user;
-        sendEmailVerification(user)
-        .then(() => {
-          alert("登録のために確認メールが送信されました！");
-          this.$emit("onClick", false);
-        });
+        // ...
       })
       .catch((error) => {
         const errorCode = error.code;
         const errorMessage = error.message;
-        console.log("エラーコード：" + errorCode);
-        console.log("エラーメッセージ：" + errorMessage);
         // ..
       });
 
@@ -135,10 +78,11 @@ label, input {
 button{
   margin-top: 1vw;
   padding: 0.2vw 1vw;
-  width: 5vw;
-  height: 2.2vw;
+  width: 7vw;
+  height: 2.6vw;
   font-size: 1vw;
   font-family: 'Kosugi Maru', sans-serif;
+  background-color: lightskyblue;
 }
 
 input {

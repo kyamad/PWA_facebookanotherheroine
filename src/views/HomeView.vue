@@ -1,8 +1,11 @@
 <template>
 <div v-if="signup">
-<SignUp @onClick="SignUpCls"></SignUp>
+  <SignUp @onClick="SignUpCls"></SignUp>
 </div>
-<Header></Header>
+<div v-if="signin">
+  <SignIn @onClick="SinInCls"></SignIn>
+</div>
+<Header @onClick="SignOpn"></Header>
 
   <main id="top-page">
     <section id="section1">
@@ -26,22 +29,35 @@ import { defineComponent } from 'vue';
 import LiveList from  '@/components/LiveList.vue';
 import Header from  '@/components/header.vue';
 import SignUp from  '@/components/SignUp.vue';
+import SignIn from  '@/components/SignIn.vue';
 
 export default defineComponent({
   name: 'LiveStreaming',
   components: {
     LiveList,
     Header,
-    SignUp
+    SignUp,
+    SignIn
   },
   data: function(){
     return{
-      signup: true,
+      signup: false,
+      signin: false
     }
   },
   methods: {
-    SignUpCls(value:any) {
-        this.signup = value;
+    SignOpn(value:number){
+      if(value == 1){
+        this.signup = true;
+      } else if(value == 2){
+        this.signin = true;
+      };
+    },
+    SignUpCls(value:boolean){
+      this.signup = value;
+    },
+    SinInCls(value:boolean){
+      this.signin = value;
     },
   }
 });

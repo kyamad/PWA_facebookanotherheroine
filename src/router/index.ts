@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import StreamingView from '../views/StreamingView.vue'
 import LiveStreaming from '../views/LiveStreaming.vue'
 import index from '../views/index.vue'
+// import Develop from '../components/SignIn.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -22,9 +23,14 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/streaming',
-    name: 'streaming',
+    name: 'LiveStreaming',
     component: LiveStreaming
   },
+  // {
+  //   path: '/develop',
+  //   name: 'develop',
+  //   component:Develop
+  // },
   {
     path: '/about',
     name: 'about',
