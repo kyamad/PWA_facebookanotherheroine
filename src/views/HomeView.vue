@@ -28,8 +28,11 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { onMounted } from 'vue';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import app from "../../firebaseconfig";
+import firebaseUtils from '../firebaseUtils';
+import store from '../store';
 import LiveList from  '@/components/LiveList.vue';
 import Header from  '@/components/header.vue';
 import LogInHeader from  '@/components/logInheader.vue';
@@ -45,13 +48,15 @@ export default defineComponent({
     SignUp,
     SignIn
   },
+  
   data: function(){
     return{
       signup: false,
       signin: false,
-      Login:false
+      Login: store.state.isLoggedIn
     }
   },
+
   methods: {
     SignOpn(value:number){
       if(value == 1){
@@ -67,19 +72,34 @@ export default defineComponent({
       this.signin = value;
     },
   },
-  created(){
-    const auth = getAuth();
-    let Login = this.Login;
 
-    auth.onAuthStateChanged(function(user) {
-      if (user) {
-        console.log('login');
-        Login = true;
-      } else {
-        console.log('logout');
+  setup () {
+    firebaseUtils.onAuthStateChanged();    
+
+    onMounted(() => {
+      const auth = getAuth();
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          firebaseUtils.onAuthStateChanged();   
+        } else {
+          firebaseUtils.onAuthStateChanged(); 
+        }
+      });
+    });
+  },
+
+  computed:{
+      LoginFlg: function(){
+        return store.getters['isLoggedIn']
       }
-    });     
+  },
+
+  watch: {
+    LoginFlg(Val) {
+      this.$data.Login = Val;
+    },
   }
+  
 });
 </script>
 

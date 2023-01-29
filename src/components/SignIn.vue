@@ -31,6 +31,7 @@ import { defineComponent } from 'vue';
 import { getDatabase, ref, set , push } from "firebase/database";
 import app from "../../firebaseconfig";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import firebaseUtils from '../firebaseUtils';
 
 export default defineComponent({
   name: 'SignIn',
@@ -43,15 +44,17 @@ export default defineComponent({
   },
   methods: {
     close: function(){
-      this.$emit("onClick", this.signin)
+      this.$emit("onClick", this.signin);
     },
     SignIn: function() {
+      this.email = this.email.replace(/\s+/g, "");
+      this.password = this.password.replace(/\s+/g, "");
+      
       const auth = getAuth(app);
       const mail = this.email;
       const pass = this.password;
-      this.email = this.email.replace(/\s+/g, "");
-      this.password = this.password.replace(/\s+/g, "");
-
+      
+      
       if(!this.email){
         alert("メールアドレスを入力してください")
       } else if(!this.password) {
@@ -59,8 +62,9 @@ export default defineComponent({
       } else {
         signInWithEmailAndPassword(auth, mail, pass)
         .then((userCredential) => {
-          this.$emit("onClick", false);
           const user = userCredential.user;
+          firebaseUtils.onAuthStateChanged();
+          this.$emit("onClick", false);
         })
         .catch((error) => {
           const errorCode = error.code;
