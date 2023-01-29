@@ -65,6 +65,7 @@ import { defineComponent } from 'vue';
 import { getDatabase, ref, set , push } from "firebase/database";
 import app from "../../firebaseconfig";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import firebaseUtils from '../firebaseUtils';
 
 export default defineComponent({
   name: 'SignUp',
@@ -96,12 +97,13 @@ export default defineComponent({
       this.$emit("onClick", this.signup)
     },
     AddReister: function() {
-      const auth = getAuth(app);
-      const mail = this.email;
-      const pass = this.password;
       this.name = this.name.replace(/\s+/g, "");
       this.email = this.email.replace(/\s+/g, "");
       this.password = this.password.replace(/\s+/g, "");
+
+      const auth = getAuth(app);
+      const mail = this.email;
+      const pass = this.password;
       
       if(!this.name){
         alert("ユーザー名を入力してください")
@@ -116,6 +118,7 @@ export default defineComponent({
           sendEmailVerification(user)
           .then(() => {
             alert("登録のために確認メールが送信されました！");
+            firebaseUtils.onAuthStateChanged();
             this.$emit("onClick", false);
           });
         })

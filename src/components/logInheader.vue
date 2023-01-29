@@ -8,7 +8,8 @@
             <li class="m6"><a href="#" class ="linkURL"> つゆだく </a></li>
             <li class="m7"><a href="#" class ="linkURL"> ラジオ </a></li>
             <li class="m8"><a href="#" class ="linkURL"> リクエスト部屋 </a></li>
-            <li class="livem2"><a href="/livepage.php" class ="livebtn blue"> 配信する！ </a></li>
+            <li class="livem2"><a href="/streaming" class ="livebtn blue"> 配信する！ </a></li>
+            <li class="livem2"><a href="#" class ="livebtn" @click="Logout"> ログアウト </a></li>
             <li class="livem3"><a href="#" class ="aikon"><img src="../assets/aikon2.png"></a></li>
         </ul>
     </header>
@@ -16,9 +17,42 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { getAuth, signOut } from "firebase/auth";
+import firebaseUtils from '../firebaseUtils';
 
 export default defineComponent({
+    methods: {
+        Logout: function(){
+            const auth = getAuth();
+            signOut(auth).then(() => {
+                alert("ログアウト完了！")
+                firebaseUtils.onAuthStateChanged();
+            }).catch((error) => {
+                alert("ログアウトがうまくいきませんでした。時間をおいて再度お試しください。")
+            });
+        }
+    }
 });
+
+// ユーザー名、画像の登録と取得
+// →https://firebase.google.com/docs/auth/web/manage-users?hl=ja&authuser=0#get_a_users_profile
+
+// コメント欄、お便り対応
+// →考える
+
+// DOM操作じゃなくてDOM切り替えに
+// →お題機能含む
+// →考える
+
+// ミュート実装
+// →Agora
+
+// ラジオ切り替え
+// →Agora＆DOM切り替え
+
+// ここまでやればリリース自体はできる
+// けど、足りないものが多すぎるのでこのタイミングで相談入れる
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -99,6 +133,6 @@ a{
 
 .aikon img{
  width: 4vw;
- margin: 0.3vw 8.5vw 0 1vw;
+ margin: 0.3vw 1.8vw 0 1vw;
 }
 </style>
