@@ -66,7 +66,7 @@ import { defineComponent} from 'vue';
 import { reactive } from 'vue';
 import { getDatabase, ref, set , push } from "firebase/database";
 import { initializeApp } from "firebase/app";
-import app from "../../firebaseConfig";
+import app from "../../firebaseconfig";
 
 export default defineComponent({
   name: 'MessagingFunction',

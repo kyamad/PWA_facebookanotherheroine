@@ -29,7 +29,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { getDatabase, ref, set , push } from "firebase/database";
-import app from "../../firebaseConfig";
+import app from "../../firebaseconfig";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 export default defineComponent({
