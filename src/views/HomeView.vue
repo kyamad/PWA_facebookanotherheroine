@@ -29,7 +29,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import app from "../../firebaseConfig";
+import app from "../../firebaseconfig";
 import LiveList from  '@/components/LiveList.vue';
 import Header from  '@/components/header.vue';
 import LogInHeader from  '@/components/logInheader.vue';
@@ -67,14 +67,14 @@ export default defineComponent({
       this.signin = value;
     },
   },
-  // https://qiita.com/Shiho_anyplus/items/f76422ff3ea03f088b20
-  beforeUpdate: function(){
-    let userlogin = this.Login
+  created(){
+    const auth = getAuth();
+    let Login = this.Login;
 
-    getAuth().onAuthStateChanged(function(user) {
+    auth.onAuthStateChanged(function(user) {
       if (user) {
         console.log('login');
-        this.userlogin = true;
+        Login = true;
       } else {
         console.log('logout');
       }
