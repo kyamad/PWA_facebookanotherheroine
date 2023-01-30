@@ -8,7 +8,9 @@
 <div v-if="Login">
   <LogInHeader></LogInHeader>
 </div>
-<Header @onClick="SignOpn"></Header>
+<div v-if="!Login">
+  <Header @onClick="SignOpn"></Header>
+</div>
   <main id="top-page">
     <section id="section1">
       <div class="koukoku">
@@ -80,8 +82,6 @@ export default defineComponent({
       onAuthStateChanged(auth, (user) => {
         if (user) {
           firebaseUtils.onAuthStateChanged();   
-        } else {
-          firebaseUtils.onAuthStateChanged(); 
         }
       });
     });
@@ -111,7 +111,7 @@ template{
 #section1{
  font-family: 'Kosugi Maru', sans-serif;
  display: flex;
- margin-top: 3.5vw;
+ margin-top: 8.5vw;
  background-color: #f9fcff;
 }
   
