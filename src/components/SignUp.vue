@@ -10,7 +10,7 @@
               <form v-on:submit.prevent="AddReister">
                   <div class="img-choice">
                     <label class="input-item__label">アイコンを選択
-                      <input type="file" @change="onFileChange($event)" ref="preview" accept="image/png,image/jpg,image"/>
+                      <input type="file" @change="onFileChange($event)" accept="image/png,image/jpg,image"/>
                     </label>
                     <div class="preview-item">
                       <img
@@ -74,9 +74,10 @@
 </template>
 
 <script lang="ts">
-import { ref, defineComponent } from 'vue';
+import { defineComponent } from 'vue';
 import {auth} from "../../firebaseconfig";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
+import { getStorage, ref, uploadString, getDownloadURL } from "firebase/storage";
 import firebaseUtils from '../firebaseUtils';
 
 export default defineComponent({
@@ -95,6 +96,8 @@ export default defineComponent({
       gender: [{gen:"男性"},{gen:"女性"},{gen:"その他"}],
       signup: false,
       uploadedImage: '',
+      IconName:"",
+      DLImage:"",
     }
   },
   created: function () {
@@ -108,7 +111,7 @@ export default defineComponent({
     },
 
     close: function(){
-      this.$emit("onClick", this.signup)
+      this.$emit("onClick", this.signup);
     },
 
     onFileChange(e:any) {
@@ -119,6 +122,7 @@ export default defineComponent({
           const reader = new FileReader();
           reader.onload = (e) => {
               this.uploadedImage = e.target!.result as string || '' ;
+              this.IconName = files[0].name;
           };
           reader.readAsDataURL(file);
       }
@@ -128,10 +132,16 @@ export default defineComponent({
       this.name = this.name.replace(/\s+/g, "");
       this.email = this.email.replace(/\s+/g, "");
       this.password = this.password.replace(/\s+/g, "");
+      this.IconName = this.IconName.replace("#", "");
+      this.IconName = this.IconName.replace("[", "");
+      this.IconName = this.IconName.replace("]", "");
+      this.IconName = this.IconName.replace("*", "");
+      this.IconName = this.IconName.replace("?", "");
 
       const mail = this.email;
       const pass = this.password;
       const name = this.name;
+      const storage = getStorage();
       
       if(!this.name){
         alert("ユーザー名を入力してください")
@@ -145,16 +155,33 @@ export default defineComponent({
           const user = userCredential.user;
           sendEmailVerification(user)
           .then(() => {
-            updateProfile(user, {
-              displayName: name, photoURL: ""
-            }).then(() => {
-              console.log(user.displayName);
-            }).catch((error) => {
-              alert("写真またはユーザー名登録時にエラーが起きたようです。")
-            });
-            alert("登録のために確認メールが送信されました！");
-            firebaseUtils.onAuthStateChanged();
-            this.$emit("onClick", false);
+            if(this.IconName){
+              const photoRef = ref(storage, "images/" + user.uid + "/" + this.IconName);
+              uploadString(photoRef, this.uploadedImage, 'data_url').then((snapshot) => {
+                getDownloadURL(photoRef).then((url) => {
+                  updateProfile(user, {
+                    displayName: name, photoURL: url,
+                  }).then(() => {
+                    alert("登録のために確認メールが送信されました！");
+                    firebaseUtils.onAuthStateChanged();
+                    this.$emit("onClick", false);
+                  }).catch((error) => {
+                    alert("写真またはユーザー名登録時にエラーが起きたようです。")
+                  });
+                });
+              });
+            } else {
+              updateProfile(user, {
+                displayName: name, photoURL: "gs://amateras-952e1.appspot.com/images/P5VYgyEX69apAU1YbK5TFcVRMTA3/aikon2.png",
+              }).then(() => {
+                console.log("写真なし：" + auth.currentUser?.photoURL)
+              }).catch((error) => {
+                alert("写真またはユーザー名登録時にエラーが起きたようです。")
+              });
+              alert("登録のために確認メールが送信されました！");
+              firebaseUtils.onAuthStateChanged();
+              this.$emit("onClick", false);
+            }
           });
         })
         .catch((error) => {
@@ -279,18 +306,23 @@ select{
   font-size: 1vw;
   padding: 0.1vw;
   border: 0.1vw solid;
+  background-color: #f9f9f9;
 }
 
 .img-choice {
   display: flex;
   width: 90%;
-  background-color: #f9f9f9;
+  height: 5vw;
   margin-bottom: 1.3vw;
 }
 
+.preview-item{
+  margin: auto 2vw auto 1vw;
+}
+
 .preview-item img {
-  margin-left: 1vw;
-  width: 4vw;
+  width: 5vw;
+  max-height: 5vw;
 }
 
 .form-group{
