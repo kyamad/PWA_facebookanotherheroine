@@ -29,7 +29,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { getDatabase, ref, set , push } from "firebase/database";
-import app from "../../firebaseconfig";
+import {auth} from "../../firebaseconfig";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import firebaseUtils from '../firebaseUtils';
 
@@ -50,7 +50,6 @@ export default defineComponent({
       this.email = this.email.replace(/\s+/g, "");
       this.password = this.password.replace(/\s+/g, "");
       
-      const auth = getAuth(app);
       const mail = this.email;
       const pass = this.password;
       

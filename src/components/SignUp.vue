@@ -8,6 +8,19 @@
       <div class="row">
           <div class="col-sm-8">
               <form v-on:submit.prevent="AddReister">
+                  <div class="img-choice">
+                    <label class="input-item__label">アイコンを選択
+                      <input type="file" @change="onFileChange($event)" ref="preview" accept="image/png,image/jpg,image"/>
+                    </label>
+                    <div class="preview-item">
+                      <img
+                        v-show="uploadedImage"
+                        class="preview-item-file"
+                        :src="uploadedImage"
+                        alt=""
+                      />
+                    </div>
+                  </div>
                   <div class="form-group">
                       <label for="Name">ユーザー名</label>
                       <input type="text" class="form-control1" id="UserName" v-model="name" maxlength="10">
@@ -61,10 +74,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { getDatabase, ref, set , push } from "firebase/database";
-import app from "../../firebaseconfig";
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
+import { ref, defineComponent } from 'vue';
+import {auth} from "../../firebaseconfig";
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import firebaseUtils from '../firebaseUtils';
 
 export default defineComponent({
@@ -82,6 +94,7 @@ export default defineComponent({
       NowYear:0,
       gender: [{gen:"男性"},{gen:"女性"},{gen:"その他"}],
       signup: false,
+      uploadedImage: '',
     }
   },
   created: function () {
@@ -93,17 +106,32 @@ export default defineComponent({
     get_days: function () {
       this.days_max = new Date(this.year, this.month, 0).getDate();
     },
+
     close: function(){
       this.$emit("onClick", this.signup)
     },
+
+    onFileChange(e:any) {
+      const files = e.target.files;
+
+      if(files.length > 0) {
+          const file = files[0];
+          const reader = new FileReader();
+          reader.onload = (e) => {
+              this.uploadedImage = e.target!.result as string || '' ;
+          };
+          reader.readAsDataURL(file);
+      }
+    },
+
     AddReister: function() {
       this.name = this.name.replace(/\s+/g, "");
       this.email = this.email.replace(/\s+/g, "");
       this.password = this.password.replace(/\s+/g, "");
 
-      const auth = getAuth(app);
       const mail = this.email;
       const pass = this.password;
+      const name = this.name;
       
       if(!this.name){
         alert("ユーザー名を入力してください")
@@ -117,6 +145,13 @@ export default defineComponent({
           const user = userCredential.user;
           sendEmailVerification(user)
           .then(() => {
+            updateProfile(user, {
+              displayName: name, photoURL: ""
+            }).then(() => {
+              console.log(user.displayName);
+            }).catch((error) => {
+              alert("写真またはユーザー名登録時にエラーが起きたようです。")
+            });
             alert("登録のために確認メールが送信されました！");
             firebaseUtils.onAuthStateChanged();
             this.$emit("onClick", false);
@@ -230,6 +265,32 @@ select{
 
 .row{
   margin-top: 1.5vw;
+}
+
+.img-choice label > input{
+  display: none;
+}
+
+.img-choice label{
+  width: 9vw;
+  height: 1.5vw;
+  margin:auto;
+  text-align: center;
+  font-size: 1vw;
+  padding: 0.1vw;
+  border: 0.1vw solid;
+}
+
+.img-choice {
+  display: flex;
+  width: 90%;
+  background-color: #f9f9f9;
+  margin-bottom: 1.3vw;
+}
+
+.preview-item img {
+  margin-left: 1vw;
+  width: 4vw;
 }
 
 .form-group{
