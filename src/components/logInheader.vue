@@ -10,7 +10,7 @@
             <li class="m8"><a href="#" class ="linkURL"> リクエスト部屋 </a></li>
             <li class="livem2"><a href="/streaming" class ="livebtn blue"> 配信する！ </a></li>
             <li class="livem2"><a href="#" class ="livebtn" @click="Logout"> ログアウト </a></li>
-            <li class="livem3"><a href="#" class ="aikon"><img src="IconImg"></a></li>
+            <li class="livem3"><a href="#" class ="aikon"><img :src="IconImg"></a></li>
         </ul>
     </header>
 </template>
@@ -21,6 +21,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../firebaseconfig";
 import { onAuthStateChanged } from "firebase/auth";
 import firebaseUtils from '../firebaseUtils';
+import router from '../router'
 
 export default defineComponent({
     data: function() {
@@ -31,26 +32,29 @@ export default defineComponent({
     methods: {
         Logout: function(){
             signOut(auth).then(() => {
-                alert("ログアウト完了！")
+                alert("ログアウト完了！");
                 firebaseUtils.onAuthStateChanged();
+                router.push('/');
             }).catch((error) => {
                 alert("ログアウトがうまくいきませんでした。時間をおいて再度お試しください。")
             });
         }
     },
+    created: function(){
+        this.$data.IconImg = auth.currentUser?.photoURL as string;
+    },
     setup () {
         firebaseUtils.onAuthStateChanged();  
 
         onMounted(() => {
-            return{
-                IconImg : auth.currentUser?.photoURL,
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+            firebaseUtils.onAuthStateChanged();   
             }
+        });
         });
     },
 });
-
-// ユーザー名、画像の登録と取得
-// →https://firebase.google.com/docs/auth/web/manage-users?hl=ja&authuser=0#get_a_users_profile
 
 // コメント欄、お便り対応
 // →考える

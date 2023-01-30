@@ -1,7 +1,7 @@
 <template>
   <div class="commentview">
       <!--コメント、おたより一覧と内容は別componentsにする-->
-      <ul class="tab-panel">
+    <ul class="tab-panel">
       <li class="Tab-A" @click="isSelect('1')" v-bind:class="{'active': isActive === '1'}"><div class="tab-A">コメント</div></li>
       <li class="Tab-B" @click="isSelect('2')" v-bind:class="{'active': isActive === '2'}"><div class="tab-B">おたより</div></li>
     </ul>
@@ -64,9 +64,10 @@
 <script lang="ts">
 import { defineComponent} from 'vue';
 import { reactive } from 'vue';
-import { getDatabase, ref, set , push } from "firebase/database";
+import { getDatabase, ref, set , push, onValue } from "firebase/database";
 import { initializeApp } from "firebase/app";
-import {auth} from "../../firebaseconfig";
+import { auth, app} from "../../firebaseconfig";
+import { serverTimestamp } from 'firebase/database';
 
 export default defineComponent({
   name: 'MessagingFunction',
@@ -75,31 +76,58 @@ export default defineComponent({
   
   data: function() {
     return {
-      isActive : 1,
+      isActive : '1',
       channelMessage:"",
       WriteComment:"",
+      yyyymmdd:"",
+      TimeStamp:"",
     }
   },
 
   methods: {
 
-    isSelect: function (num:number) {
-      this.isActive = num;
+    isSelect: function (num:String) {
+      this.isActive = num as string;
     },
 
-    addComment : function(WriteComment:string){
-      // const database = getDatabase(app);
-      // const DatabaseRef = ref(database ,"test")
+    addComment : function(){
+      const database = getDatabase(app);
+      let today = new Date();
+      let yyyy = today.getFullYear();
+      let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      let dd = String(today.getDate()).padStart(2, "0");
+      let hh = String(today.getHours()).padStart(2, "0");
+      let hmm = String(today.getMinutes()).padStart(2, "0");
+      let ss = String(today.getSeconds()).padStart(2, "0");
+      let ms = String(today.getMilliseconds()).padStart(3, "0");
+      this.yyyymmdd = String(yyyy) + String(mm) + String(dd);
+      this.TimeStamp = String(yyyy) + String(mm) + String(dd) + String(hh) + String(hmm) + String(ss) + String(ms) + auth.currentUser?.uid; 
+      const UserDatabaseRef = ref(database, "UserBase/" + auth.currentUser?.uid + "/" + this.yyyymmdd + "/" + today);
+      const RoomDatabaseRef = ref(database ,"RoomBase/" + auth.currentUser?.uid + "/" + this.TimeStamp);
+      
 
-      // set(DatabaseRef, {
-      //     message:"TestMsg"
-      //   });
-      //   console.log("完了");
-      },
+      set(UserDatabaseRef, {
+        "message":this.WriteComment,
+        Room:"testRoom"
+      });
 
-    CommentSt: () => {
-    }
+      set(RoomDatabaseRef, {
+        "user": auth.currentUser?.uid,
+        "message":this.WriteComment,
+      });
+    },
   },
+  watch: {
+  },
+  created : function() {
+      const db = getDatabase();
+      const starCountRef = ref(db, "RoomBase/" + auth.currentUser?.uid)
+
+      onValue(starCountRef, (snapshot) => {
+        const data = snapshot.val();
+        console.log(data);
+      });
+  }
 });
 </script>
 

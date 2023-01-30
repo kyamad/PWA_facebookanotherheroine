@@ -1,15 +1,17 @@
 <template>
-    <ul class="login">
-        <li class="m1"><a href="/" class ="logo"><img src="../assets/S__10788901.jpg"></a></li>
-        <li class="m3"><a href="#" class ="linkURL"> イベント </a></li>
-        <li class="m4"><a href="#" class ="linkURL"> 雑談 </a></li>
-        <li class="m5"><a href="#" class ="linkURL"> ゲーム </a></li>
-        <li class="m6"><a href="#" class ="linkURL"> つゆだく </a></li>
-        <li class="m7"><a href="#" class ="linkURL"> ラジオ </a></li>
-        <li class="m8"><a href="#" class ="linkURL" > リクエスト部屋 </a></li>
-        <li class="m2"><a href="#" class ="btn blue" @click="SignUpOpn"> 新規登録 </a></li>
-        <li class="m2"><a href="#" class ="btn gold" @click="SignInOpn"> ログイン </a></li>
-    </ul>
+    <header>
+        <ul class="login">
+            <li class="m1"><a href="/" class ="logo"><img src="../assets/S__10788901.jpg"></a></li>
+            <li class="m3"><a href="#" class ="linkURL"> イベント </a></li>
+            <li class="m4"><a href="#" class ="linkURL"> 雑談 </a></li>
+            <li class="m5"><a href="#" class ="linkURL"> ゲーム </a></li>
+            <li class="m6"><a href="#" class ="linkURL"> つゆだく </a></li>
+            <li class="m7"><a href="#" class ="linkURL"> ラジオ </a></li>
+            <li class="m8"><a href="#" class ="linkURL" > リクエスト部屋 </a></li>
+            <li class="m2"><a href="#" class ="btn blue" @click="SignUpOpn"> 新規登録 </a></li>
+            <li class="m2"><a href="#" class ="btn gold" @click="SignInOpn"> ログイン </a></li>
+        </ul>
+    </header>
 </template>
 
 <script lang="ts">
@@ -34,13 +36,14 @@ export default defineComponent({
 <style scoped lang="scss">
 @import '@/assets/sass/mixin.scss';
 header{
- position: fixed;
- top: 0; left: 0;
- width:100%;
- margin:0 auto;
- background-color: white;
- opacity: 1;
- z-index: 80;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+margin: 0 auto;
+background-color: white;
+opacity: 1;
+z-index: 80;
 }
 
 a{

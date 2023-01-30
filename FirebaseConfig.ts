@@ -20,6 +20,6 @@ const storsge = getStorage(app);
 const storageRef = ref;
 const analytics = getAnalytics(app);
 
-export { auth, storsge, storageRef };
+export { auth, storsge, storageRef, app };
 
 // export default firebaseConfig;
