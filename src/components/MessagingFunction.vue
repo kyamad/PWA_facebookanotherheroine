@@ -66,7 +66,7 @@ import { defineComponent} from 'vue';
 import { reactive } from 'vue';
 import { getDatabase, ref, set , push } from "firebase/database";
 import { initializeApp } from "firebase/app";
-import app from "../../firebaseconfig";
+import {auth} from "../../firebaseconfig";
 
 export default defineComponent({
   name: 'MessagingFunction',
@@ -75,7 +75,7 @@ export default defineComponent({
   
   data: function() {
     return {
-      isActive : '1',
+      isActive : 1,
       channelMessage:"",
       WriteComment:"",
     }
@@ -83,19 +83,19 @@ export default defineComponent({
 
   methods: {
 
-    isSelect: function (num:any) {
+    isSelect: function (num:number) {
       this.isActive = num;
     },
 
-    addComment : function(WriteComment:any){
-      const database = getDatabase(app);
-      const DatabaseRef = ref(database ,"test")
+    addComment : function(WriteComment:string){
+      // const database = getDatabase(app);
+      // const DatabaseRef = ref(database ,"test")
 
-      set(DatabaseRef, {
-        message:"TestMsg"
-      });
-      console.log("完了");
-    },
+      // set(DatabaseRef, {
+      //     message:"TestMsg"
+      //   });
+      //   console.log("完了");
+      },
 
     CommentSt: () => {
     }

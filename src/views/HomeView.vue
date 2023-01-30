@@ -30,7 +30,7 @@
 import { defineComponent } from 'vue';
 import { onMounted } from 'vue';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import app from "../../firebaseconfig";
+import {auth} from "../../firebaseconfig";
 import firebaseUtils from '../firebaseUtils';
 import store from '../store';
 import LiveList from  '@/components/LiveList.vue';
@@ -51,7 +51,7 @@ export default defineComponent({
   
   data: function(){
     return{
-      signup: false,
+      signup: true,
       signin: false,
       Login: store.state.isLoggedIn
     }
@@ -77,7 +77,6 @@ export default defineComponent({
     firebaseUtils.onAuthStateChanged();    
 
     onMounted(() => {
-      const auth = getAuth();
       onAuthStateChanged(auth, (user) => {
         if (user) {
           firebaseUtils.onAuthStateChanged();   
@@ -99,7 +98,6 @@ export default defineComponent({
       this.$data.Login = Val;
     },
   }
-  
 });
 </script>
 
