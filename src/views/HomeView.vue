@@ -30,7 +30,7 @@
 import { defineComponent } from 'vue';
 import { onMounted } from 'vue';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import {auth} from "../../firebaseconfig";
+import { auth } from "../../firebaseconfig";
 import firebaseUtils from '../firebaseUtils';
 import store from '../store';
 import LiveList from  '@/components/LiveList.vue';
@@ -51,7 +51,7 @@ export default defineComponent({
   
   data: function(){
     return{
-      signup: true,
+      signup: false,
       signin: false,
       Login: store.state.isLoggedIn
     }
@@ -74,7 +74,7 @@ export default defineComponent({
   },
 
   setup () {
-    firebaseUtils.onAuthStateChanged();    
+    firebaseUtils.onAuthStateChanged();  
 
     onMounted(() => {
       onAuthStateChanged(auth, (user) => {

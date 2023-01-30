@@ -10,20 +10,26 @@
             <li class="m8"><a href="#" class ="linkURL"> リクエスト部屋 </a></li>
             <li class="livem2"><a href="/streaming" class ="livebtn blue"> 配信する！ </a></li>
             <li class="livem2"><a href="#" class ="livebtn" @click="Logout"> ログアウト </a></li>
-            <li class="livem3"><a href="#" class ="aikon"><img src="../assets/aikon2.png"></a></li>
+            <li class="livem3"><a href="#" class ="aikon"><img src="IconImg"></a></li>
         </ul>
     </header>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import { getAuth, signOut } from "firebase/auth";
+import { defineComponent, onMounted } from 'vue';
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebaseconfig";
+import { onAuthStateChanged } from "firebase/auth";
 import firebaseUtils from '../firebaseUtils';
 
 export default defineComponent({
+    data: function() {
+        return{
+            IconImg:"",
+        }
+    },
     methods: {
         Logout: function(){
-            const auth = getAuth();
             signOut(auth).then(() => {
                 alert("ログアウト完了！")
                 firebaseUtils.onAuthStateChanged();
@@ -31,7 +37,16 @@ export default defineComponent({
                 alert("ログアウトがうまくいきませんでした。時間をおいて再度お試しください。")
             });
         }
-    }
+    },
+    setup () {
+        firebaseUtils.onAuthStateChanged();  
+
+        onMounted(() => {
+            return{
+                IconImg : auth.currentUser?.photoURL,
+            }
+        });
+    },
 });
 
 // ユーザー名、画像の登録と取得
