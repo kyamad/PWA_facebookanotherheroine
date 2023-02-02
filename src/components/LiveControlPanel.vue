@@ -1,12 +1,14 @@
 <template>
-  <div class="controlview">
-    <div class="left">
-      <div class="kaito">
-       <p class="okaito">大喜利回答</p><input type="submit" class="osubmit" id="OSubmit" value="送信"><input type="text" class="otext" name="ogiriA" id="ogiriA" maxlength="0" autocomplete="off">
+  <div class="column-control">
+    <div class="column-control--left">
+      <div class="section--answer">
+       <p class="answer--ogiri">大喜利回答</p>
+       <input type="submit" class="ogiri--submit" id="OSubmit" value="送信">
+       <input type="text" class="ogiri--textinput" name="ogiriA" id="ogiriA" maxlength="0" autocomplete="off">
       </div>
-      <div class="category">
-        <p class="hcategory">配信カテゴリ</p>
-        <select name="category" class="Category">
+      <div class="section--category">
+        <p class="stream-category">配信カテゴリ</p>
+        <select name="category" class="select--categories">
           <option value="none"></option>   
           <option value="talk">雑談</option>
           <option value="oogiri">大喜利</option>
@@ -14,30 +16,30 @@
           <option value="tuyudaku">つゆだく</option>
         </select>
       </div>
-      <div class="color">
-      <div class="font">
-        <p class="mojiiro">お題文字色</p>
-        <div class="white"></div><div class="black"></div>
-      </div>
-      <div class="back">
-        <p class="odaiiro">お題背景色</p>
-        <div class="black"></div><div class="red"></div><div class="Blue"></div>
-      </div>
+      <div class="section--colorsettings">
+        <div class="section--textcolor">
+          <p class="section-heading--mojiiro">お題文字色</p>
+          <div class="colortip--white"></div><div class="colortip--black"></div>
+        </div>
+        <div class="section--bgcolor">
+          <p class="section-heading--odaiiro">お題背景色</p>
+          <div class="colortip--black"></div><div class="colortip--red"></div><div class="colortip--blue"></div>
+        </div>
       </div>
     </div>
-    <div class="right">
-      <div class="mic">
-        <p class="bol">マイク音量</p><input type="range" name="volume" class="volume" min="0" max="100" value="60">
+    <div class="column-control--right">
+      <div class="section--mic-settings">
+        <p class="section-heading--mic-volume">マイク音量</p><input type="range" name="volume" class="volume" min="0" max="100" value="60">
       </div>
-      <div class="korabo">
-        <p class="kahi"><s>コラボ配信</s></p>
+      <div class="section--collaboration-settings">
+        <p class="costream-permission"><s>コラボ配信</s></p>
         <select name="yesorno" class="yesno">
         <!--<option value="no">受付けない</option>   
         <option value="yes">受付ける</option>-->
         </select>       
       </div>
-      <div class="SNS">
-        <p class="tweet">SNSで共有</p>
+      <div class="section--socialmedias">
+        <p class="section-heading--tweet">SNSで共有</p>
         <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-size="large" 
         data-text="やあ（´・ω・｀) アマテラスで配信中だよ！" data-hashtags="アマテラス" data-lang="ja" data-show-count="false">
         </a>
@@ -65,10 +67,13 @@ export default defineComponent({
  padding-inline-start: 0;
 }
 
-body {
-  margin: 0;
-  font-family: 'M PLUS Rounded 1c', sans-serif;
-}
+// Scoped CSSなので、body指定は意味を為さない
+
+// body {
+//   margin: 0;
+//   font-family: 'M PLUS Rounded 1c', sans-serif;
+// }
+
 
 /*ここからヘッダー
 =======================================*/
@@ -76,7 +81,7 @@ body {
   /*各操作
   ---------------------------------------*/
 
-  .controlview{
+  .column-control{
   width: 100%;
   display: flex;
   justify-content: space-evenly;
@@ -86,41 +91,41 @@ body {
 
   /*左側
   ---------------------------------------*/
-  .left{
+  .column-control--left{
   width: 40%;
   }
 
-  .kaito{
+  .section--answer{
   display: flex;
   margin-bottom: 3vw;
   color: #686868;
   }
 
-  .okaito{
+  .answer--ogiri{
   margin: auto 0;
   }
 
-  .osubmit{
+  .ogiri--submit{
   margin-left: auto;
   padding: 0.1vw 1vw;
   font-size: 1.5vw;
   }
 
-  .otext{
+  .ogiri--textinput{
   width: 23.4vw;
   font-size: 1.3vw;
   }
 
-  .category{
+  .section--category{
   display: flex;
   margin-bottom: 3vw;
   }
 
-  .hcategory{
+  .stream-category{
   margin: auto 0;
   }
 
-  .Category{
+  .select--categories{
   width: 29vw;
   height: 2.5vw;
   font-size: 1.3vw;
@@ -128,76 +133,66 @@ body {
   text-align: center;
   }
 
-  .color{
+  .section--colorsettings{
   display: flex;
   justify-content: space-between;
   color: #686868;
   }
 
-  .font{
+  .section--textcolor{
   display: flex;
   }
 
-  .mojiiro{
+  .section-heading--mojiiro{
   margin-top: auto;
   }
 
-  .white{
-  margin-top: auto;
-  margin-Left: 1vw;
-  width: 3vw;
-  height: 3vw;
-  border: 0.01vw solid;
-  background-color: #FFFFFF; 
-  }
-
-  .black{
-  margin-top: auto;
-  margin-left: 1vw;
-  width: 3vw;
-  height: 3vw;
-  border: 0.01vw solid;
-  background-color: #000;
-  }
-
-  .back{
+  .section--bgcolor{
   display: flex; 
   }
 
-  .odaiiro{
+  .section-heading--odaiiro{
   margin: auto 0.5vw 0 1vw; 
   }
 
-  .red{
-  margin-top: auto;
-  margin-left: 1vw;
-  width: 3vw;
-  height: 3vw;
-  border: 0.01vw solid;
-  background-color: #cc0033;   
+  [class^="colortip--"],
+  [class*=" colortip--"] {
+    margin-top: auto;
+    margin-left: 1vw;
+    width: 3vw;
+    height: 3vw;
+    border: 0.01vw solid;
   }
 
-  .Blue{
-  margin-top: auto;
-  margin-left: 1vw;
-  width: 3vw;
-  height: 3vw;
-  border: 0.01vw solid;
-  background-color: #007bbb; 
+  .colortip--black{
+    background-color: #000;
   }
+
+  .colortip--red{
+    background-color: #cc0033;   
+  }
+
+  .colortip--blue{
+    background-color: #007bbb; 
+  }
+
+  .colortip--white{
+    background-color: #FFFFFF; 
+  }
+
 
   /*右側
   ---------------------------------------*/
-  .right{
+  .column-control--right{
   width: 40%;
   }
 
-  .mic{
+  .section--mic-settings{
   display: flex;
   margin-bottom: 3.7vw;
   }
 
-  .bol{
+  .section-heading--mic-volume{
   margin: auto 0;
   }
 
@@ -206,12 +201,12 @@ body {
   margin-left: auto;
   }
 
-  .korabo{
+  .section--collaboration-settings{
   display: flex;
   margin-bottom: 4.5vw;
   }
 
-  .kahi{
+  .costream-permission{
   margin: auto 0;
   }
 
@@ -223,11 +218,11 @@ body {
   text-align: center;
   }
 
-  .SNS{
+  .section--socialmedias{
   display: flex;
   }
 
-  .tweet{
+  .section-heading--tweet{
   margin: auto 0;
   }
 
