@@ -75,7 +75,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import {auth} from "../../firebaseconfig";
+import {auth} from "../../FirebaseConfig";
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from "firebase/auth";
 import { getStorage, ref, uploadString, getDownloadURL } from "firebase/storage";
 import firebaseUtils from '../firebaseUtils';

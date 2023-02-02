@@ -32,7 +32,7 @@
 import { defineComponent } from 'vue';
 import { onMounted } from 'vue';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../firebaseconfig";
+import { auth } from "../../FirebaseConfig";
 import firebaseUtils from '../firebaseUtils';
 import store from '../store';
 import LiveList from  '@/components/LiveList.vue';
