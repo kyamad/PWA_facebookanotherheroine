@@ -18,7 +18,7 @@
 <script lang="ts">
 import { defineComponent, onMounted } from 'vue';
 import { signOut } from "firebase/auth";
-import { auth } from "../../firebaseconfig";
+import { auth } from "../../FirebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
 import firebaseUtils from '../firebaseUtils';
 import router from '../router'

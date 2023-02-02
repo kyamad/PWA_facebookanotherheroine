@@ -66,7 +66,7 @@ import { defineComponent} from 'vue';
 import { reactive } from 'vue';
 import { getDatabase, ref, set , push, onValue } from "firebase/database";
 import { initializeApp } from "firebase/app";
-import { auth, app} from "../../firebaseconfig";
+import { auth, app} from "../../FirebaseConfig";
 import { serverTimestamp } from 'firebase/database';
 
 export default defineComponent({
