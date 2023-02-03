@@ -63,8 +63,9 @@
 
 <script lang="ts">
 import { defineComponent} from 'vue';
+import { onMounted } from 'vue';
 import { reactive } from 'vue';
-import { getDatabase, ref, set , push, onValue } from "firebase/database";
+import { getDatabase, ref, set , push, onValue, onChildAdded } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import { auth, app} from "../../FirebaseConfig";
 import { serverTimestamp } from 'firebase/database';
@@ -92,26 +93,27 @@ export default defineComponent({
 
     addComment : function(){
       const database = getDatabase(app);
-      let today = new Date();
-      let yyyy = today.getFullYear();
-      let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-      let dd = String(today.getDate()).padStart(2, "0");
-      let hh = String(today.getHours()).padStart(2, "0");
-      let hmm = String(today.getMinutes()).padStart(2, "0");
-      let ss = String(today.getSeconds()).padStart(2, "0");
-      let ms = String(today.getMilliseconds()).padStart(3, "0");
+      let Now = new Date();
+      let yyyy = Now.getFullYear();
+      let mm = String(Now.getMonth() + 1).padStart(2, "0"); //January is 0!
+      let dd = String(Now.getDate()).padStart(2, "0");
+      let hh = String(Now.getHours()).padStart(2, "0");
+      let hmm = String(Now.getMinutes()).padStart(2, "0");
+      let ss = String(Now.getSeconds()).padStart(2, "0");
+      let ms = String(Now.getMilliseconds()).padStart(3, "0");
+      this.TimeStamp = String(yyyy) + "/" + String(mm) + "/" + String(dd) + " " + String(hh) + ":" + String(hmm) + ":" + String(ss) + ":" + String(ms);
       this.yyyymmdd = String(yyyy) + String(mm) + String(dd);
-      this.TimeStamp = String(yyyy) + String(mm) + String(dd) + String(hh) + String(hmm) + String(ss) + String(ms) + auth.currentUser?.uid; 
-      const UserDatabaseRef = ref(database, "UserBase/" + auth.currentUser?.uid + "/" + this.yyyymmdd + "/" + today);
-      const RoomDatabaseRef = ref(database ,"RoomBase/" + auth.currentUser?.uid + "/" + this.TimeStamp); //個別URL作ったら置き換える
+      const UserDatabaseRef = ref(database, "UserBase/" + auth.currentUser?.uid + "/" + this.yyyymmdd + "/" + Now);
+      const RoomDatabaseRef = ref(database ,"RoomBase/" + auth.currentUser?.uid + "/"); //個別URL作ったら置き換える
       
 
-      set(RoomDatabaseRef, {
-        "user": auth.currentUser?.uid,
+      push(RoomDatabaseRef, {
+        "user": auth.currentUser?.uid,  
         "message":this.WriteComment,
+        "timestamp":this.TimeStamp,
       });
 
-      set(UserDatabaseRef, {
+      push(UserDatabaseRef, {
         "message":this.WriteComment,
         Room:"testRoom"
       });
@@ -123,11 +125,13 @@ export default defineComponent({
     const db = getDatabase();
     const CommentRef = ref(db, "RoomBase/" + auth.currentUser?.uid) //個別URL作ったら置き換える
 
-    onValue(CommentRef, (snapshot) => {
-      const data = snapshot.val();
-      console.log(data);
+    onChildAdded(CommentRef, (snapshot) => {
+      console.log("kye:" + snapshot.key);
+      console.log("Val.text:" + snapshot.val().text);
+      console.log("Val.author:" + snapshot.val().author);
+      console.log("単体:" + snapshot);
     });
-  }
+  },
 });
 </script>
 
