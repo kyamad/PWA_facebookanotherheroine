@@ -103,30 +103,30 @@ export default defineComponent({
       this.yyyymmdd = String(yyyy) + String(mm) + String(dd);
       this.TimeStamp = String(yyyy) + String(mm) + String(dd) + String(hh) + String(hmm) + String(ss) + String(ms) + auth.currentUser?.uid; 
       const UserDatabaseRef = ref(database, "UserBase/" + auth.currentUser?.uid + "/" + this.yyyymmdd + "/" + today);
-      const RoomDatabaseRef = ref(database ,"RoomBase/" + auth.currentUser?.uid + "/" + this.TimeStamp);
+      const RoomDatabaseRef = ref(database ,"RoomBase/" + auth.currentUser?.uid + "/" + this.TimeStamp); //個別URL作ったら置き換える
       
-
-      set(UserDatabaseRef, {
-        "message":this.WriteComment,
-        Room:"testRoom"
-      });
 
       set(RoomDatabaseRef, {
         "user": auth.currentUser?.uid,
         "message":this.WriteComment,
+      });
+
+      set(UserDatabaseRef, {
+        "message":this.WriteComment,
+        Room:"testRoom"
       });
     },
   },
   watch: {
   },
   created : function() {
-      const db = getDatabase();
-      const starCountRef = ref(db, "RoomBase/" + auth.currentUser?.uid)
+    const db = getDatabase();
+    const CommentRef = ref(db, "RoomBase/" + auth.currentUser?.uid) //個別URL作ったら置き換える
 
-      onValue(starCountRef, (snapshot) => {
-        const data = snapshot.val();
-        console.log(data);
-      });
+    onValue(CommentRef, (snapshot) => {
+      const data = snapshot.val();
+      console.log(data);
+    });
   }
 });
 </script>
