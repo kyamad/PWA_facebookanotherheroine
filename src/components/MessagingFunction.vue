@@ -121,16 +121,33 @@ export default defineComponent({
   },
   watch: {
   },
-  created : function() {
-    const db = getDatabase();
-    const CommentRef = ref(db, "RoomBase/" + auth.currentUser?.uid) //個別URL作ったら置き換える
+  setup () {
 
-    onChildAdded(CommentRef, (snapshot) => {
-      console.log("kye:" + snapshot.key);
-      console.log("Val.text:" + snapshot.val().text);
-      console.log("Val.author:" + snapshot.val().author);
-      console.log("単体:" + snapshot);
-    });
+    // 何かがおかしい。
+    // vue側を変更→保存でコンパイルが発動するとonChildAddedも発動するのに、
+    // WEB上でTOPに行ってまた配信ページを開く　を何度かやるとonChildAddedが発動しなくなる。
+    // →1−2回までは大丈夫。
+    // Createdだからかと思ってMountedで設定してみたけど問題は同様。
+    // コメント送信を試したところ送信成功しても受信できず（onChildAdded自体が発動してないっぽい）
+    // リロードでも同様の問題が発生する。methodに入れるべき？でも監視してくれなくない？
+    // 関数化してセットアップ時（Created時）に発動指定してみたけどダメ。でもメソッドの方で関数化→セットアップ時発動指定やってない。試す。
+
+    
+    const db = getDatabase();
+    const CommentRef = ref(db, "RoomBase/" + auth.currentUser?.uid)
+    console.log("created");
+
+    onMounted(() => {
+      console.log("mount");
+
+      onChildAdded(CommentRef, (snapshot) => {
+        console.log("mount2");
+        console.log("kye:" + snapshot.key);
+        console.log("Val.text:" + snapshot.val().text);
+        console.log("Val.author:" + snapshot.val().author);
+        console.log("単体:" + snapshot);
+      });
+    })
   },
 });
 </script>
