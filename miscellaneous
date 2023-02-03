@@ -1,3 +1,126 @@
+AboutView._vue
+<template>
+  <div class="about">
+    <h1>console.log("やあ")</h1>
+  </div>
+</template>
+
+HomeView.copy._vue
+<template>
+  <div class="home">
+    <img alt="Vue logo" src="../assets/logo.png">
+    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import HelloWorld from '@/components/HelloWorld.vue'; // @ is an alias to /src
+
+// ここからナビゲーションウィンドウのやつ
+
+<nav>
+    <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link> |
+    <router-link to="/streamingview">配信</router-link> |
+</nav>
+
+export default defineComponent({
+  name: 'HomeView',
+  components: {
+    HelloWorld,
+  },
+});
+</script>
+
+index._vue
+<template>
+  <logInheader></logInheader>
+  <main id="top-page">
+  <VideoComponent></VideoComponent> 
+  <SiteLimit></SiteLimit>
+  <SignUp></SignUp>
+    <section id="section1">
+      <div class="koukoku">
+        <a href="#" class ="linkURL"><img src="../assets/広告.jpg"></a>
+      </div>
+      <article class="itiran">
+        <ul class="random">
+          <LiveList></LiveList>
+          <LiveList></LiveList>
+          <LiveList></LiveList>
+          <LiveList></LiveList>
+        </ul>
+      </article>
+    </section>
+  </main>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import VideoComponent from '@/components/VideoComponent.vue';
+import LiveList from  '@/components/LiveList.vue';
+import SiteLimit from  '@/components/SiteLimit.vue';
+import SignUp from  '@/components/SignUp.vue';
+
+export default defineComponent({
+  name: 'LiveStreaming',
+  components: {
+    VideoComponent,
+    LiveList,
+    SiteLimit,
+    SignUp
+  },
+  data: function(){
+    return{
+      signup:true,
+    }
+  },
+  methods: {
+  },
+});
+</script>
+
+<style scoped lang="scss">
+
+#section1{
+ font-family: 'Kosugi Maru', sans-serif;
+ display: flex;
+ margin-top: 3.5vw;
+ background-color: #f9fcff;
+}
+  
+ .koukoku{
+ margin: 2vw 0 0 5vw;
+}
+  
+ .koukoku img{
+ border: 0.1vw solid;
+ width: 17vw;
+}
+
+.itiran{
+ width: 80%;
+ margin-left: auto;
+}
+
+.random{
+ display: flex;
+ flex-wrap: wrap;
+ list-style: none;
+ text-align: left;
+ justify-content: center;
+ margin-right: 3vw;
+}
+
+.linkURL{
+ text-decoration: none;
+ color: #383635;
+}
+  
+</style>
+
+MessagingFunction.copy._vue
 <template>
   <div class="commentview">
       <!--コメント、おたより一覧と内容は別componentsにする-->
@@ -359,4 +482,97 @@ template {
  font-size: 1vw;
 }
 
+</style>
+
+test._vue
+mRtmClient = RtmClient.createInstance(getBaseContext(), getString(R.string.agora_app_id), new RtmClientListener(){
+    mRtmClient.login(null, login_name + mUid, new ResultCallback<Void>() {
+        mRtmChannel = mRtmClient.createChannel(channel, new MyChannelListener());
+
+        mRtmChannel.join(new ResultCallback<Void>() {
+            mRtmChannel = mRtmClient.createChannel(channel, new MyChannelListener());
+                    mRtmChannel.join(new ResultCallback<Void>() {
+                        RtmMessage message = mRtmClient.createMessage();
+                        message.setText(”Please unmute”);
+                        mRtmChannel.sendMessage(message, new ResultCallback<Void>() {
+                            class MyChannelListener implements RtmChannelListener {
+                                @Override
+                                public void onMessageReceived(final RtmMessage message, final RtmChannelMember fromMember) {
+
+                                String account = fromMember.getUserId();
+                                String msg = message.getText();
+                                //Please unmute//
+                                    if (getString(R.string.msg_unmute).equals(arrMsg[0])) {
+                                        //リクエスト文字を画面に表示
+                                        txReq =  (TextView) findViewById(R.id.textReq3);
+                                        txReq.setText(getString(R.string.msg_unmute));
+                                    }
+
+                                    //You can unmute
+                                    if (getString(R.string.msg_can_unmute).equals(arrMsg[0])) {
+                                        //マイクをON
+                                        doVoiceLocalMute(false);
+                                   }
+   }
+}
+
+VideoComponent.copy._vue
+<template>
+  <div>
+    <h2>Agora Video Web SDK Quickstart Vue.js</h2>
+    <div>
+      <div>
+        <button type="button" id="join" v-on:click="join()">JOIN</button>
+      </div>
+      <div id="local_video"></div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
+
+export default defineComponent({
+  name: 'VideoComponents',
+
+  methods: {
+    join: () => {
+      // let rtc = this.rtc;
+      // let options = this.options;
+      let rtc:any = {
+        localAudioTrack: null,
+        localVideoTrack: null,
+        client: null
+      };
+      let options = {
+        appId: "49d72a2fc8dc4917804e9e8bacde2661",
+        channel: "test_ui",
+        token: "007eJxTYNjXefPZN92nzJb/Z2+bxcjh57Nv6+KrsurSZX+DaxP8fksoMJhYppgbJRqlJVukJJtYGppbGJikWqZaJCUmp6QamZkZrj/Xk9wQyMjAODmDCUiCIYjPzlCSWlwSX5rJwAAAAiAhew==",
+        uid: 0
+      }
+      async function initializeRTC() {
+        rtc.client = AgoraRTC.createClient({ mode: "rtc", codec: "vp8" });
+        await rtc.client.join(options.appId, options.channel, options.token, options.uid);
+        rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+        rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+        rtc.localVideoTrack.play("local_video");
+        await rtc.client.publish([rtc.localAudioTrack, rtc.localVideoTrack]);
+      }
+      initializeRTC();
+    }
+  },
+  mounted: () => {
+    // const client: IAgoraRTCClient = AgoraRTC.createClient({ codec: "h264", mode: "live" });
+    // console.log("Client:", client);
+  },
+
+})
+</script>
+
+<style scoped lang="scss">
+#local_video {
+  width: 320px;
+  height: 240px;
+}
 </style>

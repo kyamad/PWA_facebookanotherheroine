@@ -4,9 +4,6 @@
 
 <style lang="scss">
 #app {
-  // App全体の基本書体指定。
-  // ただ、他の箇所の設定を見る限り Noto Sans JP , M Plus Rounded , Kosugi Maruの
-  // いずれかを指定した方がいいかな？製作者の設定意図次第。
   font-family: "Helvetica Neue",
     Arial,
     "Hiragino Kaku Gothic ProN",
