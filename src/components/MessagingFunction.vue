@@ -104,7 +104,7 @@ export default defineComponent({
       this.TimeStamp = String(yyyy) + "/" + String(mm) + "/" + String(dd) + " " + String(hh) + ":" + String(hmm) + ":" + String(ss) + ":" + String(ms);
       this.yyyymmdd = String(yyyy) + String(mm) + String(dd);
       const UserDatabaseRef = ref(database, "UserBase/" + auth.currentUser?.uid + "/" + this.yyyymmdd + "/" + Now);
-      const RoomDatabaseRef = ref(database ,"RoomBase/" + auth.currentUser?.uid + "/"); //個別URL作ったら置き換える
+      const RoomDatabaseRef = ref(database ,"RoomBase/" + auth.currentUser?.uid); //個別URL作ったら置き換える
       
 
       push(RoomDatabaseRef, {
