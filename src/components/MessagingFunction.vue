@@ -8,6 +8,16 @@
     <template v-if="isActive === '1'">
       <div id="tabpage1">
         <ul class="comment">
+          <!-- これを参考にチャット欄回す
+            <section v-for="{ key, name, image, message } in chat" :key="key" class="item">
+            <div class="item-image"><img :src="image" width="40" height="40"></div>
+            <div class="item-detail">
+              <div class="item-name">{{ name }}</div>
+              <div class="item-message">
+                <nl2br tag="div" :text="message"/>
+              </div>
+            </div>
+          </section> -->
           <li class="listener"><p class="lisname"></p><p class="listenerkom"></p></li>
         </ul>
       </div>
@@ -78,6 +88,8 @@ export default defineComponent({
   data: function() {
     return {
       isActive : '1',
+      username:"",
+      userphotoURL:"",
       channelMessage:"",
       writeComment:""
     }
@@ -128,14 +140,9 @@ export default defineComponent({
   },
   setup () {
 
-    // 何かがおかしい。
-    // vue側を変更→保存でコンパイルが発動するとonChildAddedも発動するのに、
-    // WEB上でTOPに行ってまた配信ページを開く　を何度かやるとonChildAddedが発動しなくなる。
-    // →1−2回までは大丈夫。
-    // Createdだからかと思ってMountedで設定してみたけど問題は同様。
-    // コメント送信を試したところ送信成功しても受信できず（onChildAdded自体が発動してないっぽい）
-    // リロードでも同様の問題が発生する。methodに入れるべき？でも監視してくれなくない？
-    // 関数化してセットアップ時（Created時）に発動指定してみたけどダメ。でもメソッドの方で関数化→セットアップ時発動指定やってない。試す。
+    // そもそもルームベースの取得ルートは配信者のチャット欄に対して固有の値を割り振り、それを取得したい
+    // →これを実現するためにはどうしたらいいか？
+    // 合わせて個別URL発行の方法も知る必要がある気がする
 
     onMounted(() => {
       
