@@ -1,7 +1,7 @@
 <template>
     <header>
         <ul class="login">
-            <li class="m1"><a href="/" class ="logo"><img src="../assets/S__10788901.jpg"></a></li>
+            <li class="m1"><router-link to="/" class ="logo"><img src="../assets/S__10788901.jpg"></router-link></li>
             <li class="m3"><a href="#" class ="linkURL"> イベント </a></li>
             <li class="m4"><a href="#" class ="linkURL"> 雑談 </a></li>
             <li class="m5"><a href="#" class ="linkURL"> ゲーム </a></li>
