@@ -38,7 +38,7 @@
     </template>
     <div class="CommentAddfld">
       <button v-on:click="addComment">送信</button>
-      <input class="CommentText" type="text" v-model="WriteComment">
+      <input class="CommentText" type="text" v-model="writeComment">
     </div>
   </div>
   <!--配信コード入れたらまずここ（レイアウト崩れるので）
@@ -65,10 +65,10 @@
 import { defineComponent} from 'vue';
 import { onMounted } from 'vue';
 import { reactive } from 'vue';
-import { getDatabase, ref, set , push, onValue, onChildAdded } from "firebase/database";
-import { initializeApp } from "firebase/app";
-import { auth, app} from "../../FirebaseConfig";
-import { serverTimestamp } from 'firebase/database';
+import { getDatabase, ref, get, set , push, onValue, onChildAdded, Database } from "firebase/database";
+// import { initializeApp } from "firebase/app";
+import { auth } from "../../FirebaseConfig";
+// import { serverTimestamp } from 'firebase/database'; 
 
 export default defineComponent({
   name: 'MessagingFunction',
@@ -79,9 +79,7 @@ export default defineComponent({
     return {
       isActive : '1',
       channelMessage:"",
-      WriteComment:"",
-      yyyymmdd:"",
-      TimeStamp:"",
+      writeComment:""
     }
   },
 
@@ -92,34 +90,41 @@ export default defineComponent({
     },
 
     addComment : function(){
-      const database = getDatabase(app);
-      let Now = new Date();
-      let yyyy = Now.getFullYear();
-      let mm = String(Now.getMonth() + 1).padStart(2, "0"); //January is 0!
-      let dd = String(Now.getDate()).padStart(2, "0");
-      let hh = String(Now.getHours()).padStart(2, "0");
-      let hmm = String(Now.getMinutes()).padStart(2, "0");
-      let ss = String(Now.getSeconds()).padStart(2, "0");
-      let ms = String(Now.getMilliseconds()).padStart(3, "0");
-      this.TimeStamp = String(yyyy) + "/" + String(mm) + "/" + String(dd) + " " + String(hh) + ":" + String(hmm) + ":" + String(ss) + ":" + String(ms);
-      this.yyyymmdd = String(yyyy) + String(mm) + String(dd);
-      const UserDatabaseRef = ref(database, "UserBase/" + auth.currentUser?.uid + "/" + this.yyyymmdd + "/" + Now);
-      const RoomDatabaseRef = ref(database ,"RoomBase/" + auth.currentUser?.uid); //個別URL作ったら置き換える
-      
+      const 
+        NOW = new Date(),
+        yyyy = NOW.getFullYear(),
+        mm = String(NOW.getMonth() + 1).padStart(2, "0"),
+        dd = String(NOW.getDate()).padStart(2, "0"),
+        hh = String(NOW.getHours()).padStart(2, "0"),
+        hmm = String(NOW.getMinutes()).padStart(2, "0"),
+        ss = String(NOW.getSeconds()).padStart(2, "0"),
+        ms = String(NOW.getMilliseconds()).padStart(3, "0");
 
+      const
+        timeStamp = `${yyyy}/${mm}/${dd} ${hh}:${hmm}:${ss}:${ms}`,
+        yyyymmdd = String(yyyy) + String(mm) + String(dd);
+      
+      const db:Database = getDatabase();
+      const UserDatabaseRef = ref(db, `UserBase/${auth.currentUser?.uid}/${yyyymmdd}/${NOW.getTime()}`);
+      const RoomDatabaseRef = ref(db ,`RoomBase/${auth.currentUser?.uid}`);
+      
       push(RoomDatabaseRef, {
         "user": auth.currentUser?.uid,  
-        "message":this.WriteComment,
-        "timestamp":this.TimeStamp,
+        "message":this.writeComment,
+        "timestamp":timeStamp,
       });
 
       push(UserDatabaseRef, {
-        "message":this.WriteComment,
+        "message":this.writeComment,
         Room:"testRoom"
       });
     },
   },
   watch: {
+  }, 
+
+  created(){
+    
   },
   setup () {
 
@@ -132,21 +137,40 @@ export default defineComponent({
     // リロードでも同様の問題が発生する。methodに入れるべき？でも監視してくれなくない？
     // 関数化してセットアップ時（Created時）に発動指定してみたけどダメ。でもメソッドの方で関数化→セットアップ時発動指定やってない。試す。
 
-    
-    const db = getDatabase();
-    const CommentRef = ref(db, "RoomBase/" + auth.currentUser?.uid)
-    console.log("created");
-
     onMounted(() => {
-      console.log("mount");
+      
+      const waitAuth:any = (() => 
+        new Promise((resolve:any,reject:any) => {
+          let count = 0;
+          setInterval(() => {
+            count++;
+            if(auth.currentUser?.uid != null){
+              resolve();
+            }else if(count > 20){
+              reject();
+            }
+          },100);
+        })
+      )();
 
-      onChildAdded(CommentRef, (snapshot) => {
-        console.log("mount2");
-        console.log("kye:" + snapshot.key);
-        console.log("Val.text:" + snapshot.val().text);
-        console.log("Val.author:" + snapshot.val().author);
-        console.log("単体:" + snapshot);
-      });
+      waitAuth.then(() => {
+        const db:Database = getDatabase();
+        const CommentRef = ref(db, `RoomBase/${auth.currentUser?.uid}`)
+      
+        console.log("mount");
+        console.log("CommentRef:",CommentRef , "DB:",db , onChildAdded,`RoomBase/${auth.currentUser?.uid}`);
+        
+        onChildAdded(CommentRef, (snapshot) => {
+          console.log("mount2");
+          console.log("key:" + snapshot.key);
+          console.log("Val.text:" + snapshot.val().text);
+          console.log("Val.author:" + snapshot.val().author);
+          console.log("単体:" + snapshot);
+        });
+      },() => {
+        alert("AuthIDが取得できませんでした")
+      })
+
     })
   },
 });
