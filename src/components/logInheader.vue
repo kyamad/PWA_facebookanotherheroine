@@ -56,22 +56,6 @@ export default defineComponent({
     },
 });
 
-// コメント欄、お便り対応
-// →考える
-
-// DOM操作じゃなくてDOM切り替えに
-// →お題機能含む
-// →考える
-
-// ミュート実装
-// →Agora
-
-// ラジオ切り替え
-// →Agora＆DOM切り替え
-
-// ここまでやればリリース自体はできる
-// けど、足りないものが多すぎるのでこのタイミングで相談入れる
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

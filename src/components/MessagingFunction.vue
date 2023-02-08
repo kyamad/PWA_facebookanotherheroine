@@ -8,6 +8,16 @@
     <template v-if="isActive === '1'">
       <div id="tabpage1">
         <ul class="comment">
+          <!-- これを参考にチャット欄回す
+            <section v-for="{ key, name, image, message } in chat" :key="key" class="item">
+            <div class="item-image"><img :src="image" width="40" height="40"></div>
+            <div class="item-detail">
+              <div class="item-name">{{ name }}</div>
+              <div class="item-message">
+                <nl2br tag="div" :text="message"/>
+              </div>
+            </div>
+          </section> -->
           <li class="listener"><p class="lisname"></p><p class="listenerkom"></p></li>
         </ul>
       </div>
@@ -63,11 +73,15 @@
 
 <script lang="ts">
 import { defineComponent} from 'vue';
+import { onMounted } from 'vue';
 import { reactive } from 'vue';
-import { getDatabase, ref, set , push, onValue } from "firebase/database";
+import { getDatabase, ref, set , push, onValue, onChildAdded } from "firebase/database";
 import { initializeApp } from "firebase/app";
 import { auth, app} from "../../FirebaseConfig";
 import { serverTimestamp } from 'firebase/database';
+
+const database = getDatabase(app);
+const AuthCurrentUser = auth.currentUser;
 
 export default defineComponent({
   name: 'MessagingFunction',
@@ -77,6 +91,8 @@ export default defineComponent({
   data: function() {
     return {
       isActive : '1',
+      username:"",
+      userphotoURL:"",
       channelMessage:"",
       WriteComment:"",
       yyyymmdd:"",
@@ -91,27 +107,29 @@ export default defineComponent({
     },
 
     addComment : function(){
-      const database = getDatabase(app);
-      let today = new Date();
-      let yyyy = today.getFullYear();
-      let mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-      let dd = String(today.getDate()).padStart(2, "0");
-      let hh = String(today.getHours()).padStart(2, "0");
-      let hmm = String(today.getMinutes()).padStart(2, "0");
-      let ss = String(today.getSeconds()).padStart(2, "0");
-      let ms = String(today.getMilliseconds()).padStart(3, "0");
+      let Now = new Date();
+      let yyyy = Now.getFullYear();
+      let mm = String(Now.getMonth() + 1).padStart(2, "0"); //January is 0!
+      let dd = String(Now.getDate()).padStart(2, "0");
+      let hh = String(Now.getHours()).padStart(2, "0");
+      let hmm = String(Now.getMinutes()).padStart(2, "0");
+      let ss = String(Now.getSeconds()).padStart(2, "0");
+      let ms = String(Now.getMilliseconds()).padStart(3, "0");
+      this.TimeStamp = String(yyyy) + "/" + String(mm) + "/" + String(dd) + " " + String(hh) + ":" + String(hmm) + ":" + String(ss) + ":" + String(ms);
       this.yyyymmdd = String(yyyy) + String(mm) + String(dd);
-      this.TimeStamp = String(yyyy) + String(mm) + String(dd) + String(hh) + String(hmm) + String(ss) + String(ms) + auth.currentUser?.uid; 
-      const UserDatabaseRef = ref(database, "UserBase/" + auth.currentUser?.uid + "/" + this.yyyymmdd + "/" + today);
-      const RoomDatabaseRef = ref(database ,"RoomBase/" + auth.currentUser?.uid + "/" + this.TimeStamp); //個別URL作ったら置き換える
+      const UserDatabaseRef = ref(database, "UserBase/" + auth.currentUser?.uid + "/" + this.yyyymmdd + "/" + Now);
+      const RoomDatabaseRef = ref(database ,"RoomBase/" + "testroom"); //個別URL作ったら置き換える
       
+      this.username = AuthCurrentUser?.displayName as string;
+      this.userphotoURL = AuthCurrentUser?.photoURL as string;
 
-      set(RoomDatabaseRef, {
-        "user": auth.currentUser?.uid,
+      push(RoomDatabaseRef, {
+        "user": auth.currentUser?.uid,  
         "message":this.WriteComment,
+        "timestamp":this.TimeStamp,
       });
 
-      set(UserDatabaseRef, {
+      push(UserDatabaseRef, {
         "message":this.WriteComment,
         Room:"testRoom"
       });
@@ -119,15 +137,15 @@ export default defineComponent({
   },
   watch: {
   },
-  created : function() {
-    const db = getDatabase();
-    const CommentRef = ref(db, "RoomBase/" + auth.currentUser?.uid) //個別URL作ったら置き換える
+  setup () {
+    const CommentRef = ref(database, "RoomBase/" + "testroom")
 
-    onValue(CommentRef, (snapshot) => {
-      const data = snapshot.val();
-      console.log(data);
-    });
-  }
+    onMounted(() => {
+
+      onChildAdded(CommentRef, (dt) => {
+      });
+    })
+  },
 });
 </script>
 
