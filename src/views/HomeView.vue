@@ -76,15 +76,7 @@ export default defineComponent({
   },
 
   setup () {
-    firebaseUtils.onAuthStateChanged();  
-
-    onMounted(() => {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          firebaseUtils.onAuthStateChanged();   
-        }
-      });
-    });
+    firebaseUtils.onAuthStateChanged();
   },
 
   computed:{

@@ -1,6 +1,5 @@
 <template>
   <div class="commentview">
-      <!--コメント、おたより一覧と内容は別componentsにする-->
     <ul class="tab-panel">
       <li class="Tab-A" @click="isSelect('1')" v-bind:class="{'active': isActive === '1'}"><div class="tab-A">コメント</div></li>
       <li class="Tab-B" @click="isSelect('2')" v-bind:class="{'active': isActive === '2'}"><div class="tab-B">おたより</div></li>
@@ -8,17 +7,7 @@
     <template v-if="isActive === '1'">
       <div id="tabpage1">
         <ul class="comment">
-          <!-- これを参考にチャット欄回す
-            <section v-for="{ key, name, image, message } in chat" :key="key" class="item">
-            <div class="item-image"><img :src="image" width="40" height="40"></div>
-            <div class="item-detail">
-              <div class="item-name">{{ name }}</div>
-              <div class="item-message">
-                <nl2br tag="div" :text="message"/>
-              </div>
-            </div>
-          </section> -->
-          <li class="listener"><p class="lisname"></p><p class="listenerkom"></p></li>
+          <CommentList></CommentList>
         </ul>
       </div>
     </template>
@@ -51,12 +40,6 @@
       <input class="CommentText" type="text" v-model="writeComment">
     </div>
   </div>
-  <!--配信コード入れたらまずここ（レイアウト崩れるので）
-  <div class="commentsubmit">
-    <input type="submit" class="ssubmit" id="Submit" value="送信">
-    <input type="text" class="ccmon" name="username" id="Comment" autocomplete="off">
-  </div>
-  -->
   <!--
   </div>
   <div class="reportfld">
@@ -73,6 +56,7 @@
 
 <script lang="ts">
 import { defineComponent} from 'vue';
+import CommentList from '@/components/CommentList.vue'
 import { onMounted } from 'vue';
 import { reactive } from 'vue';
 import { getDatabase, ref, get, set , push, onValue, onChildAdded, Database } from "firebase/database";
@@ -83,6 +67,7 @@ import { auth } from "../../FirebaseConfig";
 export default defineComponent({
   name: 'MessagingFunction',
   components : {
+    CommentList
   },
   
   data: function() {
@@ -112,73 +97,27 @@ export default defineComponent({
         ss = String(NOW.getSeconds()).padStart(2, "0"),
         ms = String(NOW.getMilliseconds()).padStart(3, "0");
 
-      const
-        timeStamp = `${yyyy}/${mm}/${dd} ${hh}:${hmm}:${ss}:${ms}`,
-        yyyymmdd = String(yyyy) + String(mm) + String(dd);
+      const timeStamp = `${yyyy}/${mm}/${dd} ${hh}:${hmm}:${ss}:${ms}`;
       
       const db:Database = getDatabase();
-      const UserDatabaseRef = ref(db, `UserBase/${auth.currentUser?.uid}/${yyyymmdd}/${NOW.getTime()}`);
       const RoomDatabaseRef = ref(db ,`RoomBase/${auth.currentUser?.uid}`);
       
       push(RoomDatabaseRef, {
+        "Kinds":"Comment",
         "user": auth.currentUser?.uid,  
         "message":this.writeComment,
         "timestamp":timeStamp,
       });
-
-      push(UserDatabaseRef, {
-        "message":this.writeComment,
-        Room:"testRoom"
-      });
+      
     },
   },
   watch: {
   }, 
 
   created(){
-    
   },
+
   setup () {
-
-    // そもそもルームベースの取得ルートは配信者のチャット欄に対して固有の値を割り振り、それを取得したい
-    // →これを実現するためにはどうしたらいいか？
-    // 合わせて個別URL発行の方法も知る必要がある気がする
-
-    onMounted(() => {
-      
-      const waitAuth:any = (() => 
-        new Promise((resolve:any,reject:any) => {
-          let count = 0;
-          setInterval(() => {
-            count++;
-            if(auth.currentUser?.uid != null){
-              resolve();
-            }else if(count > 20){
-              reject();
-            }
-          },100);
-        })
-      )();
-
-      waitAuth.then(() => {
-        const db:Database = getDatabase();
-        const CommentRef = ref(db, `RoomBase/${auth.currentUser?.uid}`)
-      
-        console.log("mount");
-        console.log("CommentRef:",CommentRef , "DB:",db , onChildAdded,`RoomBase/${auth.currentUser?.uid}`);
-        
-        onChildAdded(CommentRef, (snapshot) => {
-          console.log("mount2");
-          console.log("key:" + snapshot.key);
-          console.log("Val.text:" + snapshot.val().text);
-          console.log("Val.author:" + snapshot.val().author);
-          console.log("単体:" + snapshot);
-        });
-      },() => {
-        alert("AuthIDが取得できませんでした")
-      })
-
-    })
   },
 });
 </script>
@@ -252,24 +191,6 @@ template {
 
   /*コメント
   ---------------------------------------*/
-
-.listener{
-    display: block;/*通常はblock*/
-    text-align: justify;
-  }
-
-.comment li{
-  padding: 1vw;
-  font-size: 1.25vw;
-  list-style: none;
-  word-break: break-all;
-  border-bottom: 0.2vw solid #cccccc;
-}
-
-.lisname{
-  color: #9a493f;
-  margin-bottom: 0.4vw;
-}
 
   .mail{
   height: 5vw;
