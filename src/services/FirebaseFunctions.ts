@@ -2,8 +2,17 @@ import { getDatabase, ref, get, set , onValue, onChildAdded, Database } from "fi
 import { auth } from "../../FirebaseConfig";
 
 const db:Database = getDatabase();
+// const CommentRef = ref(db, `RoomBase/${auth.currentUser?.uid}`);
 
 class FBRTDB {
+
+    public currentChat:any = null;
+    public authID:string = ""; 
+    public chatSnapShot:any[] = []
+
+    constructor(){
+        this.authID = auth.currentUser?.uid as string || "";
+    }
 
     LiverReceptionComment(){
         const waitAuth:any = (() => 
@@ -11,7 +20,7 @@ class FBRTDB {
                 let count = 0;
                 setInterval(() => {
                 count++;
-                if(auth.currentUser?.uid != null){
+                if(this.authID !== ""){
                     resolve();
                 }else if(count > 20){
                     reject();
@@ -20,20 +29,19 @@ class FBRTDB {
             })
         )();
 
-        let GetData:any = "";
-
         waitAuth.then(() => {
             const CommentRef = ref(db, `RoomBase/${auth.currentUser?.uid}`);
             onChildAdded(CommentRef, (snapshot) => {
-                GetData = snapshot.val().message;
-                console.log("key:" + snapshot.key);
-                console.log("Val.text:" + snapshot.val().message);
-            });
-            console.log("22:",GetData)
+                this.chatSnapShot.push( {
+                    "key":snapshot.key,
+                    "kinds":snapshot.val().kinds,
+                    "name":snapshot.val().name,
+                    "Comment":snapshot.val().message})
+                    // メモ：取得自体はリアルタイムでできてる
+                });
         },() => {
-            alert("AuthIDが取得できませんでした")
+            alert("AuthIDが取得できませんでしta")
         });
-        return GetData;
     }
 }
 

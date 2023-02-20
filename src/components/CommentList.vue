@@ -2,7 +2,7 @@
   <!-- <li class="Listener"><p class="lisName"></p><p class="ListenerComment"></p></li> -->
   <li v-for="{key, name, Comment} in chat" :key="key" class="Listener">
     <p class="ListenerName">{{ name }}</p>
-    <p class="ListenerComment">{{ Comment }}</p>
+    <p class="ListenerComment" @click="test">{{ Comment }}</p>
   </li>
   <!-- これを参考にチャット欄回す
   <section v-for="{ key, name, image, message } in chat" :key="key" class="item">
@@ -17,10 +17,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent} from 'vue';
-import { onMounted } from 'vue';
-import { ref } from 'vue';
+import { defineComponent, reactive, ref, onMounted} from 'vue';
 import FBRTDB from '../services/FirebaseFunctions';
+import { getDatabase, get, set , onValue, onChildAdded, Database } from "firebase/database";
+import { auth } from "../../FirebaseConfig";
+
 
 export default defineComponent({
   name: 'CommentList',
@@ -29,11 +30,15 @@ export default defineComponent({
   
   data: function() {
     return {
-      // chat:[]
+      // chat:FBRTDB.chatSnapShot[0]
     }
   },
 
   methods: {
+    test: function(){
+      console.log(this.chat);
+      // chat上に追加が来てるかの確認a
+    }
   },
 
   watch: {
@@ -41,19 +46,17 @@ export default defineComponent({
 
   setup () {
 
-    const chat = ref([]);
-
     // そもそもルームベースの取得ルートは配信者のチャット欄に対して固有の値を割り振り、それを取得したい
     // →これを実現するためにはどうしたらいいか？
-    // 合わせて個別URL発行の方法も知る必要がある気がする
+    // 合わせて個別URL発行の方法も知る必要がある気がするな
 
-    onMounted(() => {
-      const DDB = FBRTDB.LiverReceptionComment();
-      console.log("DDB:",DDB)
-    })
-
+    const chat:any = ref([]);
+    
+    FBRTDB.LiverReceptionComment();
+    chat.value.push(...FBRTDB.chatSnapShot)
+    
     return {
-      chat
+      chat,
     }
   },
 });

@@ -105,6 +105,7 @@ export default defineComponent({
       push(RoomDatabaseRef, {
         "Kinds":"Comment",
         "user": auth.currentUser?.uid,  
+        "name": auth.currentUser?.displayName,
         "message":this.writeComment,
         "timestamp":timeStamp,
       });
