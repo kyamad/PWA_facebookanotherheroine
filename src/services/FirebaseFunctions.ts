@@ -1,5 +1,6 @@
 import { getDatabase, ref, get, set , onValue, onChildAdded, Database } from "firebase/database";
 import { auth } from "../../FirebaseConfig";
+import store from '../store';
 
 const db:Database = getDatabase();
 // const CommentRef = ref(db, `RoomBase/${auth.currentUser?.uid}`);
@@ -11,11 +12,12 @@ class FBRTDB {
     public chatSnapShot:any[] = []
 
     constructor(){
-        this.authID = auth.currentUser?.uid as string || "";
+        this.authID = store.getters['userid'] as string || "";
     }
 
     LiverReceptionComment(){
-        const waitAuth:any = (() => 
+        const waitAuth:any =
+         (() => 
             new Promise((resolve:any,reject:any) => {
                 let count = 0;
                 setInterval(() => {
@@ -30,17 +32,16 @@ class FBRTDB {
         )();
 
         waitAuth.then(() => {
-            const CommentRef = ref(db, `RoomBase/${auth.currentUser?.uid}`);
+            const CommentRef = ref(db, `RoomBase/${this.authID}`);
             onChildAdded(CommentRef, (snapshot) => {
                 this.chatSnapShot.push( {
                     "key":snapshot.key,
-                    "kinds":snapshot.val().kinds,
+                    "kinds":snapshot.val().Kinds,
                     "name":snapshot.val().name,
                     "Comment":snapshot.val().message})
-                    // メモ：取得自体はリアルタイムでできてる
                 });
         },() => {
-            alert("AuthIDが取得できませんでしta")
+            alert("AuthIDが取得できませんでした");
         });
     }
 }

@@ -1,14 +1,14 @@
 <template>
     <header>
         <ul class="login">
-            <li class="m1"><a href="/" class ="logo"><img src="../assets/S__10788901.jpg"></a></li>
+            <li class="m1"><router-link to="/" class ="logo"><img src="../assets/S__10788901.jpg"></router-link></li>
             <li class="m3"><a href="#" class ="linkURL"> イベント </a></li>
             <li class="m4"><a href="#" class ="linkURL"> 雑談 </a></li>
             <li class="m5"><a href="#" class ="linkURL"> ゲーム </a></li>
             <li class="m6"><a href="#" class ="linkURL"> つゆだく </a></li>
             <li class="m7"><a href="#" class ="linkURL"> ラジオ </a></li>
             <li class="m8"><a href="#" class ="linkURL"> リクエスト部屋 </a></li>
-            <li class="livem2"><a href="/streaming" class ="livebtn blue"> 配信する！ </a></li>
+            <li class="livem2"><router-link to="/streaming" class ="livebtn blue"> 配信する！ </router-link></li>
             <li class="livem2"><a href="#" class ="livebtn" @click="Logout"> ログアウト </a></li>
             <li class="livem3"><a href="#" class ="aikon"><img :src="IconImg"></a></li>
         </ul>
@@ -19,7 +19,6 @@
 import { defineComponent, onMounted } from 'vue';
 import { signOut } from "firebase/auth";
 import { auth } from "../../FirebaseConfig";
-import { onAuthStateChanged } from "firebase/auth";
 import firebaseUtils from '../firebaseUtils';
 import router from '../router'
 
@@ -44,14 +43,8 @@ export default defineComponent({
         this.$data.IconImg = auth.currentUser?.photoURL as string;
     },
     setup () {
-        firebaseUtils.onAuthStateChanged();  
 
         onMounted(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-            firebaseUtils.onAuthStateChanged();   
-            }
-        });
         });
     },
 });

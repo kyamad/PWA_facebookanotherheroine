@@ -60,9 +60,7 @@ import CommentList from '@/components/CommentList.vue'
 import { onMounted } from 'vue';
 import { reactive } from 'vue';
 import { getDatabase, ref, get, set , push, onValue, onChildAdded, Database } from "firebase/database";
-// import { initializeApp } from "firebase/app";
 import { auth } from "../../FirebaseConfig";
-// import { serverTimestamp } from 'firebase/database'; 
 
 export default defineComponent({
   name: 'MessagingFunction',
