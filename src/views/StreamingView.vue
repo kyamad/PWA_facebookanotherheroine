@@ -12,6 +12,8 @@
 import { defineComponent } from 'vue';
 import TopicList from '@/components/TopicList.vue';
 
+// firebaseUtils.tsを呼び出すこと
+
 export default defineComponent({
   name: 'StreamingView',
   components: {

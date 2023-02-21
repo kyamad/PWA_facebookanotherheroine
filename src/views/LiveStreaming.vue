@@ -119,14 +119,10 @@ export default defineComponent({
     MessagingFunction
   },
   setup () {
+    // computedにGetters書く
     firebaseUtils.onAuthStateChanged();  
 
     onMounted(() => {
-      onAuthStateChanged(auth, (user) => {
-        if (user) {
-          firebaseUtils.onAuthStateChanged();   
-        }
-      });
     });
   },
 });

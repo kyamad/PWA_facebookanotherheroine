@@ -1,3 +1,37 @@
+Storeのstate.isloginは当然初期値がFalseになってる
+→各ページのSetupでfirebaseUtils.tsが発動→FalseがTrueに変わってる
+つまり、Storeにキャッシュ機能はないんじゃないの？
+
+すぐ使えるようにおいておく
+const waitAuth:any =
+         (() => 
+            new Promise((resolve:any,reject:any) => {
+                let count = 0;
+                setInterval(() => {
+                count++;
+                if(this.authID !== ""){
+                    resolve();
+                }else if(count > 20){
+                    reject();
+                }
+                },100);
+            })
+        )();
+
+        waitAuth.then(() => {
+            const CommentRef = ref(db, `RoomBase/${this.authID}`);
+            onChildAdded(CommentRef, (snapshot) => {
+                this.chatSnapShot.push( {
+                    "key":snapshot.key,
+                    "kinds":snapshot.val().kinds,
+                    "name":snapshot.val().name,
+                    "Comment":snapshot.val().message})
+                });
+        },() => {
+            alert("AuthIDが取得できませんでした");
+        });
+
+
 初回起動時ログイン判定おかしくない？（ログインしてるのにページ内読み込み（F5じゃなくてページ遷移）しないと判定されてない）
 名前の命名やりながら見直し
 配信ページとかその人の配信の視聴ページとか、ページを分ける（生成する）仕組み調べる

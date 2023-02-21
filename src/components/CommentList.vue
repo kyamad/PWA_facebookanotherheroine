@@ -30,7 +30,6 @@ export default defineComponent({
   
   data: function() {
     return {
-      // chat:FBRTDB.chatSnapShot[0]
     }
   },
 
@@ -45,15 +44,13 @@ export default defineComponent({
   }, 
 
   setup () {
-
-    // そもそもルームベースの取得ルートは配信者のチャット欄に対して固有の値を割り振り、それを取得したい
-    // →これを実現するためにはどうしたらいいか？
-    // 合わせて個別URL発行の方法も知る必要がある気がするな
-
+    
     const chat:any = ref([]);
     
     FBRTDB.LiverReceptionComment();
-    chat.value.push(...FBRTDB.chatSnapShot)
+    console.log(FBRTDB.chatSnapShot);
+    chat.value.push(...FBRTDB.chatSnapShot);
+    console.log(chat.value);
     
     return {
       chat,
