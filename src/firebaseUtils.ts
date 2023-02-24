@@ -10,10 +10,12 @@ export default {
       if(user) {
         store.commit('onAuthStateChanged', user);
         store.commit('UseridDelivery', user.uid);
+        store.commit('UserNameDelivery', user.displayName);
         store.commit('onUserLoginStatusChanged', true);
       } else {
         store.commit('onAuthStateChanged', user);
         store.commit('UseridDelivery', "");
+        store.commit('UserNameDelivery', "");
         store.commit('onUserLoginStatusChanged', false);
       }
     });

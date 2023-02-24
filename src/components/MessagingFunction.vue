@@ -57,10 +57,10 @@
 <script lang="ts">
 import { defineComponent} from 'vue';
 import CommentList from '@/components/CommentList.vue'
-import { onMounted } from 'vue';
 import { reactive } from 'vue';
-import { getDatabase, ref, get, set , push, onValue, onChildAdded, Database } from "firebase/database";
-import { auth } from "../../FirebaseConfig";
+import FBRTDB from '../services/FirebaseFunctions';
+import store from '../store';
+import {useRoute} from 'vue-router'
 
 export default defineComponent({
   name: 'MessagingFunction',
@@ -85,27 +85,30 @@ export default defineComponent({
     },
 
     addComment : function(){
-      const 
-        NOW = new Date(),
-        yyyy = NOW.getFullYear(),
-        mm = String(NOW.getMonth() + 1).padStart(2, "0"),
-        dd = String(NOW.getDate()).padStart(2, "0"),
-        hh = String(NOW.getHours()).padStart(2, "0"),
-        hmm = String(NOW.getMinutes()).padStart(2, "0"),
-        ss = String(NOW.getSeconds()).padStart(2, "0"),
-        ms = String(NOW.getMilliseconds()).padStart(3, "0");
+      FBRTDB.AddComment(this.writeComment,this.id);
+      console.log(store.getters['username']);
 
-      const timeStamp = `${yyyy}/${mm}/${dd} ${hh}:${hmm}:${ss}:${ms}`;
+      // const 
+      //   NOW = new Date(),
+      //   yyyy = NOW.getFullYear(),
+      //   mm = String(NOW.getMonth() + 1).padStart(2, "0"),
+      //   dd = String(NOW.getDate()).padStart(2, "0"),
+      //   hh = String(NOW.getHours()).padStart(2, "0"),
+      //   hmm = String(NOW.getMinutes()).padStart(2, "0"),
+      //   ss = String(NOW.getSeconds()).padStart(2, "0"),
+      //   ms = String(NOW.getMilliseconds()).padStart(3, "0");
+
+      // const timeStamp = `${yyyy}/${mm}/${dd} ${hh}:${hmm}:${ss}:${ms}`;
       
-      const db:Database = getDatabase();
-      const RoomDatabaseRef = ref(db ,`RoomBase/${auth.currentUser?.uid}/Comment`);
+      // const db:Database = getDatabase();
+      // const RoomDatabaseRef = ref(db ,`RoomBase/${auth.currentUser?.uid}/Comment`);
       
-      push(RoomDatabaseRef, {
-        "user": auth.currentUser?.uid,  
-        "name": auth.currentUser?.displayName,
-        "message":this.writeComment,
-        "timestamp":timeStamp,
-      });
+      // push(RoomDatabaseRef, {
+      //   "user": auth.currentUser?.uid,  
+      //   "name": auth.currentUser?.displayName,
+      //   "message":this.writeComment,
+      //   "timestamp":timeStamp,
+      // });
 
       this.writeComment = "";
       
@@ -118,6 +121,12 @@ export default defineComponent({
   },
 
   setup () {
+    const route = useRoute();
+    // const  id  = route.params;
+    return {
+      id: route.params
+    }
+
   },
 });
 </script>
