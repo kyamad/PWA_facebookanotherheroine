@@ -100,15 +100,7 @@ import VideoComponent from '@/components/VideoComponent.vue';
 import LiveControlPanel from '@/components/LiveControlPanel.vue';
 import MessagingFunction from '@/components/MessagingFunction.vue';
 import { onMounted } from 'vue';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../FirebaseConfig";
 import firebaseUtils from '../firebaseUtils';
-import store from '../store';
-import LiveList from  '@/components/LiveList.vue';
-import Header from  '@/components/header.vue';
-import LogInHeader from  '@/components/logInheader.vue';
-import SignUp from  '@/components/SignUp.vue';
-import SignIn from  '@/components/SignIn.vue';
 
 export default defineComponent({
   name: 'LiveStreaming',
