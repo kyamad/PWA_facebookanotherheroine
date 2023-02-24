@@ -12,6 +12,7 @@ class FBRTDB {
     }
 
     LiverReceptionComment(){
+        console.log(this.authID);
         const chatSnapShot:any[] = reactive([]);
         const waitAuth:any =
          (() => 
