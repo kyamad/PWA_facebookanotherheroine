@@ -1,5 +1,6 @@
 import { getDatabase, ref, get, set , onValue, onChildAdded, Database } from "firebase/database";
 import { auth } from "../../FirebaseConfig";
+import { defineComponent, reactive, onMounted} from 'vue';
 import store from '../store';
 
 const db:Database = getDatabase();
@@ -9,13 +10,16 @@ class FBRTDB {
 
     public currentChat:any = null;
     public authID:string = ""; 
-    public chatSnapShot:any[] = []
+    public chatSnapShot:any[] = reactive([]);
+    public chatSnapShot2:any[] = []
 
     constructor(){
         this.authID = store.getters['userid'] as string || "";
+        this.chatSnapShot = [];
     }
 
     LiverReceptionComment(){
+        console.log("1",this.chatSnapShot);
         const waitAuth:any =
          (() => 
             new Promise((resolve:any,reject:any) => {
@@ -41,7 +45,7 @@ class FBRTDB {
                     "Comment":snapshot.val().message})
                 });
         },() => {
-            alert("AuthIDが取得できませんでした");
+            alert("IDが取得できませんでした");
         });
     }
 }
