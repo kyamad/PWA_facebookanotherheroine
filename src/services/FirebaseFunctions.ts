@@ -4,22 +4,15 @@ import { defineComponent, reactive, onMounted} from 'vue';
 import store from '../store';
 
 const db:Database = getDatabase();
-// const CommentRef = ref(db, `RoomBase/${auth.currentUser?.uid}`);
 
 class FBRTDB {
-
-    public currentChat:any = null;
-    public authID:string = ""; 
-    public chatSnapShot:any[] = reactive([]);
-    public chatSnapShot2:any[] = []
-
+    public authID:string = "";
     constructor(){
         this.authID = store.getters['userid'] as string || "";
-        this.chatSnapShot = [];
     }
 
     LiverReceptionComment(){
-        console.log("1",this.chatSnapShot);
+        const chatSnapShot:any[] = reactive([]);
         const waitAuth:any =
          (() => 
             new Promise((resolve:any,reject:any) => {
@@ -36,17 +29,17 @@ class FBRTDB {
         )();
 
         waitAuth.then(() => {
-            const CommentRef = ref(db, `RoomBase/${this.authID}`);
+            const CommentRef = ref(db, `RoomBase/${this.authID}/Comment`);
             onChildAdded(CommentRef, (snapshot) => {
-                this.chatSnapShot.push( {
+                chatSnapShot.push( {
                     "key":snapshot.key,
-                    "kinds":snapshot.val().Kinds,
                     "name":snapshot.val().name,
                     "Comment":snapshot.val().message})
                 });
         },() => {
             alert("IDが取得できませんでした");
         });
+        return chatSnapShot
     }
 }
 
