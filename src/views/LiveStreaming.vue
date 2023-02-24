@@ -120,6 +120,7 @@ export default defineComponent({
   },
   setup () {
     // computedにGetters書く
+    // ログインヘッダーのアイコンない人共通のやつ差し込む
     firebaseUtils.onAuthStateChanged();  
 
     onMounted(() => {

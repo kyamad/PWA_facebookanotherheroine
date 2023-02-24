@@ -30,31 +30,52 @@ export default defineComponent({
   
   data: function() {
     return {
+      chat:FBRTDB.chatSnapShot
     }
   },
 
   methods: {
     test: function(){
       console.log(this.chat);
-      // chat上に追加が来てるかの確認a
+      // chat上に追加が来てるかの確認
     }
   },
 
   watch: {
   }, 
 
+// どっちもリアクティブ性は取れてるはず、直接ページに書くしかないか？
+// ComputedにFBRTDB.chatsnapShot監視入れてみる
+// 送信後チャットに追加来てない→FBRTDB.chatsnapShotにはきてる
+// Setupに入れるとダブルでカウントされてしまう
+
   setup () {
     
-    const chat:any = ref([]);
-    
     FBRTDB.LiverReceptionComment();
-    console.log(FBRTDB.chatSnapShot);
-    chat.value.push(...FBRTDB.chatSnapShot);
-    console.log(chat.value);
-    
-    return {
-      chat,
-    }
+    // const chat:any = reactive(FBRTDB.chatSnapShot);
+    // const waitComment:any =
+    //      (() => 
+    //         new Promise((resolve:any,reject:any) => {
+    //             let count = 0;
+    //             setInterval(() => {
+    //             count++;
+    //             if(FBRTDB.chatSnapShot !== []){
+    //                 resolve();
+    //             }else if(count > 20){
+    //                 reject();
+    //             }
+    //             },100);
+    //         })
+    //     )();
+    //     waitComment.then(() => {
+    //       chat.push(...FBRTDB.chatSnapShot);
+    //     },() => {
+    //         alert("コメントが取得できませんでした");
+    //     });
+
+    // return {
+    //   chat,
+    // }
   },
 });
 </script>
