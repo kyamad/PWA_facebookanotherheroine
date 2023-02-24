@@ -8,7 +8,10 @@
             <li class="m6"><a href="#" class ="linkURL"> つゆだく </a></li>
             <li class="m7"><a href="#" class ="linkURL"> ラジオ </a></li>
             <li class="m8"><a href="#" class ="linkURL"> リクエスト部屋 </a></li>
-            <li class="livem2"><router-link to="/streaming" class ="livebtn blue"> 配信する！ </router-link></li>
+            <li class="livem2"><router-link v-bind:to="{
+                name: 'LiveStreaming',
+                params: { id } }" 
+                class ="livebtn blue"> 配信する！ </router-link></li>
             <li class="livem2"><a href="#" class ="livebtn" @click="Logout"> ログアウト </a></li>
             <li class="livem3"><a href="#" class ="aikon"><img :src="IconImg"></a></li>
         </ul>
@@ -21,11 +24,13 @@ import { signOut } from "firebase/auth";
 import { auth } from "../../FirebaseConfig";
 import firebaseUtils from '../firebaseUtils';
 import router from '../router'
+import store from '../store';
 
 export default defineComponent({
     data: function() {
         return{
             IconImg:"",
+            id: store.getters['userid']
         }
     },
     methods: {

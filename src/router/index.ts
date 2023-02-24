@@ -14,8 +14,9 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('../views/StreamingView.vue')
   },
   {
-    path: '/streaming',
+    path: '/streaming/:id',
     name: 'LiveStreaming',
+    props:true,
     component: () => import('../views/LiveStreaming.vue')
   },
   // {
