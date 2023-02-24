@@ -2,7 +2,7 @@
   <!-- <li class="Listener"><p class="lisName"></p><p class="ListenerComment"></p></li> -->
   <li v-for="{key, name, Comment} in chat" :key="key" class="Listener">
     <p class="ListenerName">{{ name }}</p>
-    <p class="ListenerComment" @click="test">{{ Comment }}</p>
+    <p class="ListenerComment">{{ Comment }}</p>
   </li>
   <!-- これを参考にチャット欄回す
   <section v-for="{ key, name, image, message } in chat" :key="key" class="item">
@@ -30,52 +30,22 @@ export default defineComponent({
   
   data: function() {
     return {
-      chat:FBRTDB.chatSnapShot
     }
   },
 
   methods: {
-    test: function(){
-      console.log(this.chat);
-      // chat上に追加が来てるかの確認
-    }
   },
 
   watch: {
   }, 
 
-// どっちもリアクティブ性は取れてるはず、直接ページに書くしかないか？
-// ComputedにFBRTDB.chatsnapShot監視入れてみる
-// 送信後チャットに追加来てない→FBRTDB.chatsnapShotにはきてる
-// Setupに入れるとダブルでカウントされてしまう
 
   setup () {
-    
-    FBRTDB.LiverReceptionComment();
-    // const chat:any = reactive(FBRTDB.chatSnapShot);
-    // const waitComment:any =
-    //      (() => 
-    //         new Promise((resolve:any,reject:any) => {
-    //             let count = 0;
-    //             setInterval(() => {
-    //             count++;
-    //             if(FBRTDB.chatSnapShot !== []){
-    //                 resolve();
-    //             }else if(count > 20){
-    //                 reject();
-    //             }
-    //             },100);
-    //         })
-    //     )();
-    //     waitComment.then(() => {
-    //       chat.push(...FBRTDB.chatSnapShot);
-    //     },() => {
-    //         alert("コメントが取得できませんでした");
-    //     });
 
-    // return {
-    //   chat,
-    // }
+    return {
+      chat: FBRTDB.LiverReceptionComment(),
+    }
+
   },
 });
 </script>

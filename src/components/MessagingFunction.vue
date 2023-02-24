@@ -98,15 +98,16 @@ export default defineComponent({
       const timeStamp = `${yyyy}/${mm}/${dd} ${hh}:${hmm}:${ss}:${ms}`;
       
       const db:Database = getDatabase();
-      const RoomDatabaseRef = ref(db ,`RoomBase/${auth.currentUser?.uid}`);
+      const RoomDatabaseRef = ref(db ,`RoomBase/${auth.currentUser?.uid}/Comment`);
       
       push(RoomDatabaseRef, {
-        "Kinds":"Comment",
         "user": auth.currentUser?.uid,  
         "name": auth.currentUser?.displayName,
         "message":this.writeComment,
         "timestamp":timeStamp,
       });
+
+      this.writeComment = "";
       
     },
   },
