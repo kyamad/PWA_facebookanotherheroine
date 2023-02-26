@@ -2,7 +2,7 @@ import { getDatabase, ref, get, set , onValue, onChildAdded, Database, push } fr
 import { auth } from "../../FirebaseConfig";
 import { defineComponent, reactive, onMounted} from 'vue';
 import store from '../store';
-import {RouteParams, useRoute} from 'vue-router'
+import {useRoute} from 'vue-router'
 
 const db:Database = getDatabase();
 
@@ -48,7 +48,7 @@ class FBRTDB {
         return chatSnapShot
     }
 
-    AddComment(WriteComment:string, id:RouteParams){
+    AddComment(WriteComment:string){
         const 
         NOW = new Date(),
         yyyy = NOW.getFullYear(),
@@ -61,7 +61,8 @@ class FBRTDB {
 
         const timeStamp = `${yyyy}/${mm}/${dd} ${hh}:${hmm}:${ss}:${ms}`;
         
-        const RoomDatabaseRef = ref(db ,`RoomBase/${id}/Comment`);
+        const db:Database = getDatabase();
+        const RoomDatabaseRef = ref(db ,`RoomBase/${auth.currentUser?.uid}/Comment`);
         
         push(RoomDatabaseRef, {
             "user": this.authID,  
