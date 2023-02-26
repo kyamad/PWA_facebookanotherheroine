@@ -85,7 +85,7 @@ export default defineComponent({
     },
 
     addComment : function(){
-      FBRTDB.AddComment(this.writeComment,this.id);
+      FBRTDB.AddComment(this.writeComment);
       console.log(store.getters['username']);
 
       // const 
@@ -122,10 +122,7 @@ export default defineComponent({
 
   setup () {
     const route = useRoute();
-    // const  id  = route.params;
-    return {
-      id: route.params
-    }
+    const { id } = route.params;
 
   },
 });
