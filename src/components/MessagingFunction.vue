@@ -13,24 +13,10 @@
     </template>
     <template v-else-if="isActive === '2'">
       <div id="tabpage2">
-        <ul class="otayori">
-          <li class="mail">
-            <a href="#mailopen0" class ="honbun"><p class="mainame">ユーザー名ユーザー名</p>
-              <div class="mailarea">
-                <p class="listenermai">複数行の時はline-clampプロパティを使用します。ここに入れる数値が表示される行を表しています。（3行で隠したい場合は「3」）</p>
-              </div>
-            </a>
-          </li>
+        <ul class="Letter">
+          <LetterList></LetterList>
         </ul>
       </div>
-      <!--
-      <div id="mailopen0">
-        <div class="open">
-          <p class="otaname">おたよりネーム：ユーザー名ユーザー名</p>
-          <p class="maildetail">複数行の時はline-clampプロパティを使用します。ここに入れる数値が表示される行を表しています。（3行で隠したい場合は「3」）</p>
-        </div>  
-      </div>
-      -->
       <!--<div class ="reportsuccess">
         <div class ="sucmsg">通報完了しました</div>
       </div>-->
@@ -57,7 +43,7 @@
 <script lang="ts">
 import { defineComponent} from 'vue';
 import CommentList from '@/components/CommentList.vue'
-import { reactive } from 'vue';
+import LetterList from '@/components/LetterList.vue'
 import FBRTDB from '../services/FirebaseFunctions';
 import store from '../store';
 import {useRoute} from 'vue-router'
@@ -65,7 +51,8 @@ import {useRoute} from 'vue-router'
 export default defineComponent({
   name: 'MessagingFunction',
   components : {
-    CommentList
+    CommentList,
+    LetterList
   },
   
   data: function() {
@@ -86,7 +73,7 @@ export default defineComponent({
 
     addComment : function(){
       FBRTDB.AddComment(this.writeComment);
-      console.log(store.getters['username']);
+      // console.log(store.getters['username']);
 
       // const 
       //   NOW = new Date(),
@@ -180,7 +167,7 @@ template {
     margin: auto;
   }
 
-  #tabpage1, #tabpage2, #mailopen0{
+  #tabpage1, #tabpage2 {
   position: relative;
   border: 0.17vw solid black;
   border-top: 0;
@@ -191,54 +178,12 @@ template {
   background-color: #FFFFFF;
   }
 
-  #tabpage1.active, #tabpage2.active, #mailopen0{
+  #tabpage1.active, #tabpage2.active {
   display: none;
   }
 
   /*コメント
   ---------------------------------------*/
-
-  .mail{
-  height: 5vw;
-  font-size: 1vw;
-  }
-
-  .honbun{
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: #000;
-  border-bottom: 0.2vw solid #cccccc;
-  }
-
-  .mainame{
-  padding-left: 0.5vw;
-  width: 20%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  }
-
-  .mailarea{
-  width: 80%;
-  height: 80%;
-  margin: auto 0;
-  border-left: 0.3vw solid; 
-  text-align: left;
-  display: flex;
-  align-items: center;
-  }
-
-  .listenermai{
-  display: -webkit-box;
-  margin:0.5vw;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-  word-break: break-all;
-  }
 
 .CommentAddfld{
  margin-top: 0.7vw;

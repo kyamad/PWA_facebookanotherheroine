@@ -71,6 +71,39 @@ class FBRTDB {
             "timestamp":timeStamp,
         });
     }
+
+    LiverReceptionLetter(){
+        const route = useRoute();
+        const { id } = route.params;
+        const LetterSnapShot:any[] = reactive([]);
+        const waitAuth:any =
+         (() => 
+            new Promise((resolve:any,reject:any) => {
+                let count = 0;
+                setInterval(() => {
+                count++;
+                if(this.authID !== ""){
+                    resolve();
+                }else if(count > 20){
+                    reject();
+                }
+                },100);
+            })
+        )();
+
+        waitAuth.then(() => {
+            const CommentRef = ref(db, `RoomBase/${id}/Letter`);
+            onChildAdded(CommentRef, (snapshot) => {
+                LetterSnapShot.push( {
+                    "key":snapshot.key,
+                    "name":snapshot.val().name,
+                    "Text":snapshot.val().message})
+                });
+        },() => {
+            alert("IDが取得できませんでした");
+        });
+        return LetterSnapShot
+    }
 }
 
 // console.log("CommentRef:",CommentRef , "DB:",db , onChildAdded,`RoomBase/${auth.currentUser?.uid}`);

@@ -1,44 +1,16 @@
 <template>
-  <!-- <li class="Listener"><p class="lisName"></p><p class="ListenerComment"></p></li> -->
   <li v-for="{key, name, Comment} in chat" :key="key" class="Listener">
     <p class="ListenerName">{{ name }}</p>
     <p class="ListenerComment">{{ Comment }}</p>
   </li>
-  <!-- これを参考にチャット欄回す
-  <section v-for="{ key, name, image, message } in chat" :key="key" class="item">
-    <div class="item-image"><img :src="image" width="40" height="40"></div>
-    <div class="item-detail">
-      <div class="item-name">{{ name }}</div>
-      <div class="item-message">
-        <nl2br tag="div" :text="message"/>
-      </div>
-    </div>
-  </section> -->
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, onMounted} from 'vue';
+import { defineComponent } from 'vue';
 import FBRTDB from '../services/FirebaseFunctions';
-import { getDatabase, get, set , onValue, onChildAdded, Database } from "firebase/database";
-import { auth } from "../../FirebaseConfig";
-
 
 export default defineComponent({
   name: 'CommentList',
-  components : {
-  },
-  
-  data: function() {
-    return {
-    }
-  },
-
-  methods: {
-  },
-
-  watch: {
-  }, 
-
 
   setup () {
 
@@ -47,6 +19,7 @@ export default defineComponent({
     }
 
   },
+
 });
 </script>
 
