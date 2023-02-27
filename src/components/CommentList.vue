@@ -1,8 +1,10 @@
 <template>
-  <li v-for="{key, name, Comment} in chat" :key="key" class="Listener">
-    <p class="ListenerName">{{ name }}</p>
-    <p class="ListenerComment">{{ Comment }}</p>
-  </li>
+  <ul class="comment">
+      <li v-for="{key, name, Comment} in chat" :key="key" class="Listener">
+        <p class="ListenerName">{{ name }}</p>
+        <p class="ListenerComment">{{ Comment }}</p>
+    </li>
+  </ul>
 </template>
 
 <script lang="ts">
@@ -13,6 +15,8 @@ export default defineComponent({
   name: 'CommentList',
 
   setup () {
+
+    const CommentUl = document.querySelector("comment")
 
     return {
       chat: FBRTDB.LiverReceptionComment(),
