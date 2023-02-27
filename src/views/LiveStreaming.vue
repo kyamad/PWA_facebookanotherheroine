@@ -2,28 +2,26 @@
  <logInheader></logInheader>
  <main id="mainsection">
     <div class="mainview">
-      <div class="liveview">
-        <div class="ltitle">
-          <form action="" method="get" class="tform">
-            <div class="form_item">
-              <input type="text" class="fitem" value="配信タイトル未設定(最大20文字)" id="livename" maxlength="20">
-              <p class="foitem"></p>
+      <div class="Delivery-Fld">
+        <div class="Live-Title">
+          <form action="" method="get" class="Live-Title-Form">
+            <div class="Live-Title-Form-Item">
+              <input type="text" class="Live-Title-Form-Content" value="配信タイトル未設定(最大20文字)" id="Live-Title-Form-Content-Id" maxlength="20">
+              <p class="TitleDisplay"></p>
             </div>
           </form>
-          <p class="livemove">分経過</p>
+          <p class="ElapsedTime">分経過</p>
         </div>
-        <div class="livestartbtn">
-          <div class="samune">
-            <!-- <div class="filter"></div> -->
+        <div class="Streaming-View-Fld">
+          <div class="Streaming-View-Screen">
             <!--<div class="pointfld">
             <div class="pointcount"><div class="nowpoint">現在10000000Pt</div></div>
             <img src="img/aikon.png" alt>
             <img src="img/aikon.png" alt>
             <img src="img/aikon.png" alt>
             </div>-->
-            <!--<label class="imgsetbtn">画像を設定<input type="file" accept="image/png, image/jpeg" id="samunechange" style="display:none;"></label>-->
-            <!-- <RadioComponent></RadioComponent> -->
-            <VideoComponent></VideoComponent> 
+            <RadioComponent v-if="Radio === true"></RadioComponent>
+            <VideoComponent v-if="Radio === false"></VideoComponent> 
           </div>
           <!--<div class="display"><div class="dtitle"></div><div class="dtheme"></div><div class="fldclose">閉じる</div></div>
           <div class="answerfld"><div class="Afld">回答</div><div class="answer"></div><div class="Afldclose">閉じる</div></div>
@@ -48,27 +46,27 @@
           <div class="manneriAlert">お疲れさまでした！いい配信だったよ！</div>
         </div>
         </div>-->
-        <ul class="llivebtn">
-          <li class="kirikae"><span>ラジオに<br>切り替え</span></li>
-          <li class="kirikae2"><span>カメラに<br>切り替え</span></li>
-          <li class="end"><span>配信終了</span></li>
-          <li class="echo"><span>エコー</span></li>
-          <li class="odai"><span>お題</span></li>
-          <li class="timer"><span>タイマー</span></li>
-          <div class="sctimer">
-            <ul class="timerlist">
-            <li class="timeritem"><div class="time">OFF</div></li>
-            <li class="timeritem"><div class="time" data-num="15">00:15</div></li>
-            <li class="timeritem"><div class="time" data-num="30">00:30</div></li>
-            <li class="timeritem"><div class="time" data-num="60">01:00</div></li>
-            <li class="timeritem"><div class="time" data-num="180">03:00</div></li>
-            <li class="timeritem"><div class="time" data-num="300">05:00</div></li>
-            <li class="timeritem"><div class="time" data-num="900">15:00</div></li>
-            <li class="timeritem"><div class="time" data-num="1800">30:00</div></li>
+        <ul class="Streaming-Control-btn-Fld">
+          <li class="ChangeRadio-btn" v-if="Radio === false" @click="ChangeRadioMode()"><span>ラジオに<br>切り替え</span></li>
+          <li class="ChangeCamera-btn" v-if="Radio === true" @click="ChangeCameraMode()"><span>カメラに<br>切り替え</span></li>
+          <li class="Live-End-btn"><span>配信終了</span></li>
+          <li class="Echo-btn"><span>エコー</span></li>
+          <li class="Theme-Opne-btn"><span>お題</span></li>
+          <li class="Timer-btn"><span>タイマー</span></li>
+          <div class="Timer-Object">
+            <ul class="Timer-List">
+              <li class="Timer-Item"><div class="Select-Time">OFF</div></li>
+              <li class="Timer-Item"><div class="Select-Time" data-num="15">00:15</div></li>
+              <li class="Timer-Item"><div class="Select-Time" data-num="30">00:30</div></li>
+              <li class="Timer-Item"><div class="Select-Time" data-num="60">01:00</div></li>
+              <li class="Timer-Item"><div class="Select-Time" data-num="180">03:00</div></li>
+              <li class="Timer-Item"><div class="Select-Time" data-num="300">05:00</div></li>
+              <li class="Timer-Item"><div class="Select-Time" data-num="900">15:00</div></li>
+              <li class="Timer-Item"><div class="Select-Time" data-num="1800">30:00</div></li>
             </ul>
           </div>
-          <li class="Link"><span>URLコピー</span></li>
-          <li class="mute"><span>ミュート</span></li>
+          <li class="URL-Copy-btn"><span>URLコピー</span></li>
+          <li class="Mute-btn"><span>ミュート</span></li>
         </ul>
         <!--機能的に今はレベルが足りないのでいつか必ず...!!
         <div class="kirinukifld">
@@ -112,8 +110,20 @@ export default defineComponent({
     LiveControlPanel,
     MessagingFunction
   },
+  data: function(){
+    return{
+      Radio:true
+    }
+  },
+  methods:{
+    ChangeRadioMode(){
+      this.Radio = true;
+    },
+    ChangeCameraMode(){
+      this.Radio = false;
+    }
+  },
   setup () {
-    // ログインヘッダーのアイコンない人共通のやつ差し込む
     firebaseUtils.onAuthStateChanged();  
 
     onMounted(() => {
@@ -162,29 +172,29 @@ header{
   padding-top: 1vw;
   }
 
-  .liveview{
+  .Delivery-Fld{
   margin-top: 2vw;
   }
 
   /*配信画面上部
   ---------------------------------------*/
-  .ltitle{
+  .Live-Title{
   display: flex;
   align-items:flex-end;
   }
 
-  .form_item{
+  .Live-Title-Form-Item{
   margin-bottom: 0.2vw;
   }
 
-  .fitem{
+  .Live-Title-Form-Content{
   font-family:none;
   width: 31vw;
   font-size: 1.5vw;
   padding-left: 0.5vw;
   }
 
-  .foitem{
+  .TitleDisplay{
   width: 31vw;
   font-size: 1.6vw;
   margin-top: 0.6vw;
@@ -193,7 +203,7 @@ header{
   display: block;
   }
 
-  .livemove{
+  .ElapsedTime{
   margin-left: auto;
   margin-bottom: 0.2vw;
   font-size: 1.5vw;
@@ -201,7 +211,7 @@ header{
 
   /*スタート前のフィルター
   ---------------------------------------*/
-  .livestartbtn{
+  .Streaming-View-Fld{
   position: relative;
   width: 60vw;
   height: 33.75vw;
@@ -219,7 +229,7 @@ header{
   opacity: 0.5;
   }
 
-  .samune{
+  .Streaming-View-Screen{
   position: relative;
   background-color: #000;
   overflow: hidden;
@@ -234,7 +244,7 @@ header{
 
   /*配信ツール
   --------------------------------------*/
-  .llivebtn{
+  .Streaming-Control-btn-Fld{
   display: flex;
   list-style: none;
   justify-content: space-between;
@@ -242,7 +252,7 @@ header{
   margin-top: 1vw;
   }
 
-  .llivebtn li{
+  .Streaming-Control-btn-Fld li{
   display: block;
   text-align: center;
   margin-top: 0.5vw;
@@ -253,41 +263,40 @@ header{
   cursor: pointer;
   }
 
-  .llivebtn span{
+  .Streaming-Control-btn-Fld span{
   line-height: 4.5vw;
   vertical-align: middle;
   }
 
-  .llivebtn .mute{
+  .Streaming-Control-btn-Fld .Mute-btn{
   width: 11vw;
   }
 
-  .llivebtn .kirikae{
+  .Streaming-Control-btn-Fld .ChangeRadio-btn{
   display: block;
   background-color: #f5deb3;
   }
 
-  .llivebtn .kirikae span{
+  .Streaming-Control-btn-Fld .ChangeRadio-btn span{
   margin-top: 1vw;
   line-height: 2.2vw;
   }
 
-  .llivebtn .kirikae2{
-  display: none;
+  .Streaming-Control-btn-Fld .ChangeCamera-btn{
   background-color: #f5deb3;
   }
 
-  .llivebtn .kirikae2 span{
+  .Streaming-Control-btn-Fld .ChangeCamera-btn span{
   margin-top: 1vw;
   line-height: 2.2vw;
   }
 
-  .llivebtn .end{
+  .Streaming-Control-btn-Fld .Live-End-btn{
   display: none;
   background-color: #f5deb3;
   }
 
-  .sctimer{
+  .Timer-Object{
     display: none;
     position: absolute;
     margin-top: -15vw;
@@ -296,14 +305,14 @@ header{
 
   /*タイマー
   ---------------------------------------*/
-  .timerlist{
+  .Timer-List{
     overflow: scroll;
     overflow-x: hidden;
     width: 9vw;
     height: 10vw;
   }
 
-  .timerlist .timeritem{
+  .Timer-List .Timer-Item{
     display: flex;
     margin: auto 0;
     border: 0;
@@ -312,7 +321,7 @@ header{
     padding: 0;
   }
 
-  .time{
+  .Select-Time{
     margin: auto;
   }
 

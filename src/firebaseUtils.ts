@@ -11,11 +11,13 @@ export default {
         store.commit('onAuthStateChanged', user);
         store.commit('UseridDelivery', user.uid);
         store.commit('UserNameDelivery', user.displayName);
+        store.commit('UserphotoURLDelivery', user.photoURL);
         store.commit('onUserLoginStatusChanged', true);
       } else {
         store.commit('onAuthStateChanged', user);
         store.commit('UseridDelivery', "");
         store.commit('UserNameDelivery', "");
+        store.commit('UserphotoURLDelivery', "");
         store.commit('onUserLoginStatusChanged', false);
       }
     });

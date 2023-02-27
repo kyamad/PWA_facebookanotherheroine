@@ -19,7 +19,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onMounted } from 'vue';
+import { defineComponent, onMounted, reactive } from 'vue';
 import { signOut } from "firebase/auth";
 import { auth } from "../../FirebaseConfig";
 import firebaseUtils from '../firebaseUtils';
@@ -29,7 +29,7 @@ import store from '../store';
 export default defineComponent({
     data: function() {
         return{
-            IconImg:"",
+            // IconImg:"",
             id: store.getters['userid']
         }
     },
@@ -44,13 +44,13 @@ export default defineComponent({
             });
         }
     },
-    created: function(){
-        this.$data.IconImg = auth.currentUser?.photoURL as string;
-    },
     setup () {
+        let IconImg:any = reactive([])
+        IconImg = store.getters['userphotoURL'] as string || "";
 
-        onMounted(() => {
-        });
+        return{
+            IconImg,
+        }
     },
 });
 

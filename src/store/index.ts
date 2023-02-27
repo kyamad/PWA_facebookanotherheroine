@@ -9,6 +9,7 @@ export default createStore({
     user: {},
     userid:"",
     username:"",
+    userphotoURL:"",
     isLoggedIn: false,
     etc: true
   },
@@ -21,6 +22,9 @@ export default createStore({
     },
     username(state) {
       return state.username;
+    },
+    userphotoURL(state) {
+      return state.userphotoURL;
     },
     isLoggedIn(state) {
       return state.isLoggedIn;
@@ -35,6 +39,9 @@ export default createStore({
     },
     UserNameDelivery(state, username:string) {
       state.username = username as string || "";
+    },
+    UserphotoURLDelivery(state, userphotoURL:string) {
+      state.userphotoURL = userphotoURL as string || "";
     },
     onUserLoginStatusChanged(state, isLoggedIn) {
       state.isLoggedIn = isLoggedIn; // ログインしているかどうか

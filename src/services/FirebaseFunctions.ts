@@ -12,7 +12,6 @@ class FBRTDB {
     constructor(){
         this.authID = store.getters['userid'] as string || "";
         this.userName = store.getters['username'] as string || "";
-
     }
 
     LiverReceptionComment(){
@@ -48,7 +47,7 @@ class FBRTDB {
         return chatSnapShot
     }
 
-    AddComment(WriteComment:string){
+    AddComment(WriteComment:string,id:string){
         const 
         NOW = new Date(),
         yyyy = NOW.getFullYear(),
@@ -62,7 +61,7 @@ class FBRTDB {
         const timeStamp = `${yyyy}/${mm}/${dd} ${hh}:${hmm}:${ss}:${ms}`;
         
         const db:Database = getDatabase();
-        const RoomDatabaseRef = ref(db ,`RoomBase/${auth.currentUser?.uid}/Comment`);
+        const RoomDatabaseRef = ref(db ,`RoomBase/${id}/Comment`);
         
         push(RoomDatabaseRef, {
             "user": this.authID,  

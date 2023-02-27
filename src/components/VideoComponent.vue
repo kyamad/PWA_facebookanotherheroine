@@ -1,8 +1,8 @@
 <template>
+  <div id="local_video"></div>
   <div class="filter" v-if="!Start"></div>
   <button type="button" v-if="!Start" id="startbtn" @click="join()">LIVE<br>スタート</button>
-  <div id="local_video"></div>
-</template>
+  </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';

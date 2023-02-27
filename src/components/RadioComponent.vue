@@ -1,56 +1,72 @@
 <template>
-  <img id="samuneimg" v-if="!Start" src="../assets/サムネ.jpg">
-  <div class="filter" v-if="!Start"></div>
-  <label class="imgsetbtn" v-if="!Start">画像を設定<input type="file" accept="image/png, image/jpeg" @change="onImgChange($event)" style="display:none;"></label>
-  <button type="button" v-if="!Start" id="startbtn" @click="join()">LIVE<br>スタート</button>
-  <div v-if="Start" id="local_video">
+  <div id="local_video">
     <img
-      v-show="uploadedImage"
-      class="preview-item-file"
-      :src="uploadedImage"
+      v-show="ImgURL"
+      v-bind:class="{Imgwidth: width, ImgHigh: !width}"
+      :src="ImgURL"
       alt=""
     />
   </div>
+  <div class="filter" v-if="!Start"></div>
+  <label class="imgsetbtn" v-if="!Start">画像を設定
+    <input type="file" accept="image/png, image/jpeg" @change="onImgChange($event)" style="display:none;">
+  </label>
+  <button type="button" v-if="!Start" id="startbtn" @click="join()">LIVE<br>スタート</button>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { onMounted } from 'vue';
-import AgoraLiveStreaming from '../services/AgoraFunctions'
-
-declare var document:any; // documentオブジェクトの型チェックエラー一時海回避用
+import AgoraLiveStreaming from '../services/AgoraFunctions';
+import { getStorage, ref, uploadString, getDownloadURL } from "firebase/storage";
+import store from '../store';
 
 export default defineComponent({
   name: 'RadioComponent',
   data: function(){
     return {
       Start: false,
+      userid: store.getters['userid'] as string || "",
       uploadedImage: '',
-      ImgName:"",
-      ImgRatio:"",
+      Format:"",
+      ImgURL:"",
+      width:false,
     }
   },
   methods:{
     onImgChange(e:any) {
       const files = e.target.files;
-
+      const storage = getStorage();
+      
       if(files.length > 0) {
-          const file = files[0];
-          const image = new Image();
-          const reader = new FileReader();
-          reader.onload = (e) => {
-              image.src = e.target!.result as string || '' ;
-              this.uploadedImage = image.src;
-              this.ImgName = files[0].name;
-          };
-          
-          reader.readAsDataURL(file);
+        const file = files[0];
+        const img = new Image();
+        const reader = new FileReader();
+        let ImgRatio:number = 0;
+        reader.onload = (e) => {
+            this.uploadedImage = e.target!.result as string || '' ;
+            img.src = e.target!.result as string || '' ;
+            img.onload = function() {
+              ImgRatio = img.naturalWidth - img.naturalHeight;
+            }
+            const photoRef = ref(storage, "images/" + this.userid + "/" + "RadioImg");
+            uploadString(photoRef, this.uploadedImage, 'data_url').then((snapshot) => {
+              getDownloadURL(photoRef).then((url) => {
+                this.ImgURL = url;
+              });
+            });
+            if(ImgRatio > 0){
+              this.width = true;
+            } else {
+              this.width = false;
+            }
+        };
+        reader.readAsDataURL(file);
       }
     },
 
     join: function() {
       this.Start = true as boolean ;   
-      AgoraLiveStreaming.RadioStreaming;
+      AgoraLiveStreaming.RadioStreaming();
     }
   },
 });
@@ -75,6 +91,16 @@ export default defineComponent({
 
 #local_video {
   width: 100%;
+  height: 100%;
+}
+
+.Imgwidth{
+  width: 100%;
+  height: auto;
+}
+
+.ImgHigh{
+  width: auto;
   height: 100%;
 }
 
