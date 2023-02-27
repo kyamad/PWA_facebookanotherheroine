@@ -68,45 +68,17 @@ export default defineComponent({
     },
 
     addComment : function(){
-      FBRTDB.AddComment(this.writeComment);
-      // console.log(store.getters['username']);
-
-      // const 
-      //   NOW = new Date(),
-      //   yyyy = NOW.getFullYear(),
-      //   mm = String(NOW.getMonth() + 1).padStart(2, "0"),
-      //   dd = String(NOW.getDate()).padStart(2, "0"),
-      //   hh = String(NOW.getHours()).padStart(2, "0"),
-      //   hmm = String(NOW.getMinutes()).padStart(2, "0"),
-      //   ss = String(NOW.getSeconds()).padStart(2, "0"),
-      //   ms = String(NOW.getMilliseconds()).padStart(3, "0");
-
-      // const timeStamp = `${yyyy}/${mm}/${dd} ${hh}:${hmm}:${ss}:${ms}`;
-      
-      // const db:Database = getDatabase();
-      // const RoomDatabaseRef = ref(db ,`RoomBase/${auth.currentUser?.uid}/Comment`);
-      
-      // push(RoomDatabaseRef, {
-      //   "user": auth.currentUser?.uid,  
-      //   "name": auth.currentUser?.displayName,
-      //   "message":this.writeComment,
-      //   "timestamp":timeStamp,
-      // });
-
+      FBRTDB.AddComment(this.writeComment,this.id);
       this.writeComment = "";
-      
     },
   },
-  watch: {
-  }, 
-
-  created(){
-  },
-
   setup () {
     const route = useRoute();
-    const { id } = route.params;
-
+    let  id  = JSON.stringify(route.params.id).replace(/"/g, "");
+    
+    return {
+      id,
+    }
   },
 });
 </script>
