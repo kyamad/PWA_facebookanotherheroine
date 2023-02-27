@@ -6,16 +6,12 @@
     </ul>
     <template v-if="isActive === '1'">
       <div id="tabpage1">
-        <ul class="comment">
-          <CommentList></CommentList>
-        </ul>
+        <CommentList></CommentList>
       </div>
     </template>
     <template v-else-if="isActive === '2'">
       <div id="tabpage2">
-        <ul class="Letter">
-          <LetterList></LetterList>
-        </ul>
+        <LetterList></LetterList>
       </div>
       <!--<div class ="reportsuccess">
         <div class ="sucmsg">通報完了しました</div>
@@ -129,15 +125,15 @@ template {
   width: 32vw;
 }
 
-  .tab-panel{
+.tab-panel{
   width: 100%;
   height: 4vw;
   display: flex;
   font-size: 2.1vw;
   justify-content: center;
-  }
+}
 
-  .tab-panel li{
+.tab-panel li{
   display: flex;
   width: 50%;
   font-size: 1.3vw;
@@ -148,26 +144,26 @@ template {
   z-index: 0;
   background-color: #EEEEEE;
   cursor: pointer;
-  }
+}
 
-  .tab-panel li.active{
-    background-color: #FFFFFF;
-    border-bottom: 0;
-  }
+.tab-panel li.active{
+  background-color: #FFFFFF;
+  border-bottom: 0;
+}
 
-  .Tab-A{
-    margin-right: -0.1vw;
+.Tab-A{
+  margin-right: -0.1vw;
   }
-  .Tab-B{
-    margin-left: -0.1vw;
-  }
+.Tab-B{
+  margin-left: -0.1vw;
+}
 
-  .tab-A, .tab-B{
-    display: flex;
-    margin: auto;
-  }
+.tab-A, .tab-B{
+  display: flex;
+  margin: auto;
+}
 
-  #tabpage1, #tabpage2 {
+#tabpage1, #tabpage2 {
   position: relative;
   border: 0.17vw solid black;
   border-top: 0;
@@ -176,14 +172,14 @@ template {
   overflow: scroll;
   overflow-x: hidden;
   background-color: #FFFFFF;
-  }
+}
 
-  #tabpage1.active, #tabpage2.active {
+#tabpage1.active, #tabpage2.active {
   display: none;
-  }
+}
 
-  /*コメント
-  ---------------------------------------*/
+/*コメント
+---------------------------------------*/
 
 .CommentAddfld{
  margin-top: 0.7vw;

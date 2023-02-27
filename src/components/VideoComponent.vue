@@ -1,6 +1,6 @@
 <template>
-  <button type="button" id="startbtn" v-on:click="join()">LIVE<br>スタート</button>
-  <div id="local_video"></div>
+  <button type="button" v-if="!Start" id="startbtn" @click="join()">LIVE<br>スタート</button>
+  <div v-if="Start" id="local_video"></div>
 </template>
 
 <script lang="ts">
@@ -12,11 +12,16 @@ declare var document:any; // documentオブジェクトの型チェックエラ�
 
 export default defineComponent({
   name: 'VideoComponents',
+  data: function(){
+    return {
+      Start: false
+    }
+  },
   methods: {
-    join: () => {
-      // let rtc = this.rtc;
-      // let options = this.options;
+    join: function() {
 
+      this.Start = false as boolean ;
+      
       let rtc:any = {
         localAudioTrack: null,
         localVideoTrack: null,
@@ -50,7 +55,6 @@ export default defineComponent({
       function Livestart() {
         document.getElementById("samuneimg").style.display = "none";
         document.querySelector(".filter").style.display = "none";
-        document.getElementById("startbtn").style.display = "none";
       }
 
       Livestart();

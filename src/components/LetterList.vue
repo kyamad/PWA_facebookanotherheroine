@@ -1,18 +1,20 @@
 <template>
   <template v-if="isActive === 'LetterSummary'">
-    <li v-for="{key, name, Text} in LetterList" :key="key" class="letter" @click="isSelect('LetterOpen',name,Text)">
-      <div class ="LetterOverview">
-        <p class="LetterName">{{ name }}</p>
-        <div class="LetterText">
-          <p class="TextOverview">{{ Text }}</p>
+    <ul class="LetterUl">
+      <li v-for="{key, name, Text} in LetterList" :key="key" class="letter" @click="isSelect('LetterOpen',name,Text)">
+        <div class ="LetterOverview">
+          <p class="LetterName">{{ name }}</p>
+          <div class="LetterText">
+            <p class="TextOverview">{{ Text }}</p>
+          </div>
         </div>
-      </div>
-    </li>
+      </li>
+    </ul>
   </template>
   
   <template v-if="isActive === 'LetterOpen'">
     <div id="LetterDetail">
-      <div class="BackSummary" @click="isSelect('LetterSummary', '', '')">&lt戻る</div>
+      <div class="BackSummary" @click="isSelect('LetterSummary', '', '')">&lt;戻る</div>
       <div class="LetterContent">
         <p class="FullLetterName">{{ LetterName }}</p>
         <p class="FullLetterText">{{ LetterText }}</p>
@@ -66,6 +68,10 @@ template {
 
 /*一覧
   ---------------------------------------*/
+
+.LetterUl{
+  list-style: none;
+}
 
 .letter{
   height: 5vw;

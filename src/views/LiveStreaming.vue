@@ -2,92 +2,92 @@
  <logInheader></logInheader>
  <main id="mainsection">
     <div class="mainview">
-    <div class="liveview">
-      <div class="ltitle">
-      <form action="" method="get" class="tform">
-        <div class="form_item">
-        <input type="text" class="fitem" value="配信タイトル未設定(最大20文字)" id="livename" maxlength="20">
-        <p class="foitem"></p>
+      <div class="liveview">
+        <div class="ltitle">
+          <form action="" method="get" class="tform">
+            <div class="form_item">
+              <input type="text" class="fitem" value="配信タイトル未設定(最大20文字)" id="livename" maxlength="20">
+              <p class="foitem"></p>
+            </div>
+          </form>
+          <p class="livemove">分経過</p>
         </div>
-      </form>
-      <p class="livemove">分経過</p>
-      </div>
-      <div class="livestartbtn">
-      <div class="samune">
-        <img id="samuneimg" src="../assets/サムネ.jpg">
-        <!--<div class="pointfld">
-        <div class="pointcount"><div class="nowpoint">現在10000000Pt</div></div>
-        <img src="img/aikon.png" alt>
-        <img src="img/aikon.png" alt>
-        <img src="img/aikon.png" alt>
-        </div>-->
-        <div class="filter"></div>
-        <!--<label class="imgsetbtn">画像を設定<input type="file" accept="image/png, image/jpeg" id="samunechange" style="display:none;"></label>-->
-        <VideoComponent></VideoComponent> 
-      </div>
-      <!--<div class="display"><div class="dtitle"></div><div class="dtheme"></div><div class="fldclose">閉じる</div></div>
-      <div class="answerfld"><div class="Afld">回答</div><div class="answer"></div><div class="Afldclose">閉じる</div></div>
-      <div class="timedisp"><div class="stti"><div class="tstartbtn"><div class="tsbtnnaka">スタート</div></div><div class="timenaka"></div></div>
-        <div class="fullrod"><div class="changerod"></div></div>
-      </div>-->
-      </div>
-      <!--<div class="liveEndView">
-      <div class="liveEndfld">
-        <div class="EndfldTop">
-        <p class="Endendmsg">配信終了！</p>
-        <div class="endkirinuki">切り抜き</div>
-        <a href="/livepage.php" class="Restart">再配信</a>
+        <div class="livestartbtn">
+          <div class="samune">
+            <div class="filter"></div>
+            <img id="samuneimg" src="../assets/サムネ.jpg">
+            <!--<div class="pointfld">
+            <div class="pointcount"><div class="nowpoint">現在10000000Pt</div></div>
+            <img src="img/aikon.png" alt>
+            <img src="img/aikon.png" alt>
+            <img src="img/aikon.png" alt>
+            </div>-->
+            <!--<label class="imgsetbtn">画像を設定<input type="file" accept="image/png, image/jpeg" id="samunechange" style="display:none;"></label>-->
+            <VideoComponent></VideoComponent> 
+          </div>
+          <!--<div class="display"><div class="dtitle"></div><div class="dtheme"></div><div class="fldclose">閉じる</div></div>
+          <div class="answerfld"><div class="Afld">回答</div><div class="answer"></div><div class="Afldclose">閉じる</div></div>
+          <div class="timedisp"><div class="stti"><div class="tstartbtn"><div class="tsbtnnaka">スタート</div></div><div class="timenaka"></div></div>
+            <div class="fullrod"><div class="changerod"></div></div>
+          </div>-->
         </div>
-        <div class="Endfld">
-        <p class="giftmsg">ギフトをくれたユーザー</p>
-        <ul class="givegiftuser">
-        <li class="giveuser"><a href="#" class ="guserURL"><img class="giveuserimg" src="img/aikon.png" alt><div class="gusername">ユーザー名ユーザー名</div></a><div class="giftpoint">1500Pt</div></li>
-        <li class="giveuser"><a href="#" class ="guserURL"><img class="giveuserimg" src="img/aikon.png" alt><div class="gusername">ユーザー名ユーザー名ユーザー名</div></a><div class="giftpoint">1500Pt</div></li>
-        </ul>
-        </div>
-        <div class="manneriAlert">お疲れさまでした！いい配信だったよ！</div>
-      </div>
-      </div>-->
-      <ul class="llivebtn">
-        <li class="kirikae"><span>ラジオに<br>切り替え</span></li>
-        <li class="kirikae2"><span>カメラに<br>切り替え</span></li>
-        <li class="end"><span>配信終了</span></li>
-        <li class="echo"><span>エコー</span></li>
-        <li class="odai"><span>お題</span></li>
-        <li class="timer"><span>タイマー</span></li>
-        <div class="sctimer">
-          <ul class="timerlist">
-          <li class="timeritem"><div class="time">OFF</div></li>
-          <li class="timeritem"><div class="time" data-num="15">00:15</div></li>
-          <li class="timeritem"><div class="time" data-num="30">00:30</div></li>
-          <li class="timeritem"><div class="time" data-num="60">01:00</div></li>
-          <li class="timeritem"><div class="time" data-num="180">03:00</div></li>
-          <li class="timeritem"><div class="time" data-num="300">05:00</div></li>
-          <li class="timeritem"><div class="time" data-num="900">15:00</div></li>
-          <li class="timeritem"><div class="time" data-num="1800">30:00</div></li>
+        <!--<div class="liveEndView">
+        <div class="liveEndfld">
+          <div class="EndfldTop">
+          <p class="Endendmsg">配信終了！</p>
+          <div class="endkirinuki">切り抜き</div>
+          <a href="/livepage.php" class="Restart">再配信</a>
+          </div>
+          <div class="Endfld">
+          <p class="giftmsg">ギフトをくれたユーザー</p>
+          <ul class="givegiftuser">
+          <li class="giveuser"><a href="#" class ="guserURL"><img class="giveuserimg" src="img/aikon.png" alt><div class="gusername">ユーザー名ユーザー名</div></a><div class="giftpoint">1500Pt</div></li>
+          <li class="giveuser"><a href="#" class ="guserURL"><img class="giveuserimg" src="img/aikon.png" alt><div class="gusername">ユーザー名ユーザー名ユーザー名</div></a><div class="giftpoint">1500Pt</div></li>
           </ul>
+          </div>
+          <div class="manneriAlert">お疲れさまでした！いい配信だったよ！</div>
         </div>
-        <li class="Link"><span>URLコピー</span></li>
-        <li class="mute"><span>ミュート</span></li>
-      </ul>
-      <!--機能的に今はレベルが足りないのでいつか必ず...!!
-      <div class="kirinukifld">
-      <div class="kiriback">
-        <img class="pausebtn" src="img/一時停止ボタン.png" alt>
-        <div class="kirikugiri"></div>
-        <div class="kirisamune">
-        <div class="kirifilter">
-          <div class="kiritorifld"><div class="kiritorifldL"></div><div class="kiritorifldR"></div></div>
-        </div>
-        </div>
-        </div>
-        <div class="sebtnfld">
-        <div class="savebtn">保存</div>
-        <div class="kiriendbtn">終了</div>
-        </div>
-      </div>-->
-    </div>
-    <MessagingFunction></MessagingFunction>
+        </div>-->
+        <ul class="llivebtn">
+          <li class="kirikae"><span>ラジオに<br>切り替え</span></li>
+          <li class="kirikae2"><span>カメラに<br>切り替え</span></li>
+          <li class="end"><span>配信終了</span></li>
+          <li class="echo"><span>エコー</span></li>
+          <li class="odai"><span>お題</span></li>
+          <li class="timer"><span>タイマー</span></li>
+          <div class="sctimer">
+            <ul class="timerlist">
+            <li class="timeritem"><div class="time">OFF</div></li>
+            <li class="timeritem"><div class="time" data-num="15">00:15</div></li>
+            <li class="timeritem"><div class="time" data-num="30">00:30</div></li>
+            <li class="timeritem"><div class="time" data-num="60">01:00</div></li>
+            <li class="timeritem"><div class="time" data-num="180">03:00</div></li>
+            <li class="timeritem"><div class="time" data-num="300">05:00</div></li>
+            <li class="timeritem"><div class="time" data-num="900">15:00</div></li>
+            <li class="timeritem"><div class="time" data-num="1800">30:00</div></li>
+            </ul>
+          </div>
+          <li class="Link"><span>URLコピー</span></li>
+          <li class="mute"><span>ミュート</span></li>
+        </ul>
+        <!--機能的に今はレベルが足りないのでいつか必ず...!!
+        <div class="kirinukifld">
+        <div class="kiriback">
+          <img class="pausebtn" src="img/一時停止ボタン.png" alt>
+          <div class="kirikugiri"></div>
+          <div class="kirisamune">
+          <div class="kirifilter">
+            <div class="kiritorifld"><div class="kiritorifldL"></div><div class="kiritorifldR"></div></div>
+          </div>
+          </div>
+          </div>
+          <div class="sebtnfld">
+          <div class="savebtn">保存</div>
+          <div class="kiriendbtn">終了</div>
+          </div>
+        </div>-->
+      </div>
+      <MessagingFunction></MessagingFunction>
     </div>
     <LiveControlPanel></LiveControlPanel>
  </main>
@@ -111,7 +111,6 @@ export default defineComponent({
     MessagingFunction
   },
   setup () {
-    // computedにGetters書く
     // ログインヘッダーのアイコンない人共通のやつ差し込む
     firebaseUtils.onAuthStateChanged();  
 
