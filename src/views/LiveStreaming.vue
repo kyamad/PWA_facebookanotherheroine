@@ -14,8 +14,7 @@
         </div>
         <div class="livestartbtn">
           <div class="samune">
-            <div class="filter"></div>
-            <img id="samuneimg" src="../assets/サムネ.jpg">
+            <!-- <div class="filter"></div> -->
             <!--<div class="pointfld">
             <div class="pointcount"><div class="nowpoint">現在10000000Pt</div></div>
             <img src="img/aikon.png" alt>
@@ -23,6 +22,7 @@
             <img src="img/aikon.png" alt>
             </div>-->
             <!--<label class="imgsetbtn">画像を設定<input type="file" accept="image/png, image/jpeg" id="samunechange" style="display:none;"></label>-->
+            <!-- <RadioComponent></RadioComponent> -->
             <VideoComponent></VideoComponent> 
           </div>
           <!--<div class="display"><div class="dtitle"></div><div class="dtheme"></div><div class="fldclose">閉じる</div></div>
@@ -97,6 +97,7 @@
 import { defineComponent } from 'vue';
 import logInheader from '@/components/logInheader.vue';
 import VideoComponent from '@/components/VideoComponent.vue';
+import RadioComponent from '@/components/RadioComponent.vue';
 import LiveControlPanel from '@/components/LiveControlPanel.vue';
 import MessagingFunction from '@/components/MessagingFunction.vue';
 import { onMounted } from 'vue';
@@ -106,6 +107,7 @@ export default defineComponent({
   name: 'LiveStreaming',
   components: {
     VideoComponent,
+    RadioComponent,
     logInheader,
     LiveControlPanel,
     MessagingFunction
