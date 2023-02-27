@@ -1,4 +1,5 @@
 <template>
+  <div class="filter" v-if="!Start"></div>
   <button type="button" v-if="!Start" id="startbtn" @click="join()">LIVE<br>スタート</button>
   <div v-if="Start" id="local_video"></div>
 </template>
@@ -7,11 +8,13 @@
 import { defineComponent } from 'vue';
 import AgoraRTC, { IAgoraRTCClient } from "agora-rtc-sdk-ng";
 import { RtcTokenBuilder, RtcRole } from 'agora-access-token';
+import { onMounted } from 'vue';
+import AgoraLiveStreaming from '../services/AgoraFunctions'
 
 declare var document:any; // documentオブジェクトの型チェックエラー一時海回避用
 
 export default defineComponent({
-  name: 'VideoComponents',
+  name: 'VideoComponent',
   data: function(){
     return {
       Start: false
@@ -20,51 +23,49 @@ export default defineComponent({
   methods: {
     join: function() {
 
-      this.Start = false as boolean ;
+      this.Start = true as boolean ;
+      AgoraLiveStreaming.VideoStreaming();
       
+      // let rtc:any = {
+      //   localAudioTrack: null,
+      //   localVideoTrack: null,
+      //   client: null
+      // };
+      
+      // let options = {
+      //   appId: "49d72a2fc8dc4917804e9e8bacde2661",
+      //   channel: "haisinnmeiireru",
+      //   uid: "aaaaa",
+      //   appCertificate: "e4736ccd47ad4fb9ae0bc8e713398b55",
+      //   expirationTimeInSeconds : 60 * 60,// トークンの有効期間
+      //   currentTimestamp : Math.floor(Date.now() / 1000)
+      // };
+
+      // const privilegeExpiredTs = options.currentTimestamp + options.expirationTimeInSeconds;
+      // const token = RtcTokenBuilder.buildTokenWithAccount(options.appId, options.appCertificate, options.channel, options.uid, RtcRole.PUBLISHER, privilegeExpiredTs);
+      
+      // async function initializeRTC() {
+      //   rtc.client = AgoraRTC.createClient({ mode: "live", codec: "vp8" }) as IAgoraRTCClient;
+      //   await rtc.client.join(options.appId, options.channel, token, options.uid);
+      //   rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+      //   rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
+      //   rtc.localVideoTrack.play("local_video");
+      //   await rtc.client.publish([rtc.localAudioTrack, rtc.localVideoTrack]);
+      // }
+      // initializeRTC();
+    }
+  },
+
+  setup(){
+    onMounted(() => {
       let rtc:any = {
         localAudioTrack: null,
         localVideoTrack: null,
         client: null
       };
       
-      let options = {
-        appId: "49d72a2fc8dc4917804e9e8bacde2661",
-        channel: "demochannel",
-        token: "007eJxTYNg9bflqRqOJC2fNLyjQ2KVvuWhj/4aUZCG1fHPzedtbcxgUGEwsU8yNEo3Ski1Skk0sDc0tDExSLVMtkhKTU1KNzMwMDy/bnNwQyMjQO0GblZEBAkF8boaU1Nz85IzEvLzUHAYGAOE1IVw=",
-        uid: "aaaaa",
-        appCertificate: "e4736ccd47ad4fb9ae0bc8e713398b55",
-        expirationTimeInSeconds : 60 * 60,// トークンの有効期間
-        currentTimestamp : Math.floor(Date.now() / 1000)
-      };
-
-      const privilegeExpiredTs = options.currentTimestamp + options.expirationTimeInSeconds;
-
-      const token = RtcTokenBuilder.buildTokenWithAccount(options.appId, options.appCertificate, options.channel, options.uid, RtcRole.PUBLISHER, privilegeExpiredTs);
-      
-      async function initializeRTC() {
-        rtc.client = AgoraRTC.createClient({ mode: "live", codec: "vp8" });
-        await rtc.client.join(options.appId, options.channel, token, options.uid);
-        rtc.localAudioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-        rtc.localVideoTrack = await AgoraRTC.createCameraVideoTrack();
-        rtc.localVideoTrack.play("local_video");
-        await rtc.client.publish([rtc.localAudioTrack, rtc.localVideoTrack]);
-      }
-      initializeRTC();
-
-      function Livestart() {
-        document.getElementById("samuneimg").style.display = "none";
-        document.querySelector(".filter").style.display = "none";
-      }
-
-      Livestart();
-    }
-  },
-  mounted: () => {
-    // const client: IAgoraRTCClient = AgoraRTC.createClient({ codec: "h264", mode: "live" });
-    // console.log("Client:", client);
-  },
-
+    });
+  }
 })
 </script>
 
@@ -88,4 +89,15 @@ export default defineComponent({
   width: 100%;
   height: 100%;
 }
+
+.filter{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #808080;
+  opacity: 0.5;
+}
+
 </style>
