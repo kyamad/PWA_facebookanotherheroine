@@ -39,8 +39,9 @@ class FBRTDB {
                 chatSnapShot.push( {
                     "key":snapshot.key,
                     "name":snapshot.val().name,
-                    "Comment":snapshot.val().message})
-                });
+                    "Comment":snapshot.val().message
+                })
+            });
         },() => {
             alert("IDが取得できませんでした");
         });
@@ -91,6 +92,7 @@ class FBRTDB {
         const route = useRoute();
         const { id } = route.params;
         const TopicSnapShot:any[] = reactive([]);
+
         const waitAuth:any =
          (() => 
             new Promise((resolve:any,reject:any) => {
@@ -107,52 +109,29 @@ class FBRTDB {
         )();
 
         waitAuth.then(() => {
-            const recentPostsRef = query(ref(db, `RoomBase/${id}/TalkThema`), limitToLast(1));
-            onChildAdded(recentPostsRef, (snapshot) => {
+            const recentPostsRefComment = query(ref(db, `RoomBase/${id}/OgiriThema`), limitToLast(1));
+            const recentPostsRefTalkThema = query(ref(db, `RoomBase/${id}/TalkThema`), limitToLast(1));
+            onChildAdded(recentPostsRefComment, (snapshot) => {
+                TopicSnapShot.splice(0, TopicSnapShot.length);
                 TopicSnapShot.push( {
                     "key":snapshot.key,
                     "Category":snapshot.val().Category,
                     "Content":snapshot.val().Content,
                 })
-                });
+            }),
+            onChildAdded(recentPostsRefTalkThema, (snapshot) => {
+                TopicSnapShot.splice(0, TopicSnapShot.length);
+                TopicSnapShot.push( {
+                    "key":snapshot.key,
+                    "Category":snapshot.val().Category,
+                    "Content":snapshot.val().Content,
+                })
+            });
         },() => {
             alert("IDが取得できませんでした");
         });
         return TopicSnapShot
     }
-
-    // ReceptionThema(){
-    //     const route = useRoute();
-    //     const { id } = route.params;
-    //     const ThemaSnapShot:any[] = reactive([]);
-    //     const waitAuth:any =
-    //      (() => 
-    //         new Promise((resolve:any,reject:any) => {
-    //             let count = 0;
-    //             setInterval(() => {
-    //             count++;
-    //             if(this.authID !== ""){
-    //                 resolve();
-    //             }else if(count > 20){
-    //                 reject();
-    //             }
-    //             },100);
-    //         })
-    //     )();
-
-    //     waitAuth.then(() => {
-    //         const CommentRef = ref(db, `RoomBase/${id}/Letter`);
-    //         onChildAdded(CommentRef, (snapshot) => {
-    //             ThemaSnapShot.push( {
-    //                 "Category":snapshot.val().Category,
-    //                 "Content":snapshot.val().Content,
-    //             })
-    //         });
-    //     },() => {
-    //         alert("IDが取得できませんでした");
-    //     });
-    //     return ThemaSnapShot
-    // }
 
     LiverReceptionLetter(){
         const route = useRoute();
@@ -179,8 +158,9 @@ class FBRTDB {
                 LetterSnapShot.push( {
                     "key":snapshot.key,
                     "name":snapshot.val().name,
-                    "Text":snapshot.val().message})
-                });
+                    "Text":snapshot.val().message
+                })
+            });
         },() => {
             alert("IDが取得できませんでした");
         });

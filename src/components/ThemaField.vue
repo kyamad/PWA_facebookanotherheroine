@@ -16,7 +16,7 @@
   <div v-if="ThemaDisplay == true" class="Thema-Display-Fld">
     <div class="Thema-Category" v-for="{key, Category} in ThemaSnapShot" :key="key" >{{Category}}</div>
     <div class="Thema-Content" v-for="{key, Content} in ThemaSnapShot" :key="key" >{{ Content }}</div>
-    <div class="Thema-Fld-Close-btn">閉じる</div>
+    <div class="Thema-Fld-Close-btn" @click="ThemaClose()">閉じる</div>
   </div>
   <div class="Ogiri-Answer-Fld">
     <div class="Answer-Title">回答</div>
@@ -56,6 +56,11 @@ export default defineComponent({
 
     ThemeFldClose(){
       this.$emit("onClick", "false")
+    },
+
+    ThemaClose(){
+      this.ThemaDisplay = false
+      this.ThemeFldClose();
     },
 
     ThemaDisplayChange(){
