@@ -23,9 +23,8 @@
             <RadioComponent v-if="Radio === true"></RadioComponent>
             <VideoComponent v-if="Radio === false"></VideoComponent> 
           </div>
-          <!--<div class="display"><div class="dtitle"></div><div class="dtheme"></div><div class="fldclose">閉じる</div></div>
-          <div class="answerfld"><div class="Afld">回答</div><div class="answer"></div><div class="Afldclose">閉じる</div></div>
-          <div class="timedisp"><div class="stti"><div class="tstartbtn"><div class="tsbtnnaka">スタート</div></div><div class="timenaka"></div></div>
+          <ThemaField v-if="Themafld === true" @onClick="ThemafldChange"></ThemaField>
+          <!--<div class="timedisp"><div class="stti"><div class="tstartbtn"><div class="tsbtnnaka">スタート</div></div><div class="timenaka"></div></div>
             <div class="fullrod"><div class="changerod"></div></div>
           </div>-->
         </div>
@@ -51,7 +50,7 @@
           <li class="ChangeCamera-btn" v-if="Radio === true" @click="ChangeCameraMode()"><span>カメラに<br>切り替え</span></li>
           <li class="Live-End-btn"><span>配信終了</span></li>
           <li class="Echo-btn"><span>エコー</span></li>
-          <li class="Theme-Opne-btn"><span>お題</span></li>
+          <li class="Theme-Opne-btn" @click="ThemafldChange()"><span>お題</span></li>
           <li class="Timer-btn"><span>タイマー</span></li>
           <div class="Timer-Object">
             <ul class="Timer-List">
@@ -96,6 +95,7 @@ import { defineComponent } from 'vue';
 import logInheader from '@/components/logInheader.vue';
 import VideoComponent from '@/components/VideoComponent.vue';
 import RadioComponent from '@/components/RadioComponent.vue';
+import ThemaField from '@/components/ThemaField.vue';
 import LiveControlPanel from '@/components/LiveControlPanel.vue';
 import MessagingFunction from '@/components/MessagingFunction.vue';
 import { onMounted } from 'vue';
@@ -108,11 +108,13 @@ export default defineComponent({
     RadioComponent,
     logInheader,
     LiveControlPanel,
-    MessagingFunction
+    MessagingFunction,
+    ThemaField,
   },
   data: function(){
     return{
-      Radio:true
+      Radio:true,
+      Themafld:true,
     }
   },
   methods:{
@@ -121,7 +123,14 @@ export default defineComponent({
     },
     ChangeCameraMode(){
       this.Radio = false;
-    }
+    },
+    ThemafldChange(){
+      if(this.Themafld === true){
+        this.Themafld = false
+      } else {
+        this.Themafld = true
+      }
+    },
   },
   setup () {
     firebaseUtils.onAuthStateChanged();  

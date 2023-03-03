@@ -1,4 +1,4 @@
-import { getDatabase, ref, get, set , onValue, onChildAdded, Database, push } from "firebase/database";
+import { getDatabase, ref, query, limitToLast, onChildAdded, Database, push } from "firebase/database";
 import { auth } from "../../FirebaseConfig";
 import { defineComponent, reactive, onMounted} from 'vue';
 import store from '../store';
@@ -59,8 +59,6 @@ class FBRTDB {
         ms = String(NOW.getMilliseconds()).padStart(3, "0");
 
         const timeStamp = `${yyyy}/${mm}/${dd} ${hh}:${hmm}:${ss}:${ms}`;
-        
-        const db:Database = getDatabase();
         const RoomDatabaseRef = ref(db ,`RoomBase/${id}/Comment`);
         
         push(RoomDatabaseRef, {
@@ -70,6 +68,91 @@ class FBRTDB {
             "timestamp":timeStamp,
         });
     }
+
+    ThemaChoice(ThemaCategory:string,Content:string,id:string){
+        if(ThemaCategory === "Talk"){
+            const RoomDatabaseRef = ref(db ,`RoomBase/${id}/TalkThema`);
+        
+            push(RoomDatabaseRef, {
+                "Category": "トークテーマ",  
+                "Content": Content,
+            });
+        } else if(ThemaCategory === "Ogiri"){
+            const RoomDatabaseRef = ref(db ,`RoomBase/${id}/OgiriThema`);
+        
+            push(RoomDatabaseRef, {
+                "Category": "お題",  
+                "Content": Content,
+            });
+        };
+    }
+
+    AddTopic(){
+        const route = useRoute();
+        const { id } = route.params;
+        const TopicSnapShot:any[] = reactive([]);
+        const waitAuth:any =
+         (() => 
+            new Promise((resolve:any,reject:any) => {
+                let count = 0;
+                setInterval(() => {
+                count++;
+                if(this.authID !== ""){
+                    resolve();
+                }else if(count > 20){
+                    reject();
+                }
+                },100);
+            })
+        )();
+
+        waitAuth.then(() => {
+            const recentPostsRef = query(ref(db, `RoomBase/${id}/TalkThema`), limitToLast(1));
+            onChildAdded(recentPostsRef, (snapshot) => {
+                TopicSnapShot.push( {
+                    "key":snapshot.key,
+                    "Category":snapshot.val().Category,
+                    "Content":snapshot.val().Content,
+                })
+                });
+        },() => {
+            alert("IDが取得できませんでした");
+        });
+        return TopicSnapShot
+    }
+
+    // ReceptionThema(){
+    //     const route = useRoute();
+    //     const { id } = route.params;
+    //     const ThemaSnapShot:any[] = reactive([]);
+    //     const waitAuth:any =
+    //      (() => 
+    //         new Promise((resolve:any,reject:any) => {
+    //             let count = 0;
+    //             setInterval(() => {
+    //             count++;
+    //             if(this.authID !== ""){
+    //                 resolve();
+    //             }else if(count > 20){
+    //                 reject();
+    //             }
+    //             },100);
+    //         })
+    //     )();
+
+    //     waitAuth.then(() => {
+    //         const CommentRef = ref(db, `RoomBase/${id}/Letter`);
+    //         onChildAdded(CommentRef, (snapshot) => {
+    //             ThemaSnapShot.push( {
+    //                 "Category":snapshot.val().Category,
+    //                 "Content":snapshot.val().Content,
+    //             })
+    //         });
+    //     },() => {
+    //         alert("IDが取得できませんでした");
+    //     });
+    //     return ThemaSnapShot
+    // }
 
     LiverReceptionLetter(){
         const route = useRoute();
