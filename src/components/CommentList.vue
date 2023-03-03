@@ -15,13 +15,9 @@ export default defineComponent({
   name: 'CommentList',
 
   setup () {
-
-    const CommentUl = document.querySelector("comment")
-
     return {
       chat: FBRTDB.LiverReceptionComment(),
     }
-
   },
 
 });
