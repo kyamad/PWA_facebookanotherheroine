@@ -3,8 +3,8 @@
     <div class="column-control--left">
       <div class="section--answer">
        <p class="answer--ogiri">大喜利回答</p>
-       <input type="submit" @click="SendAnswer" class="AddOgirAnswer" value="送信">
-       <input type="text" class="WriteAnswerFld"  v-model="OgiriAnswer" maxlength="0" autocomplete="off">
+       <input type="submit" @click="SendAnswer(OgiriAnswer,id)" class="AddOgirAnswer" value="送信">
+       <input type="text" class="WriteAnswerFld"  v-model="OgiriAnswer" maxlength="10" autocomplete="off">
       </div>
       <div class="section--category">
         <p class="stream-category">配信カテゴリ</p>

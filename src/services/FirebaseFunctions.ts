@@ -172,6 +172,40 @@ class FBRTDB {
         });
     }
 
+    AddAnswerFld(){
+        const route = useRoute();
+        const { id } = route.params;
+        let AnswerSnapShot:any[] = reactive([]);
+
+        const waitAuth:any =
+         (() => 
+            new Promise((resolve:any,reject:any) => {
+                let count = 0;
+                setInterval(() => {
+                count++;
+                if(this.authID !== ""){
+                    resolve();
+                }else if(count > 20){
+                    reject();
+                }
+                },100);
+            })
+        )();
+
+        waitAuth.then(() => {
+            const recentPostsRef = query(ref(db, `RoomBase/${id}/OrigiAnswer`), limitToLast(1));
+            onChildAdded(recentPostsRef, (snapshot) => {
+                AnswerSnapShot.splice(0, AnswerSnapShot.length);
+                AnswerSnapShot.push( {
+                    "Answer":snapshot.val().Answer,
+                })
+                });
+        },() => {
+            alert("IDが取得できませんでした");
+        });
+        return AnswerSnapShot
+    }
+
 // --------------------------------------テーマ関連
 
 }

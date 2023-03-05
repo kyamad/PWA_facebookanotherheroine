@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, watch } from 'vue';
 import TalkThemaList from '@/components/TalkThemaList.vue';
 import OgiriThemaList from '@/components/OgiriThemaList.vue';
 import FBRTDB from '../services/FirebaseFunctions';
@@ -43,7 +43,13 @@ export default defineComponent({
       ThemaDisplay:false,
       ThemaCategoly:"",
       ThemaContent:"",
+      AnswerFld:false,
     }
+  },
+  watch:{
+    AnswerFldText: function(){
+      console.log("やあ");
+    },
   },
   methods:{
     ChangeOgiri(){
@@ -66,10 +72,16 @@ export default defineComponent({
     ThemaDisplayChange(){
       this.ThemaDisplay = true
     },
+
+    AnswerFldDisplay(){
+      this.AnswerFld = true
+      console.log("やあ")
+    }
   },
   setup () {
     return{
       ThemaSnapShot:FBRTDB.AddTopic(),
+      AnswerFldText:FBRTDB.AddAnswerFld(),
     }
   },
 
