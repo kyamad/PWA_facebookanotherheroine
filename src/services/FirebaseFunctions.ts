@@ -14,6 +14,7 @@ class FBRTDB {
         this.userName = store.getters['username'] as string || "";
     }
 
+// --------------------------------------コメント、おたより
     LiverReceptionComment(){
         const route = useRoute();
         const { id } = route.params;
@@ -69,91 +70,6 @@ class FBRTDB {
         });
     }
 
-    ThemaChoice(ThemaCategory:string,Content:string,id:string){
-        if(ThemaCategory === "Talk"){
-            const RoomDatabaseRef = ref(db ,`RoomBase/${id}/TalkThema`);
-        
-            push(RoomDatabaseRef, {
-                "Category": "トークテーマ",  
-                "Content": Content,
-            });
-        } else if(ThemaCategory === "Ogiri"){
-            const RoomDatabaseRef = ref(db ,`RoomBase/${id}/OgiriThema`);
-        
-            push(RoomDatabaseRef, {
-                "Category": "お題",  
-                "Content": Content,
-            });
-        };
-    }
-
-    AddTopic(){
-        const route = useRoute();
-        const { id } = route.params;
-        const TopicSnapShot:any[] = reactive([]);
-        const waitAuth:any =
-         (() => 
-            new Promise((resolve:any,reject:any) => {
-                let count = 0;
-                setInterval(() => {
-                count++;
-                if(this.authID !== ""){
-                    resolve();
-                }else if(count > 20){
-                    reject();
-                }
-                },100);
-            })
-        )();
-
-        waitAuth.then(() => {
-            const recentPostsRef = query(ref(db, `RoomBase/${id}/TalkThema`), limitToLast(1));
-            onChildAdded(recentPostsRef, (snapshot) => {
-                TopicSnapShot.push( {
-                    "key":snapshot.key,
-                    "Category":snapshot.val().Category,
-                    "Content":snapshot.val().Content,
-                })
-                });
-        },() => {
-            alert("IDが取得できませんでした");
-        });
-        return TopicSnapShot
-    }
-
-    // ReceptionThema(){
-    //     const route = useRoute();
-    //     const { id } = route.params;
-    //     const ThemaSnapShot:any[] = reactive([]);
-    //     const waitAuth:any =
-    //      (() => 
-    //         new Promise((resolve:any,reject:any) => {
-    //             let count = 0;
-    //             setInterval(() => {
-    //             count++;
-    //             if(this.authID !== ""){
-    //                 resolve();
-    //             }else if(count > 20){
-    //                 reject();
-    //             }
-    //             },100);
-    //         })
-    //     )();
-
-    //     waitAuth.then(() => {
-    //         const CommentRef = ref(db, `RoomBase/${id}/Letter`);
-    //         onChildAdded(CommentRef, (snapshot) => {
-    //             ThemaSnapShot.push( {
-    //                 "Category":snapshot.val().Category,
-    //                 "Content":snapshot.val().Content,
-    //             })
-    //         });
-    //     },() => {
-    //         alert("IDが取得できませんでした");
-    //     });
-    //     return ThemaSnapShot
-    // }
-
     LiverReceptionLetter(){
         const route = useRoute();
         const { id } = route.params;
@@ -186,6 +102,75 @@ class FBRTDB {
         });
         return LetterSnapShot
     }
+
+// --------------------------------------コメント、おたより
+
+// --------------------------------------テーマ関連
+
+    // OgiriThemaList.vueとTalkThemaList.vueで使用
+    ThemaChoice(ThemaCategory:string,Content:string,id:string){
+        if(ThemaCategory === "Talk"){
+            const RoomDatabaseRef = ref(db ,`RoomBase/${id}/Thema`);
+        
+            push(RoomDatabaseRef, {
+                "Category": "トークテーマ",  
+                "Content": Content,
+            });
+        } else if(ThemaCategory === "Ogiri"){
+            const RoomDatabaseRef = ref(db ,`RoomBase/${id}/Thema`);
+        
+            push(RoomDatabaseRef, {
+                "Category": "お題",  
+                "Content": Content,
+            });
+        };
+    }
+    // ThemaFieldで使用
+    AddTopic(){
+        const route = useRoute();
+        const { id } = route.params;
+        let TopicSnapShot:any[] = reactive([]);
+        const waitAuth:any =
+         (() => 
+            new Promise((resolve:any,reject:any) => {
+                let count = 0;
+                setInterval(() => {
+                count++;
+                if(this.authID !== ""){
+                    resolve();
+                }else if(count > 20){
+                    reject();
+                }
+                },100);
+            })
+        )();
+
+        waitAuth.then(() => {
+            const recentPostsRef = query(ref(db, `RoomBase/${id}/Thema`), limitToLast(1));
+            TopicSnapShot = [];
+            onChildAdded(recentPostsRef, (snapshot) => {
+                TopicSnapShot.push( {
+                    "key":snapshot.key,
+                    "Category":snapshot.val().Category,
+                    "Content":snapshot.val().Content,
+                })
+                });
+        },() => {
+            alert("IDが取得できませんでした");
+        });
+        return TopicSnapShot
+    }
+    // LiveControlPanel.vueで使用
+    SendAnswer(AnswerText:string,id:string){
+        const RoomDatabaseRef = ref(db ,`RoomBase/${id}/OrigiAnswer`);
+    
+        push(RoomDatabaseRef, {
+            "Answer": AnswerText,
+        });
+    }
+
+// --------------------------------------テーマ関連
+
 }
 
 // console.log("CommentRef:",CommentRef , "DB:",db , onChildAdded,`RoomBase/${auth.currentUser?.uid}`);

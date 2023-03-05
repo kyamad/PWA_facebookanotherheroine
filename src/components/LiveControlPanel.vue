@@ -3,8 +3,8 @@
     <div class="column-control--left">
       <div class="section--answer">
        <p class="answer--ogiri">大喜利回答</p>
-       <input type="submit" class="ogiri--submit" id="OSubmit" value="送信">
-       <input type="text" class="ogiri--textinput" name="ogiriA" id="ogiriA" maxlength="0" autocomplete="off">
+       <input type="submit" @click="SendAnswer" class="AddOgirAnswer" value="送信">
+       <input type="text" class="WriteAnswerFld"  v-model="OgiriAnswer" maxlength="0" autocomplete="off">
       </div>
       <div class="section--category">
         <p class="stream-category">配信カテゴリ</p>
@@ -50,8 +50,30 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import {useRoute} from 'vue-router';
+import FBRTDB from '../services/FirebaseFunctions';
 
 export default defineComponent({
+  name:'LiveControlPanel',
+  data: function(){
+    return{
+      OgiriAnswer:""
+    }
+  },
+  methods:{
+    SendAnswer(OgiriAnswer:string,id:string){
+      FBRTDB.SendAnswer(OgiriAnswer,id);
+      this.OgiriAnswer = "";
+    },
+  },
+  setup () {
+    const route = useRoute();
+    let  id  = JSON.stringify(route.params.id).replace(/"/g, "");
+    
+    return {
+      id,
+    }
+  },
 });
 </script>
 
@@ -105,13 +127,13 @@ export default defineComponent({
   margin: auto 0;
   }
 
-  .ogiri--submit{
+  .AddOgirAnswer{
   margin-left: auto;
   padding: 0.1vw 1vw;
   font-size: 1.5vw;
   }
 
-  .ogiri--textinput{
+  .WriteAnswerFld{
   width: 23.4vw;
   font-size: 1.3vw;
   }

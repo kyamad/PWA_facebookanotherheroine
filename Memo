@@ -1,6 +1,10 @@
 Storeのstate.isloginは当然初期値がFalseになってる
 →各ページのSetupでfirebaseUtils.tsが発動→FalseがTrueに変わってる
 つまり、Storeにキャッシュ機能はないんじゃないの？
+RadioComponentの映像のとこNullにしないとカメラ自体読み込んでね？
+FunctionAppはどこで使われてるか書いておいた方が楽
+テーマフィールドは一括で受けてCatで切り分けた方が楽
+id系はConstructerにまとめたい
 
 すぐ使えるようにおいておく
 const waitAuth:any =
