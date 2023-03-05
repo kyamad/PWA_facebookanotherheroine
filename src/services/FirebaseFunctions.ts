@@ -40,8 +40,9 @@ class FBRTDB {
                 chatSnapShot.push( {
                     "key":snapshot.key,
                     "name":snapshot.val().name,
-                    "Comment":snapshot.val().message})
-                });
+                    "Comment":snapshot.val().message
+                })
+            });
         },() => {
             alert("IDが取得できませんでした");
         });
@@ -95,8 +96,9 @@ class FBRTDB {
                 LetterSnapShot.push( {
                     "key":snapshot.key,
                     "name":snapshot.val().name,
-                    "Text":snapshot.val().message})
-                });
+                    "Text":snapshot.val().message
+                })
+            });
         },() => {
             alert("IDが取得できませんでした");
         });
@@ -130,6 +132,7 @@ class FBRTDB {
         const route = useRoute();
         const { id } = route.params;
         let TopicSnapShot:any[] = reactive([]);
+
         const waitAuth:any =
          (() => 
             new Promise((resolve:any,reject:any) => {
@@ -147,8 +150,8 @@ class FBRTDB {
 
         waitAuth.then(() => {
             const recentPostsRef = query(ref(db, `RoomBase/${id}/Thema`), limitToLast(1));
-            TopicSnapShot = [];
             onChildAdded(recentPostsRef, (snapshot) => {
+                TopicSnapShot.splice(0, TopicSnapShot.length);
                 TopicSnapShot.push( {
                     "key":snapshot.key,
                     "Category":snapshot.val().Category,
@@ -160,7 +163,7 @@ class FBRTDB {
         });
         return TopicSnapShot
     }
-    // LiveControlPanel.vueで使用
+    // LiveControlPanel.vueで使用　今Maxlenghが聴いてて試せない注意
     SendAnswer(AnswerText:string,id:string){
         const RoomDatabaseRef = ref(db ,`RoomBase/${id}/OrigiAnswer`);
     
