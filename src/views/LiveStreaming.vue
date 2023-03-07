@@ -23,7 +23,7 @@
             <RadioComponent v-if="Radio === true"></RadioComponent>
             <VideoComponent v-if="Radio === false"></VideoComponent> 
           </div>
-          <ThemaField v-if="Themafld === true" @onClick="ThemafldChange"></ThemaField>
+          <ThemaField v-if="Themafld === true" @onClick="ThemafldChange" :AnswerFldText="AnswerFldText"></ThemaField>
           <!--<div class="timedisp"><div class="stti"><div class="tstartbtn"><div class="tsbtnnaka">スタート</div></div><div class="timenaka"></div></div>
             <div class="fullrod"><div class="changerod"></div></div>
           </div>-->
@@ -91,7 +91,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent,reactive } from 'vue';
 import logInheader from '@/components/logInheader.vue';
 import VideoComponent from '@/components/VideoComponent.vue';
 import RadioComponent from '@/components/RadioComponent.vue';
@@ -100,6 +100,7 @@ import LiveControlPanel from '@/components/LiveControlPanel.vue';
 import MessagingFunction from '@/components/MessagingFunction.vue';
 import { onMounted } from 'vue';
 import firebaseUtils from '../firebaseUtils';
+import FBRTDB from '../services/FirebaseFunctions';
 
 export default defineComponent({
   name: 'LiveStreaming',
@@ -134,6 +135,12 @@ export default defineComponent({
   },
   setup () {
     firebaseUtils.onAuthStateChanged();  
+    const AnswerFldText = reactive(FBRTDB.AddAnswerFld())
+
+    return{
+      AnswerFldText,
+    }
+    
 
     onMounted(() => {
     });

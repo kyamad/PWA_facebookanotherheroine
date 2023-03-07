@@ -1,7 +1,7 @@
 <template>
   <div v-if="ThemaDisplay == false" class="Theme-Fld">
-    <TalkThemaList v-if="TalkThema === true" @onClick="ThemaDisplayChange"></TalkThemaList>
-    <OgiriThemaList v-if="TalkThema === false" @onClick="ThemaDisplayChange"></OgiriThemaList>
+    <TalkThemaList v-if="TalkThema === true" @onClick="AddThema"></TalkThemaList>
+    <OgiriThemaList v-if="TalkThema === false" @onClick="AddThema"></OgiriThemaList>
     <div class="Theme-Control-btn-Fld">
       <div class="Theme-Fld-Close-btn" @click="ThemeFldClose()">閉じる</div>
       <div class="Random-Choice-btn">ランダム</div>
@@ -18,15 +18,15 @@
     <div class="Thema-Content" v-for="{key, Content} in ThemaSnapShot" :key="key" >{{ Content }}</div>
     <div class="Thema-Fld-Close-btn" @click="ThemaClose()">閉じる</div>
   </div>
-  <div class="Ogiri-Answer-Fld">
+  <div class="Ogiri-Answer-Fld" v-for="{key, Answer} in AnswerFldText" :key="key">
     <div class="Answer-Title">回答</div>
-    <div class="Answer-Content"></div>
+    <div class="Answer-Content">{{ Answer }}</div>
     <div class="Answer-Fld-Close-btn">閉じる</div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, watch } from 'vue';
+import { defineComponent, watch, watchEffect, reactive } from 'vue';
 import TalkThemaList from '@/components/TalkThemaList.vue';
 import OgiriThemaList from '@/components/OgiriThemaList.vue';
 import FBRTDB from '../services/FirebaseFunctions';
@@ -46,11 +46,11 @@ export default defineComponent({
       AnswerFld:false,
     }
   },
-  watch:{
-    AnswerFldText: function(){
-      console.log("やあ");
-    },
-  },
+  // watch:{
+  //   AnswerFldText: function(){
+  //     console.log("やあ");
+  //   },
+  // },
   methods:{
     ChangeOgiri(){
       this.TalkThema = false
@@ -69,19 +69,24 @@ export default defineComponent({
       this.ThemeFldClose();
     },
 
-    ThemaDisplayChange(){
+    AddThema(){
       this.ThemaDisplay = true
     },
 
     AnswerFldDisplay(){
       this.AnswerFld = true
-      console.log("やあ")
     }
   },
   setup () {
+    const ThemaSnapShot = reactive(FBRTDB.AddTopic())
+    const props = defineProps({
+      AnswerFldText: Object
+    })
+    console.log(props.AnswerFldText)
+
     return{
-      ThemaSnapShot:FBRTDB.AddTopic(),
-      AnswerFldText:FBRTDB.AddAnswerFld(),
+      AnswerFldText:props.AnswerFldText,
+      ThemaSnapShot,
     }
   },
 

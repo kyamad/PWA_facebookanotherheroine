@@ -13,10 +13,14 @@ import FBRTDB from '../services/FirebaseFunctions';
 
 export default defineComponent({
   name: 'CommentList',
+  data:function(){
+    return{
+      chat: FBRTDB.LiverReceptionComment(),
+    }
+  },
 
   setup () {
     return {
-      chat: FBRTDB.LiverReceptionComment(),
     }
   },
 
