@@ -1,0 +1,38 @@
+獲得ポイントの表示画面
+LiveStreaming.vue内、Streaming-View-Screenの直下、<RadioComponent v-if="Radio === true"></RadioComponent>の真上にあった
+<template>
+<div class="pointfld">
+    <div class="pointcount"><div class="nowpoint">現在10000000Pt</div></div>
+    <img src="img/aikon.png" alt>
+    <img src="img/aikon.png" alt>
+    <img src="img/aikon.png" alt>
+</div>
+
+</template>
+
+<script lang="ts">
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+});
+</script>
+
+<style scoped lang="scss">
+.pointfld{
+    display: none;
+    position: absolute;
+    justify-content: space-between;
+    height: 4vw;
+    bottom: 0;
+    left: 0;
+    margin-left: 1vw;
+}
+
+.pointcount{
+    margin: auto;
+    font-family: none;
+    font-size: 1.5vw;
+    font-weight: bold;
+}
+
+</style>
