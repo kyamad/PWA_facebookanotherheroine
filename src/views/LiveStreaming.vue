@@ -14,43 +14,22 @@
         </div>
         <div class="Streaming-View-Fld">
           <div class="Streaming-View-Screen">
-            <!--<div class="pointfld">
-            <div class="pointcount"><div class="nowpoint">現在10000000Pt</div></div>
-            <img src="img/aikon.png" alt>
-            <img src="img/aikon.png" alt>
-            <img src="img/aikon.png" alt>
-            </div>-->
             <RadioComponent v-if="Radio === true"></RadioComponent>
             <VideoComponent v-if="Radio === false"></VideoComponent> 
           </div>
-          <ThemaField v-if="Themafld === true" @onClick="ThemafldChange" :AnswerFldText="AnswerFldText"></ThemaField>
+          <ThemaField v-if="Themafld === true" @onClick="ThemaAndAnswerClose"></ThemaField>
+          <ThemaDisplay v-if="ThemaTextFld ===true" :ThemaSnapShot = "ThemaSnapShot"></ThemaDisplay>
+          <AnswerDisplay v-if="AnswerFld ===true" :AnswerFldText = "AnswerFldText"></AnswerDisplay>
           <!--<div class="timedisp"><div class="stti"><div class="tstartbtn"><div class="tsbtnnaka">スタート</div></div><div class="timenaka"></div></div>
             <div class="fullrod"><div class="changerod"></div></div>
           </div>-->
         </div>
-        <!--<div class="liveEndView">
-        <div class="liveEndfld">
-          <div class="EndfldTop">
-          <p class="Endendmsg">配信終了！</p>
-          <div class="endkirinuki">切り抜き</div>
-          <a href="/livepage.php" class="Restart">再配信</a>
-          </div>
-          <div class="Endfld">
-          <p class="giftmsg">ギフトをくれたユーザー</p>
-          <ul class="givegiftuser">
-          <li class="giveuser"><a href="#" class ="guserURL"><img class="giveuserimg" src="img/aikon.png" alt><div class="gusername">ユーザー名ユーザー名</div></a><div class="giftpoint">1500Pt</div></li>
-          <li class="giveuser"><a href="#" class ="guserURL"><img class="giveuserimg" src="img/aikon.png" alt><div class="gusername">ユーザー名ユーザー名ユーザー名</div></a><div class="giftpoint">1500Pt</div></li>
-          </ul>
-          </div>
-          <div class="manneriAlert">お疲れさまでした！いい配信だったよ！</div>
-        </div>
-        </div>-->
         <ul class="Streaming-Control-btn-Fld">
           <li class="ChangeRadio-btn" v-if="Radio === false" @click="ChangeRadioMode()"><span>ラジオに<br>切り替え</span></li>
           <li class="ChangeCamera-btn" v-if="Radio === true" @click="ChangeCameraMode()"><span>カメラに<br>切り替え</span></li>
           <li class="Live-End-btn"><span>配信終了</span></li>
           <li class="Echo-btn"><span>エコー</span></li>
-          <li class="Theme-Opne-btn" @click="ThemafldChange()"><span>お題</span></li>
+          <li class="Theme-Opne-btn" @click="ThemaAndAnswerClose()"><span>お題</span></li>
           <li class="Timer-btn"><span>タイマー</span></li>
           <div class="Timer-Object">
             <ul class="Timer-List">
@@ -91,11 +70,13 @@
 </template>
 
 <script lang="ts">
-import { defineComponent,reactive } from 'vue';
+import { defineComponent, reactive, ref, watch } from 'vue';
 import logInheader from '@/components/logInheader.vue';
 import VideoComponent from '@/components/VideoComponent.vue';
 import RadioComponent from '@/components/RadioComponent.vue';
 import ThemaField from '@/components/ThemaField.vue';
+import AnswerDisplay from '@/components/AnswerDisplay.vue';
+import ThemaDisplay from '@/components/ThemaDisplay.vue';
 import LiveControlPanel from '@/components/LiveControlPanel.vue';
 import MessagingFunction from '@/components/MessagingFunction.vue';
 import { onMounted } from 'vue';
@@ -111,6 +92,8 @@ export default defineComponent({
     LiveControlPanel,
     MessagingFunction,
     ThemaField,
+    AnswerDisplay,
+    ThemaDisplay,
   },
   data: function(){
     return{
@@ -125,7 +108,7 @@ export default defineComponent({
     ChangeCameraMode(){
       this.Radio = false;
     },
-    ThemafldChange(){
+    ThemaAndAnswerClose(){
       if(this.Themafld === true){
         this.Themafld = false
       } else {
@@ -134,11 +117,38 @@ export default defineComponent({
     },
   },
   setup () {
-    firebaseUtils.onAuthStateChanged();  
-    const AnswerFldText = reactive(FBRTDB.AddAnswerFld())
+    firebaseUtils.onAuthStateChanged(); 
+    const AnswerFldStatus = reactive(FBRTDB.ReceptionFldStatus())
+    
+    const AnswerFldText = reactive(FBRTDB.AddAnswerFld());
+    const ThemaSnapShot = reactive(FBRTDB.AddTopic());
+    let AnswerFld = ref(false);
+    let ThemaTextFld = ref(false);
+
+    watch(AnswerFldStatus, (next, prev) => {
+      if(AnswerFldStatus.StatusFld == "OgiriAnswerFld"){
+        AnswerFld.value = false
+      } else if(AnswerFldStatus.StatusFld == "ThemaTextFld"){
+        ThemaTextFld.value = false as boolean
+      }
+    })
+
+    watch(AnswerFldText, (next, prev) => {
+      AnswerFld.value = true as boolean
+      if(AnswerFldText.length === 0){
+        AnswerFld.value = false as boolean
+      }
+    })
+
+    watch(ThemaSnapShot, (next, prev) => {
+      ThemaTextFld.value = true as boolean
+    })
 
     return{
+      AnswerFld,
       AnswerFldText,
+      ThemaSnapShot,
+      ThemaTextFld,
     }
     
 

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="ThemaDisplay == false" class="Theme-Fld">
+  <div class="Theme-Fld">
     <TalkThemaList v-if="TalkThema === true" @onClick="AddThema"></TalkThemaList>
     <OgiriThemaList v-if="TalkThema === false" @onClick="AddThema"></OgiriThemaList>
     <div class="Theme-Control-btn-Fld">
@@ -12,16 +12,6 @@
         <input type="text" class="Theme-Input-Text-Area" name="chtheme" id="Chtheme" autocomplete="off" maxlength="32">
       </div>
     </div>
-  </div>
-  <div v-if="ThemaDisplay == true" class="Thema-Display-Fld">
-    <div class="Thema-Category" v-for="{key, Category} in ThemaSnapShot" :key="key" >{{Category}}</div>
-    <div class="Thema-Content" v-for="{key, Content} in ThemaSnapShot" :key="key" >{{ Content }}</div>
-    <div class="Thema-Fld-Close-btn" @click="ThemaClose()">閉じる</div>
-  </div>
-  <div class="Ogiri-Answer-Fld" v-for="{key, Answer} in AnswerFldText" :key="key">
-    <div class="Answer-Title">回答</div>
-    <div class="Answer-Content">{{ Answer }}</div>
-    <div class="Answer-Fld-Close-btn">閉じる</div>
   </div>
 </template>
 
@@ -43,14 +33,8 @@ export default defineComponent({
       ThemaDisplay:false,
       ThemaCategoly:"",
       ThemaContent:"",
-      AnswerFld:false,
     }
   },
-  // watch:{
-  //   AnswerFldText: function(){
-  //     console.log("やあ");
-  //   },
-  // },
   methods:{
     ChangeOgiri(){
       this.TalkThema = false
@@ -64,30 +48,12 @@ export default defineComponent({
       this.$emit("onClick", "false")
     },
 
-    ThemaClose(){
-      this.ThemaDisplay = false
-      this.ThemeFldClose();
-    },
-
     AddThema(){
       this.ThemaDisplay = true
+      this.$emit("onClick", "false")
     },
-
-    AnswerFldDisplay(){
-      this.AnswerFld = true
-    }
   },
   setup () {
-    const ThemaSnapShot = reactive(FBRTDB.AddTopic())
-    const props = defineProps({
-      AnswerFldText: Object
-    })
-    console.log(props.AnswerFldText)
-
-    return{
-      AnswerFldText:props.AnswerFldText,
-      ThemaSnapShot,
-    }
   },
 
 });
@@ -185,65 +151,4 @@ template {
  border: 0;
  border-left: 0.2vw solid;
 }
-
-.Thema-Display-Fld{
- position: absolute;
- top: 1%;
- left: 2.5%;
- width: 95%;
- height: 30%;
- background-color: rgb(0, 123, 187, 0.7);
- color: #FFFFFF;
-}
-
-.Thema-Category{
-  margin-top: 1.7vw;
-  font-size: 1.5vw;
-}
-
-.Thema-Content{
-  margin-top: 1.8vw;
-  font-size: 1.7vw;
-}
-
-.Thema-Fld-Close-btn{
- position: absolute;
- width: 6%;
- bottom: 5%;
- right: 2%;
- font-size: 1vw;
- cursor: pointer;
-}
-
-.Ogiri-Answer-Fld{
-  display: none;
-  position: absolute; /*themefldに対してabso*/
-  top: 26%;
-  left: 0.1%;
-  width: 98%;
-  height: 40%;
-  border: 0.5vw solid;
-  background-color: #FFFFFF;
-  color: #000000;
-  z-index: 1;
-}
-
-.Answer-Title{
-  margin-top: 1vw;
-}
-
-.Answer-Content{
-  margin-top: 2vw;
-  font-size: 2vw;
-}
-
-.Answer-Fld-Close-btn{
-  position: absolute; /*displayに対してabso*/
-  width: 6%;
-  bottom: 5%;
-  right: 2%;
-  font-size: 1vw;
-  cursor: pointer;
-}
-
 </style>

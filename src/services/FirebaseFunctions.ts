@@ -1,4 +1,4 @@
-import { getDatabase, ref, query, limitToLast, onChildAdded, Database, push } from "firebase/database";
+import { getDatabase, ref, query, limitToLast, onChildAdded, Database, push, remove } from "firebase/database";
 import { auth } from "../../FirebaseConfig";
 import { defineComponent, reactive, onMounted} from 'vue';
 import store from '../store';
@@ -147,9 +147,9 @@ class FBRTDB {
                 },100);
             })
         )();
-
         waitAuth.then(() => {
             const recentPostsRef = query(ref(db, `RoomBase/${id}/Thema`), limitToLast(1));
+            remove(ref(db, `RoomBase/${id}/Thema`))
             onChildAdded(recentPostsRef, (snapshot) => {
                 TopicSnapShot.splice(0, TopicSnapShot.length);
                 TopicSnapShot.push( {
@@ -163,6 +163,7 @@ class FBRTDB {
         });
         return TopicSnapShot
     }
+
     // LiveControlPanel.vueで使用　今Maxlenghが聴いてて試せない注意
     SendAnswer(AnswerText:string,id:string){
         const RoomDatabaseRef = ref(db ,`RoomBase/${id}/OrigiAnswer`);
@@ -172,6 +173,7 @@ class FBRTDB {
         });
     }
 
+    // LiveStreaming.vueで使用
     AddAnswerFld(){
         const route = useRoute();
         const { id } = route.params;
@@ -193,14 +195,67 @@ class FBRTDB {
         )();
 
         waitAuth.then(() => {
+            
             const recentPostsRef = query(ref(db, `RoomBase/${id}/OrigiAnswer`), limitToLast(1));
+            remove(ref(db, `RoomBase/${id}/OrigiAnswer`))
             onChildAdded(recentPostsRef, (snapshot) => {
                 AnswerSnapShot.splice(0, AnswerSnapShot.length);
-                AnswerSnapShot.push( {
+                AnswerSnapShot.push({
                     "key":snapshot.key,
                     "Answer":snapshot.val().Answer,
                 })
-                });
+            });
+        },() => {
+            alert("IDが取得できませんでした");
+        });
+        return AnswerSnapShot
+    }
+
+// --------------------------------------オープン＆クローズ
+
+    // AnswerDisplay.vueで使用
+    SendFldStatus(id:string,StatusFld:string,Status:string){
+        const RoomDatabaseRef = ref(db ,`RoomBase/${id}/Status`);
+        push(RoomDatabaseRef, {
+            "StatusFld": StatusFld,
+            "Status":Status
+        });
+    }
+
+    // LiveStreaming.vueで使用
+    ReceptionFldStatus(){
+        const route = useRoute();
+        const { id } = route.params;
+        let AnswerSnapShot:any = reactive({
+            key:"",
+            StatusFld:"",
+            Status:""
+        });
+
+        const waitAuth:any =
+         (() => 
+            new Promise((resolve:any,reject:any) => {
+                let count = 0;
+                setInterval(() => {
+                count++;
+                if(this.authID !== ""){
+                    resolve();
+                }else if(count > 20){
+                    reject();
+                }
+                },100);
+            })
+        )();
+
+        waitAuth.then(() => {
+            
+            const recentPostsRef = query(ref(db, `RoomBase/${id}/Status`), limitToLast(1));
+            remove(ref(db, `RoomBase/${id}/status`))
+            onChildAdded(recentPostsRef, (snapshot) => {
+                AnswerSnapShot.key = snapshot.key
+                AnswerSnapShot.StatusFld = snapshot.val().StatusFld
+                AnswerSnapShot.Status = snapshot.val().Status
+            });
         },() => {
             alert("IDが取得できませんでした");
         });
