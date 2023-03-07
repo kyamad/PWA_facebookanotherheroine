@@ -132,7 +132,7 @@ class FBRTDB {
         const route = useRoute();
         const { id } = route.params;
         let TopicSnapShot:any[] = reactive([]);
-
+        
         const waitAuth:any =
          (() => 
             new Promise((resolve:any,reject:any) => {
@@ -197,6 +197,7 @@ class FBRTDB {
             onChildAdded(recentPostsRef, (snapshot) => {
                 AnswerSnapShot.splice(0, AnswerSnapShot.length);
                 AnswerSnapShot.push( {
+                    "key":snapshot.key,
                     "Answer":snapshot.val().Answer,
                 })
                 });
