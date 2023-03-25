@@ -225,13 +225,22 @@ export default defineComponent({
         {name:"丁寧にdisってください"},
         {name:"大金持ちにマウンティングをしてください"},
         {name:"「そんな時に出会ったのが、このクソ青汁でした」でオトしてください"},
-      ]
+      ],
+      num:0,
+      Randomitem:"",
     }
   },
   methods: {
     ThemaChoice(name:string){
+      console.log(this.topics[4].name)
       FBRTDB.ThemaChoice("Ogiri",name,this.id)
       this.$emit("onClick", "false");
+    },
+
+    RandomChoice(){
+      this.num = Math.floor(Math.random() * this.topics.length)
+      this.Randomitem = this.topics[this.num].name
+      this.ThemaChoice(this.Randomitem)
     }
   },
   setup () {

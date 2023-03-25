@@ -1,10 +1,10 @@
 <template>
   <div class="Theme-Fld">
-    <TalkThemaList v-if="TalkThema === true" @onClick="AddThema"></TalkThemaList>
-    <OgiriThemaList v-if="TalkThema === false" @onClick="AddThema"></OgiriThemaList>
+    <TalkThemaList v-if="TalkThema === true" @onClick="ThemeFldClose" ref="Random1"></TalkThemaList>
+    <OgiriThemaList v-if="TalkThema === false" @onClick="ThemeFldClose" ref="Random"></OgiriThemaList>
     <div class="Theme-Control-btn-Fld">
       <div class="Theme-Fld-Close-btn" @click="ThemeFldClose()">閉じる</div>
-      <div class="Random-Choice-btn">ランダム</div>
+      <div class="Random-Choice-btn" @click="RandomChoice">ランダム</div>
       <div class="Change-Ogiri-btn" v-if="TalkThema === true" @click= "ChangeOgiri()">大喜利に切り替え</div>
       <div class="Change-TalkThema-btn" v-if="TalkThema === false" @click= "ChangeTalkThema()">テーマに切り替え</div>
       <div class="Theme-Input-Fld">
@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, watch, watchEffect, reactive } from 'vue';
+import { defineComponent, ref } from 'vue';
 import TalkThemaList from '@/components/TalkThemaList.vue';
 import OgiriThemaList from '@/components/OgiriThemaList.vue';
 import FBRTDB from '../services/FirebaseFunctions';
@@ -48,9 +48,9 @@ export default defineComponent({
       this.$emit("onClick", "false")
     },
 
-    AddThema(){
-      this.ThemaDisplay = true
-      this.$emit("onClick", "false")
+    RandomChoice(){
+      const Random1 = ref()
+      // Random1.RandomChoice()
     },
   },
   setup () {
