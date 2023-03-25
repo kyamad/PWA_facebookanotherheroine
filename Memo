@@ -1,6 +1,7 @@
 RadioComponentの映像のとこNullにしないとカメラ自体読み込んでね？
 FunctionAppはどこで使われてるか書いておいた方が楽
 id系はConstructerにまとめたい
+山田Mac切り替えテスト
 
 すぐ使えるようにおいておく
 const waitAuth:any =
