@@ -68,6 +68,7 @@ header{
  background-color: white;
  opacity: 1;
  z-index: 80;
+ font-family: 'Kosugi Maru', sans-serif;
 }
 
 a{

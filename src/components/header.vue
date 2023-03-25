@@ -36,6 +36,7 @@ export default defineComponent({
 <style scoped lang="scss">
 @import '@/assets/sass/mixin.scss';
 header{
+font-family: 'Kosugi Maru', sans-serif;
 position: fixed;
 top: 0;
 left: 0;

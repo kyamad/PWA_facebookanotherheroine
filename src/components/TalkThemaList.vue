@@ -267,13 +267,21 @@ export default defineComponent({
         {name:"あの頃はこれが怖かったなぁ"},
         {name:"真理を教えてあげる。みんなには内緒だよ？"},
         {name:"あなたの個人的ニュース！！"},
-      ]
+      ],
+      num:0,
+      Randomitem:"",
     }
   },
   methods:{
     ThemaChoice(name:string){
       FBRTDB.ThemaChoice("Talk",name,this.id)
       this.$emit("onClick", "false");
+    },
+
+    RandomChoice(){
+      this.num = Math.floor(Math.random() * this.topics.length)
+      this.Randomitem = this.topics[this.num].name
+      this.ThemaChoice(this.Randomitem)
     }
   },
   setup () {

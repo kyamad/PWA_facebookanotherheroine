@@ -46,22 +46,6 @@
           <li class="URL-Copy-btn"><span>URLコピー</span></li>
           <li class="Mute-btn"><span>ミュート</span></li>
         </ul>
-        <!--機能的に今はレベルが足りないのでいつか必ず...!!
-        <div class="kirinukifld">
-        <div class="kiriback">
-          <img class="pausebtn" src="img/一時停止ボタン.png" alt>
-          <div class="kirikugiri"></div>
-          <div class="kirisamune">
-          <div class="kirifilter">
-            <div class="kiritorifld"><div class="kiritorifldL"></div><div class="kiritorifldR"></div></div>
-          </div>
-          </div>
-          </div>
-          <div class="sebtnfld">
-          <div class="savebtn">保存</div>
-          <div class="kiriendbtn">終了</div>
-          </div>
-        </div>-->
       </div>
       <MessagingFunction></MessagingFunction>
     </div>
@@ -245,25 +229,10 @@ header{
   border: 0.15vw solid;
   }
 
-  .filter{
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #808080;
-  opacity: 0.5;
-  }
-
   .Streaming-View-Screen{
   position: relative;
   background-color: #000;
   overflow: hidden;
-  width: 100%;
-  height: 100%;
-  }
-
-  #samuneimg{
   width: 100%;
   height: 100%;
   }
