@@ -1,139 +1,82 @@
 <template>
-<div v-if="signup">
-  <SignUp @onClick="SignUpCls"></SignUp>
-</div>
-<div v-if="signin">
-  <SignIn @onClick="SinInCls"></SignIn>
-</div>
-<div v-if="Login">
-  <LogInHeader></LogInHeader>
-</div>
-<div v-if="!Login">
-  <Header @onClick="SignOpn"></Header>
-</div>
-  <main id="top-page">
+  <main id="GroundWork">
     <section id="section1">
-      <div class="koukoku">
-        <a href="#" class ="linkURL"><img src="../assets/広告.jpg"></a>
+      <div class="Movie">
+        <video playsinline autoplay muted loop>
+          <source src="../assets/新規FMT01c1.mp4" type="video/mp4">
+        </video>
+        <div class="OuterFrame">
+          <div Class="Filter">
+            <div class="Startbtn" @click="JumpURL">start</div>
+          </div>
+        </div>
       </div>
-      <article class="itiran">
-        <ul class="random">
-          <LiveList></LiveList>
-          <LiveList></LiveList>
-          <LiveList></LiveList>
-          <LiveList></LiveList>
-        </ul>
-      </article>
     </section>
   </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { onMounted } from 'vue';
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { auth } from "../../FirebaseConfig";
-import firebaseUtils from '../firebaseUtils';
-import store from '../store';
-import LiveList from  '@/components/LiveList.vue';
-import Header from  '@/components/header.vue';
-import LogInHeader from  '@/components/logInheader.vue';
-import SignUp from  '@/components/SignUp.vue';
-import SignIn from  '@/components/SignIn.vue';
 
 export default defineComponent({
-  name: 'LiveStreaming',
+  name: 'PWATest',
   components: {
-    LiveList,
-    Header,
-    LogInHeader,
-    SignUp,
-    SignIn
   },
   
   data: function(){
-    return{
-      signup: false,
-      signin: false,
-      Login: store.state.isLoggedIn
-    }
   },
 
   methods: {
-    SignOpn(value:number){
-      if(value == 1){
-        this.signup = true;
-      } else if(value == 2){
-        this.signin = true;
-      };
-    },
-    SignUpCls(value:boolean){
-      this.signup = value;
-    },
-    SinInCls(value:boolean){
-      this.signin = value;
-    },
-  },
-
-  setup () {
-    firebaseUtils.onAuthStateChanged();
-  },
-
-  computed:{
-      LoginFlg: function(){
-        return store.getters['isLoggedIn']
-      }
-  },
-
-  watch: {
-    LoginFlg(Val) {
-      this.$data.Login = Val;
-    },
+    JumpURL(){
+      const url = 'http://abehiroshi.la.coocan.jp/'
+      window.location.href = url
+    }
   }
 });
 </script>
 
 <style scoped lang="scss">
 
-template{
-  position: absolute;
-  height: 100%;
-}
-
 #section1{
- font-family: 'Kosugi Maru', sans-serif;
- display: flex;
- margin-top: 8.5vw;
- background-color: #f9fcff;
-}
-  
- .koukoku{
- margin: 2vw 0 0 5vw;
-}
-  
- .koukoku img{
- border: 0.1vw solid;
- width: 17vw;
+  width: 100%;
 }
 
-.itiran{
- width: 80%;
- margin-left: auto;
+.Movie{
+  position: relative;
+  // background-image: url(../assets/people_0020_popcorn.gif);
+  // background-repeat: no-repeat;
+  // background-size: contain;
+  }
+
+  .Movie video{
+    width: 100%;
+    height: auto;
+  }
+
+.OuterFrame{
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
 }
 
-.random{
- display: flex;
- flex-wrap: wrap;
- list-style: none;
- text-align: left;
- justify-content: center;
- margin-right: 3vw;
+.Filter{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(104, 105, 101, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.linkURL{
- text-decoration: none;
- color: #383635;
+.Startbtn{
+  margin-top: 150px;
+  margin-right: 15px;
+  font-size: 35px;
+  border: 5px solid;
+  padding: 5px 30px;
+  background-color: rgba(187, 34, 0, 0.9);
 }
-  
+
 </style>
-

@@ -8,17 +8,6 @@ const routes: Array<RouteRecordRaw> = [
     name: 'home',
     component: HomeView
   },
-  {
-    path: '/streamingview',
-    name: 'streamingview',
-    component: () => import('../views/StreamingView.vue')
-  },
-  {
-    path: '/streaming/:id',
-    name: 'LiveStreaming',
-    props:true,
-    component: () => import('../views/LiveStreaming.vue')
-  },
   // {
   //   path: '/develop',
   //   name: 'develop',
