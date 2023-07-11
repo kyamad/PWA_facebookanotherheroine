@@ -36,3 +36,7 @@
     font-family: 'Noto Serif JP', sans-serif;
     font-weight: 600;
 }
+
+@mixin CorporateLogo {
+    font-family: 'CorporateLogo', sans-serif;
+}

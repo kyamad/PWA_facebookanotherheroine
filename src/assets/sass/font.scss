@@ -4,7 +4,7 @@
 }
 
 @font-face {
-    font-family: 'Noto Serif JP';
+    font-family: 'Noto Serif JP1';
     src: url('@/assets/font/Noto_Serif_JP/NotoSerifJP-Black.otf') format('opentype');
 }
 
@@ -42,4 +42,9 @@
     font-family: 'Noto Serif JP';
     src: url('@/assets/font/Noto_Serif_JP/NotoSerifJP-SemiBold.otf') format('opentype');
     font-weight: 600;
+}
+
+@font-face {
+    font-family: 'CorporateLogo';
+    src: url('@/assets/font/Corporate-Logo-Bold-ver3/Corporate-Logo-Bold-ver3.otf') format('opentype');
 }
