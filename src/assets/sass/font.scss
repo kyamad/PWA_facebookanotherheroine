@@ -46,5 +46,11 @@
 
 @font-face {
     font-family: 'CorporateLogo';
-    src: url('@/assets/font/Corporate-Logo-Bold-ver3/Corporate-Logo-Bold-ver3.otf') format('opentype');
+    src: url('@/assets/font/Corporate-Logo-Bold-ver3/Corporate-Logo-Bold-ver3.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'CorporateLogo2';
+    src: url('@/assets/font/Corporate-Logo-Bold-ver3/Corporate-Logo-Medium-ver3.woff') format('woff');
+    font-weight: Medium;
 }
